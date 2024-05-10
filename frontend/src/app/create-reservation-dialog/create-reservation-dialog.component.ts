@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ReservationService, VehicleModelDto, VehicleService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-create-reservation-dialog',
@@ -22,8 +22,15 @@ export class CreateReservationDialogComponent implements OnInit {
 
   constructor(private readonly vehicleService: VehicleService,
               private readonly reservationService: ReservationService,
-              private readonly dialogRef: MatDialogRef<CreateReservationDialogComponent>) {
-
+              private readonly dialogRef: MatDialogRef<CreateReservationDialogComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: {startDate: moment.Moment, endDate: moment.Moment} | undefined) {
+    console.log(data);
+    if(data !== null && data !== undefined) {
+      this.createReservationFormGroup.patchValue({
+        startDate: data.startDate,
+        endDate: data.endDate
+      })
+    }
   }
 
   async ngOnInit(): Promise<void> {

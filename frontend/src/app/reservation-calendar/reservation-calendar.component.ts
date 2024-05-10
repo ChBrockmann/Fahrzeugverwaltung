@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarOptions, DateSelectArg, DatesSetArg, EventInput} from "fullcalendar";
 import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import {ReservationModelDto, ReservationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
@@ -24,11 +25,12 @@ export class ReservationCalendarComponent{
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin],
+    plugins: [dayGridPlugin, interactionPlugin],
     events: this.events,
     locale: 'de-DE',
     selectable: true,
     selectMirror: true,
+    selectOverlap: false,
     datesSet: async (eventArgs) => this.dateChanged(eventArgs),
     select: (eventArgs) => this.createReservationWithSelevtEvent(eventArgs),
   }
@@ -79,19 +81,29 @@ export class ReservationCalendarComponent{
   }
 
   createReservation() : void {
-    const dialog = this.dialog.open(CreateReservationDialogComponent, {autoFocus: false});
+    this.openDialog(undefined);
+  }
+
+  createReservationWithSelevtEvent(eventArgs: DateSelectArg): void {
+    this.openDialog({startDate: moment.utc(eventArgs.start).add(1, 'day'), endDate: moment.utc(eventArgs.end)});
+  }
+
+  openDialog(data: {startDate: moment.Moment, endDate: moment.Moment} | undefined): void {
+    const dialog = this.dialog.open(CreateReservationDialogComponent, {
+      autoFocus: false,
+      data: data
+    });
 
     dialog.afterClosed().subscribe(result => {
+      if(result == null)
+      {
+        return;
+      }
       let mapped = this.mapReservationModelToEvent(result);
-      console.log(mapped);
 
       this.events.push(mapped);
       this.calendarOptions.events = this.events;
     });
-  }
-
-  createReservationWithSelevtEvent(eventArgs: DateSelectArg): void {
-    console.log(eventArgs);
   }
 
 
