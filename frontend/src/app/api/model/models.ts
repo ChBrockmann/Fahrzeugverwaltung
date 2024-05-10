@@ -1,4 +1,5 @@
 export * from './accessTokenResponse';
+export * from './allUserResponse';
 export * from './createReservationRequest';
 export * from './forgotPasswordRequest';
 export * from './getAllVehicleResponse';

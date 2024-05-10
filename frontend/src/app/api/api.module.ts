@@ -3,7 +3,9 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 import { DefaultService } from './api/default.service';
+import { IcalService } from './api/ical.service';
 import { ReservationService } from './api/reservation.service';
+import { UserService } from './api/user.service';
 import { VehicleService } from './api/vehicle.service';
 
 @NgModule({

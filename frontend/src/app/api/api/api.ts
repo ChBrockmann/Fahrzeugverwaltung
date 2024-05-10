@@ -1,7 +1,11 @@
 export * from './default.service';
 import { DefaultService } from './default.service';
+export * from './ical.service';
+import { IcalService } from './ical.service';
 export * from './reservation.service';
 import { ReservationService } from './reservation.service';
+export * from './user.service';
+import { UserService } from './user.service';
 export * from './vehicle.service';
 import { VehicleService } from './vehicle.service';
-export const APIS = [DefaultService, ReservationService, VehicleService];
+export const APIS = [DefaultService, IcalService, ReservationService, UserService, VehicleService];

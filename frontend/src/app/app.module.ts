@@ -21,6 +21,7 @@ import {
 import { CreateReservationDialogComponent } from './create-reservation-dialog/create-reservation-dialog.component';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import { ViewReservationDetailsDialogComponent } from './view-reservation-details-dialog/view-reservation-details-dialog.component';
 
 
 export const MY_FORMATS = {
@@ -40,6 +41,7 @@ export const MY_FORMATS = {
         AppComponent,
         ReservationCalendarComponent,
         CreateReservationDialogComponent,
+        ViewReservationDetailsDialogComponent,
     ],
     imports: [
         BrowserModule,
