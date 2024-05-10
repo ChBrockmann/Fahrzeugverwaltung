@@ -20,6 +20,7 @@ import {
 } from "@angular/material-moment-adapter";
 import { CreateReservationDialogComponent } from './create-reservation-dialog/create-reservation-dialog.component';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 
 export const MY_FORMATS = {
@@ -54,6 +55,7 @@ export const MY_FORMATS = {
         MatFormFieldModule,
         MatDatepickerModule,
         MatMomentDateModule,
+        MatSelectModule,
     ],
     providers: [
         {

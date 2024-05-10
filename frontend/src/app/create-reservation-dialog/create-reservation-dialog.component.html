@@ -1,15 +1,24 @@
 <form [formGroup]="createReservationFormGroup" class="formgroup">
-    <h2>Fahrzeug reservieren</h2>
-    <mat-form-field style="width: 100%">
-        <mat-label>Reservierungszeitraum auswählen</mat-label>
-        <mat-date-range-input [rangePicker]="picker" separator="bis" >
-            <input matStartDate placeholder="Start" (focus)="picker.open()" formControlName="startDate">
-            <input matEndDate placeholder="Ende (inklusive)"  (focus)="picker.open()" formControlName="endDate">
-        </mat-date-range-input>
-        <mat-hint>DD.MM.YYYY bis DD.MM.YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+  <h2>Fahrzeug reservieren</h2>
+  <mat-form-field style="width: 100%">
+    <mat-label>Reservierungszeitraum auswählen</mat-label>
+    <mat-date-range-input [rangePicker]="picker" separator="bis">
+      <input matStartDate placeholder="Start" (focus)="picker.open()" formControlName="startDate">
+      <input matEndDate placeholder="Ende (inklusive)" (focus)="picker.open()" formControlName="endDate">
+    </mat-date-range-input>
+    <mat-hint>DD.MM.YYYY bis DD.MM.YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="click()">Test</button>
+  <mat-form-field style="margin-top: 32px; display: block">
+    <mat-label>Fahrzeug</mat-label>
+    <mat-select formControlName="requestedVehicleId">
+      <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.id">
+        {{ vehicle.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button style="margin-top: 32px" mat-raised-button color="primary" type="submit" (click)="createReservation()" [disabled]="!createReservationFormGroup.valid">Reservieren</button>
 </form>
