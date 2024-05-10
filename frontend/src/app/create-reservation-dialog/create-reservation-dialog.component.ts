@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ReservationService, VehicleModelDto, VehicleService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-create-reservation-dialog',
@@ -20,7 +21,8 @@ export class CreateReservationDialogComponent implements OnInit {
   public vehicles: VehicleModelDto[] | undefined;
 
   constructor(private readonly vehicleService: VehicleService,
-              private readonly reservationService: ReservationService) {
+              private readonly reservationService: ReservationService,
+              private readonly dialogRef: MatDialogRef<CreateReservationDialogComponent>) {
 
   }
 
@@ -30,12 +32,6 @@ export class CreateReservationDialogComponent implements OnInit {
     if (this.vehicles) {
       this.createReservationFormGroup.patchValue({requestedVehicleId: this.vehicles[0].id});
     }
-
-    console.log(this.vehicles);
-  }
-
-  click(): void {
-    console.log(this.createReservationFormGroup.value);
   }
 
   createReservation() : void {
@@ -45,7 +41,9 @@ export class CreateReservationDialogComponent implements OnInit {
       startDateInclusive: formValues.startDate?.format("YYYY-MM-DD") ?? "",
       endDateInclusive: formValues.endDate?.format("YYYY-MM-DD") ?? "",
       vehicle: formValues.requestedVehicleId ?? "",
-    }).subscribe(() => {});
+    }).subscribe((response) => {
+      this.dialogRef.close(response);
+    });
   }
 
 }

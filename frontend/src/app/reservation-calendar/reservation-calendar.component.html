@@ -2,7 +2,7 @@
 
 <button mat-raised-button color="primary" (click)="createReservation()">Reservierung anlegen</button>
 
-<full-calendar [options]="calendarOptions"></full-calendar>
+<full-calendar [options]="calendarOptions" [deepChangeDetection]="true"></full-calendar>
 
 
 <!--<p-dialog header="Reservierung anlegen" [modal]="true" [(visible)]="modalVisible" [style]="{width: '50vw', height: '20vw'}">-->

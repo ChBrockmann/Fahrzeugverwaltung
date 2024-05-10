@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarOptions, DatesSetArg, EventInput} from "fullcalendar";
 import dayGridPlugin from '@fullcalendar/daygrid';
-import {ReservationService} from "../api";
+import {ReservationModelDto, ReservationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
 import {MatDialog} from "@angular/material/dialog";
@@ -16,47 +16,57 @@ export class ReservationCalendarComponent{
 
   events: EventInput[] = [];
 
-
-
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin],
     events: this.events,
-    locale: 'de',
+    locale: 'de-DE',
     datesSet: async (eventArgs) => this.dateChanged(eventArgs)
   }
 
   constructor(private readonly reservationService: ReservationService,
               public dialog: MatDialog) {
+    this.events = [];
   }
 
   async getEventsForMonthYear(startdate: moment.Moment, enddate: moment.Moment): Promise<EventInput[]> {
     let events = await firstValueFrom(
         this.reservationService.getReservationsInTimespanEndpoint(startdate.format("yyyy-M-D"), enddate.format("yyyy-M-D")));
 
-    return events.reservations.map(event => {
-      return {
-        title: `Fahrzeug reserviert für ${event.reservationMadeByUser?.organization} von ${event.reservationMadeByUser?.fullname}`,
-        allDay: true,
-        start: event.startDateInclusive,
-        end: moment.utc(event.endDateInclusive).add(1, 'days').toISOString(),
-      }
-    })
+    return events.reservations.map(event => this.mapReservationModelToEvent(event));
+  }
+
+  mapReservationModelToEvent(input: ReservationModelDto) : EventInput {
+    return {
+      title: `Fahrzeug reserviert für ${input.reservationMadeByUser?.organization} von ${input.reservationMadeByUser?.fullname}`,
+      allDay: true,
+      start: input.startDateInclusive,
+      end: moment.utc(input.endDateInclusive).add(1, 'days').toISOString(),
+    }
   }
 
   async dateChanged(eventArgs: DatesSetArg) : Promise<void> {
-    console.log(eventArgs);
     let startdate = moment.utc(eventArgs.start);
     let enddate = moment.utc(eventArgs.end);
 
-    this.calendarOptions.events = await this.getEventsForMonthYear(startdate, enddate);
+    let monthYearEvents = await this.getEventsForMonthYear(startdate, enddate);
+
+    for(let event of monthYearEvents) {
+      this.events.push(event);
+    }
+
+    this.calendarOptions.events = this.events;
   }
 
   createReservation() : void {
-    const dialog = this.dialog.open(CreateReservationDialogComponent);
+    const dialog = this.dialog.open(CreateReservationDialogComponent, {autoFocus: false});
 
     dialog.afterClosed().subscribe(result => {
+      let mapped = this.mapReservationModelToEvent(result);
+      console.log(mapped);
 
+      this.events.push(mapped);
+      this.calendarOptions.events = this.events;
     });
   }
 
