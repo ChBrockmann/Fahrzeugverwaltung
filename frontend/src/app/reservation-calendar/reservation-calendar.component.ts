@@ -1,11 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {CalendarOptions, DatesSetArg, EventInput} from "fullcalendar";
+import {CalendarOptions, DateSelectArg, DatesSetArg, EventInput} from "fullcalendar";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {ReservationModelDto, ReservationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateReservationDialogComponent} from "../create-reservation-dialog/create-reservation-dialog.component";
+
+interface loadedMonths {
+  year: number,
+  month: number,
+}
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -15,13 +20,17 @@ import {CreateReservationDialogComponent} from "../create-reservation-dialog/cre
 export class ReservationCalendarComponent{
 
   events: EventInput[] = [];
+  loadedMonths: loadedMonths[] = [];
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin],
     events: this.events,
     locale: 'de-DE',
-    datesSet: async (eventArgs) => this.dateChanged(eventArgs)
+    selectable: true,
+    selectMirror: true,
+    datesSet: async (eventArgs) => this.dateChanged(eventArgs),
+    select: (eventArgs) => this.createReservationWithSelevtEvent(eventArgs),
   }
 
   constructor(private readonly reservationService: ReservationService,
@@ -30,8 +39,16 @@ export class ReservationCalendarComponent{
   }
 
   async getEventsForMonthYear(startdate: moment.Moment, enddate: moment.Moment): Promise<EventInput[]> {
+    if(this.loadedMonths.find(value => value.year === startdate.year() && value.month === startdate.month())) {
+      return [];
+    }
     let events = await firstValueFrom(
         this.reservationService.getReservationsInTimespanEndpoint(startdate.format("yyyy-M-D"), enddate.format("yyyy-M-D")));
+
+    this.loadedMonths.push({
+      year: startdate.year(),
+      month: startdate.month()
+    })
 
     return events.reservations.map(event => this.mapReservationModelToEvent(event));
   }
@@ -42,6 +59,7 @@ export class ReservationCalendarComponent{
       allDay: true,
       start: input.startDateInclusive,
       end: moment.utc(input.endDateInclusive).add(1, 'days').toISOString(),
+      id: input.id
     }
   }
 
@@ -52,7 +70,9 @@ export class ReservationCalendarComponent{
     let monthYearEvents = await this.getEventsForMonthYear(startdate, enddate);
 
     for(let event of monthYearEvents) {
-      this.events.push(event);
+      if(!this.events.find(value => value.id === event.id)) {
+        this.events.push(event);
+      }
     }
 
     this.calendarOptions.events = this.events;
@@ -68,6 +88,10 @@ export class ReservationCalendarComponent{
       this.events.push(mapped);
       this.calendarOptions.events = this.events;
     });
+  }
+
+  createReservationWithSelevtEvent(eventArgs: DateSelectArg): void {
+    console.log(eventArgs);
   }
 
 
