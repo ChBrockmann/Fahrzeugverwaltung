@@ -1,0 +1,15 @@
+<form [formGroup]="createReservationFormGroup" class="formgroup">
+    <h2>Fahrzeug reservieren</h2>
+    <mat-form-field style="width: 100%">
+        <mat-label>Reservierungszeitraum auswählen</mat-label>
+        <mat-date-range-input [rangePicker]="picker" separator="bis" >
+            <input matStartDate placeholder="Start" (focus)="picker.open()" formControlName="startDate">
+            <input matEndDate placeholder="Ende (inklusive)"  (focus)="picker.open()" formControlName="endDate">
+        </mat-date-range-input>
+        <mat-hint>DD.MM.YYYY bis DD.MM.YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="click()">Test</button>
+</form>

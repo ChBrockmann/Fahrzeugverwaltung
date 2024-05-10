@@ -5,6 +5,7 @@ import {ReservationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
 import {MatDialog} from "@angular/material/dialog";
+import {CreateReservationDialogComponent} from "../create-reservation-dialog/create-reservation-dialog.component";
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -52,11 +53,11 @@ export class ReservationCalendarComponent{
   }
 
   createReservation() : void {
-    // const dialog = this.dialog.open(CreateReservationDialogComponent);
-    //
-    // dialog.afterClosed().subscribe(result => {
-    //
-    // });
+    const dialog = this.dialog.open(CreateReservationDialogComponent);
+
+    dialog.afterClosed().subscribe(result => {
+
+    });
   }
 
 

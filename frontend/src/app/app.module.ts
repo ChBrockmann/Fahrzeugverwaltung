@@ -13,7 +13,13 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatMomentDateModule} from "@angular/material-moment-adapter";
+import {
+    MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+    MatMomentDateModule,
+    MomentDateAdapter
+} from "@angular/material-moment-adapter";
+import { CreateReservationDialogComponent } from './create-reservation-dialog/create-reservation-dialog.component';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 
 
 export const MY_FORMATS = {
@@ -32,7 +38,7 @@ export const MY_FORMATS = {
     declarations: [
         AppComponent,
         ReservationCalendarComponent,
-        // CreateReservationDialogComponent
+        CreateReservationDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -50,7 +56,15 @@ export const MY_FORMATS = {
         MatMomentDateModule,
     ],
     providers: [
-        // provideMomentDateAdapter(MY_FORMATS),
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: MY_FORMATS
+        }
     ],
     bootstrap: [AppComponent]
 })
