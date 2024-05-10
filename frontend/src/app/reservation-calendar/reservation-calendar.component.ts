@@ -4,9 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import {ReservationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
-import {CreateReservationDialogComponent} from "../create-reservation-dialog/create-reservation-dialog.component";
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -16,7 +14,6 @@ import {CreateReservationDialogComponent} from "../create-reservation-dialog/cre
 export class ReservationCalendarComponent{
 
   events: EventInput[] = [];
-  modalVisible = false;
 
 
 
@@ -55,11 +52,11 @@ export class ReservationCalendarComponent{
   }
 
   createReservation() : void {
-    const dialog = this.dialog.open(CreateReservationDialogComponent);
-
-    dialog.afterClosed().subscribe(result => {
-
-    });
+    // const dialog = this.dialog.open(CreateReservationDialogComponent);
+    //
+    // dialog.afterClosed().subscribe(result => {
+    //
+    // });
   }
 
 
