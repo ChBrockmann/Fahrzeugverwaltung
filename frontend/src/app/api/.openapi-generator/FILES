@@ -13,9 +13,12 @@ git_push.sh
 index.ts
 model/accessTokenResponse.ts
 model/allUserResponse.ts
+model/availability.ts
+model/checkAvailabilityForVehicleAndTimespanResponse.ts
 model/createReservationRequest.ts
 model/forgotPasswordRequest.ts
 model/getAllVehicleResponse.ts
+model/getReservationByIdResponse.ts
 model/getReservationsInMonthYearResponse.ts
 model/getReservationsInTimespanResponse.ts
 model/getVehicleStatusResponse.ts
