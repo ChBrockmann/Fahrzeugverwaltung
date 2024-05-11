@@ -30,9 +30,9 @@ export class ReservationCalendarComponent{
     locale: 'de-DE',
     selectable: true,
     selectMirror: true,
-    selectOverlap: false,
     datesSet: async (eventArgs) => this.dateChanged(eventArgs),
     select: (eventArgs) => this.createReservationWithSelevtEvent(eventArgs),
+    eventClick: (eventArgs) => this.clickOnEvent(eventArgs)
   }
 
   constructor(private readonly reservationService: ReservationService,
@@ -57,7 +57,7 @@ export class ReservationCalendarComponent{
 
   mapReservationModelToEvent(input: ReservationModelDto) : EventInput {
     return {
-      title: `Fahrzeug reserviert für ${input.reservationMadeByUser?.organization} von ${input.reservationMadeByUser?.fullname}`,
+      title: `${input.vehicleReserved?.name ?? "Fahrzeug"} reserviert für ${input.reservationMadeByUser?.organization} von ${input.reservationMadeByUser?.fullname}`,
       allDay: true,
       start: input.startDateInclusive,
       end: moment.utc(input.endDateInclusive).add(1, 'days').toISOString(),
@@ -78,6 +78,10 @@ export class ReservationCalendarComponent{
     }
 
     this.calendarOptions.events = this.events;
+  }
+
+  clickOnEvent(eventArgs: any) : void {
+    // console.log(eventArgs);
   }
 
   createReservation() : void {

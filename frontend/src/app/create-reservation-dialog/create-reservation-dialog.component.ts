@@ -1,9 +1,10 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {ReservationService, VehicleModelDto, VehicleService} from "../api";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import * as moment from "moment";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {CheckReservationStatus} from "../validator/check-reservation-status/check-reservation-status";
 
 @Component({
   selector: 'app-create-reservation-dialog',
@@ -31,6 +32,8 @@ export class CreateReservationDialogComponent implements OnInit {
         endDate: data.endDate
       })
     }
+
+    this.createReservationFormGroup.addAsyncValidators(CheckReservationStatus.checkVehicleAvailability(this.reservationService));
   }
 
   async ngOnInit(): Promise<void> {
@@ -52,5 +55,4 @@ export class CreateReservationDialogComponent implements OnInit {
       this.dialogRef.close(response);
     });
   }
-
 }

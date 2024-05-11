@@ -20,5 +20,21 @@
     </mat-select>
   </mat-form-field>
 
-  <button style="margin-top: 32px" mat-raised-button color="primary" type="submit" (click)="createReservation()" [disabled]="!createReservationFormGroup.valid">Reservieren</button>
+  <div style="display: block; margin-top: 32px">
+    <h3>Verfügbarkeit</h3>
+    <ng-container *ngIf="createReservationFormGroup.status == 'PENDING'">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      Verfügbarkeit wird geprüft...
+    </ng-container>
+    <ng-container *ngIf="createReservationFormGroup.status == 'VALID'">
+      Fahrzeug ist im gewählten Zeitraum verfügbar.
+    </ng-container>
+    <mat-error *ngIf="createReservationFormGroup.hasError('notAvailable')">
+      Das Fahrzeug ist im gewählten Zeitraum nicht verfügbar.
+    </mat-error>
+  </div>
+
+  <button style="margin-top: 32px" mat-raised-button color="primary" type="submit" (click)="createReservation()"
+          [disabled]="!createReservationFormGroup.valid">Reservieren
+  </button>
 </form>

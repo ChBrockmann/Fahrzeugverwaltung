@@ -27,6 +27,14 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await GetReservationsInTimespan(start, end);
     }
 
+    public override async Task<ReservationModel?> Get(ReservationId id)
+    {
+        return await Database.ReservationModels
+            .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public override async Task<IEnumerable<ReservationModel>> Get()
     {
         return await Database.ReservationModels
