@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {ReservationService} from "../api";
+import {ReservationModelDto, ReservationService} from "../api";
+import {firstValueFrom, map} from "rxjs";
 
 @Component({
   selector: 'app-view-reservation-details-dialog',
@@ -9,11 +10,16 @@ import {ReservationService} from "../api";
 })
 export class ViewReservationDetailsDialogComponent implements OnInit{
 
+  private readonly reservationId: string;
+  public reservation: ReservationModelDto | undefined;
+
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: {reservationId: string},
               private readonly reservationService: ReservationService) {
+    this.reservationId = data.reservationId;
   }
 
-  ngOnInit(): void {
-
-    }
+  async ngOnInit(): Promise<void> {
+    this.reservation = await firstValueFrom(this.reservationService.getReservationByIdEndpoint(this.reservationId).pipe(map(r => r.reservation)));
+  }
 }

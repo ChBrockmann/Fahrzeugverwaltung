@@ -1,1 +1,16 @@
-<p>view-reservation-details-dialog works!</p>
+<div style="margin: 32px">
+  <ng-container *ngIf="reservation == undefined">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    Reservierungsdetails laden...
+  </ng-container>
+  <ng-container *ngIf="reservation">
+    <h2>Reservierungsdetails</h2>
+    Fahrzeug: {{ reservation.vehicleReserved?.name }} <br>
+    Startdatum: {{ reservation.startDateInclusive | date: "dd.MM.YYYY" }} <br>
+    Enddatum: {{ reservation.endDateInclusive | date: "dd.MM.YYYY" }} <br><br>
+    Reserviert für: {{ reservation.reservationMadeByUser?.organization }} <br>
+    Reserviert von: {{ reservation.reservationMadeByUser?.fullname }} <br>
+    Reservierung erstellt am: {{ reservation.reservationCreated | date: "dd.MM.YYYY HH:mm" }} <br>
+  </ng-container>
+
+</div>

@@ -7,6 +7,9 @@ import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateReservationDialogComponent} from "../create-reservation-dialog/create-reservation-dialog.component";
+import {
+  ViewReservationDetailsDialogComponent
+} from "../view-reservation-details-dialog/view-reservation-details-dialog.component";
 
 interface loadedMonths {
   year: number,
@@ -81,7 +84,12 @@ export class ReservationCalendarComponent{
   }
 
   clickOnEvent(eventArgs: any) : void {
-    // console.log(eventArgs);
+    const dialog = this.dialog.open(ViewReservationDetailsDialogComponent, {
+      data: {reservationId: eventArgs.event.id}
+    });
+
+    dialog.afterClosed().subscribe(result => {
+    });
   }
 
   createReservation() : void {
