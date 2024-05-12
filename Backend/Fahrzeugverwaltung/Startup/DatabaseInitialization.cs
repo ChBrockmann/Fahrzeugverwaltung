@@ -6,7 +6,7 @@ namespace Fahrzeugverwaltung.Startup;
 
 public static class DatabaseInitialization
 {
-    public static void MigrateDatabase(this WebApplication app)
+    public static void InitializeDatabase(this WebApplication app)
     {
         DatabaseContext database = app.Services.CreateScope().ServiceProvider.GetRequiredService<DatabaseContext>();
         database.Database.Migrate();

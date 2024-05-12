@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccess;
 
@@ -9,7 +10,9 @@ public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContex
     {
         DbContextOptionsBuilder<DatabaseContext> optionsbuilder = new();
         
-        optionsbuilder.UseSqlite("Data Source=database.sqlite");
+        string connectionString = "server=localhost;database=fahrzeugverwaltung;user=root;password=root";
+        MySqlServerVersion serverVersion = new(new Version(8, 0, 28));
+        optionsbuilder.UseMySql(connectionString, serverVersion);
         
         return new DatabaseContext(optionsbuilder.Options);
     }
