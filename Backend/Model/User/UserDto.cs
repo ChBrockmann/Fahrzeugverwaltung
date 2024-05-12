@@ -2,7 +2,7 @@
 
 public sealed record UserDto
 {
-    public string Id { get; set; } = string.Empty;
+    public Guid Id { get; set; } = Guid.Empty;
     
     public string Firstname { get; set; } = string.Empty;
 
