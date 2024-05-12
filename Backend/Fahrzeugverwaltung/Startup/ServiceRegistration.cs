@@ -5,13 +5,32 @@ using DataAccess.VehicleService;
 using FastEndpoints.Swagger;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using Model.Configuration;
 using Model.Mapping;
 
 namespace Fahrzeugverwaltung.Startup;
 
 public static class ServiceRegistration
 {
-    public static void RegisterAllServices(this IServiceCollection services)
+    public static Configuration InitializeConfiguration(this WebApplicationBuilder webApplicationBuilder)
+    {
+        webApplicationBuilder
+            .Configuration
+            .AddJsonFile("./configuration/appsettings.json", true, true)
+            .AddUserSecrets(typeof(ServiceRegistration).Assembly, true, true)
+            .AddEnvironmentVariables();
+
+        webApplicationBuilder.Services.Configure<Configuration>(webApplicationBuilder.Configuration);
+        Configuration? configuration = webApplicationBuilder.Configuration.Get<Configuration>();
+        if (configuration is null)
+        {
+            throw new Exception("Configuration is null");
+        }
+
+        return configuration;
+    }
+    
+    public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
         services.AddFastEndpoints();
         services.SwaggerDocument(opt =>
@@ -26,7 +45,11 @@ public static class ServiceRegistration
         
         services.AddDbContext<DatabaseContext>(options =>
         {
-            options.UseSqlite("Data Source=database.sqlite");
+            string connectionString = configuration.DatabaseConnectionString;
+            logger.Information("Using connection string: {ConnectionString}", connectionString);
+            MySqlServerVersion serverVersion = new(new Version(8, 0, 28));
+            options.UseMySql(connectionString, serverVersion);
+            options.EnableSensitiveDataLogging();
         });
 
         services.AddScoped<IVehicleService, VehicleService>();

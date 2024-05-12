@@ -5,13 +5,17 @@ using DataAccess;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Identity;
+using Model.Configuration;
 using Model.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var logger = builder.SetupLogger();
 
-builder.Services.RegisterAllServices();
+Configuration configuration = builder.InitializeConfiguration();
+logger.Fatal(configuration.DatabaseConnectionString);
+
+builder.Services.RegisterAllServices(logger, configuration);
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<UserModel>()
@@ -38,7 +42,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.MigrateDatabase();
+app.InitializeDatabase();
 app.UseCors("CorsPolicy");
 
 app.MapGroup("identity").MapIdentityApi<UserModel>();
