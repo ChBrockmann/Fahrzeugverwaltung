@@ -16,10 +16,9 @@ Configuration configuration = builder.InitializeConfiguration();
 logger.Fatal(configuration.DatabaseConnectionString);
 
 builder.Services.RegisterAllServices(logger, configuration);
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<UserModel>()
-    .AddEntityFrameworkStores<DatabaseContext>();
+builder.Services.AddIdentityApiEndpoints<UserModel>().AddEntityFrameworkStores<DatabaseContext>();
 builder.Services.Configure<IdentityOptions>(opt =>
 {
     opt.Password.RequiredLength = 8;
