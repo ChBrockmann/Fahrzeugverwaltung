@@ -30,6 +30,8 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDividerModule} from '@angular/material/divider';
+import { LoginComponent } from './login/login.component';
+import {RouterModule} from "@angular/router";
 
 
 export const MY_FORMATS = {
@@ -62,10 +64,16 @@ export function apiConfigFactory(): Configuration {
     ReservationCalendarComponent,
     CreateReservationDialogComponent,
     ViewReservationDetailsDialogComponent,
+    LoginComponent,
 
   ],
   imports: [
     ApiModule.forRoot(apiConfigFactory),
+    RouterModule.forRoot([
+      { path: '', component: ReservationCalendarComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'calendar', component: ReservationCalendarComponent },
+    ]),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
