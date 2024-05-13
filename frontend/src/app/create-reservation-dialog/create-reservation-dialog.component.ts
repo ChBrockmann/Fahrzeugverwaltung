@@ -25,7 +25,7 @@ export class CreateReservationDialogComponent implements OnInit {
               private readonly reservationService: ReservationService,
               private readonly dialogRef: MatDialogRef<CreateReservationDialogComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: {startDate: moment.Moment, endDate: moment.Moment} | undefined) {
-    console.log(data);
+
     if(data !== null && data !== undefined) {
       this.createReservationFormGroup.patchValue({
         startDate: data.startDate,

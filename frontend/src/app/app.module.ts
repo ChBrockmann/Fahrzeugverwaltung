@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {ReservationCalendarComponent} from './reservation-calendar/reservation-calendar.component';
 import {FullCalendarModule} from "@fullcalendar/angular";
 import {HttpClientModule} from "@angular/common/http";
-import {ApiModule} from "./api";
+import {ApiModule, Configuration, ConfigurationParameters} from "./api";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, NG_VALIDATORS, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -40,6 +40,18 @@ export const MY_FORMATS = {
   },
 };
 
+/*
+    Why is the basepath set to an empty string?
+    The basepath is used to prefix all api calls. If we set it to localhost:5000 then later in production that value cannot be changed.
+    Instead, we are providing a relative baseUrl and let the proxy handle the rest.
+ */
+export function apiConfigFactory(): Configuration {
+  const params: ConfigurationParameters = {
+    basePath: ""
+  };
+  return new Configuration(params);
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,12 +61,12 @@ export const MY_FORMATS = {
 
   ],
   imports: [
+    ApiModule.forRoot(apiConfigFactory),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FullCalendarModule,
     HttpClientModule,
-    ApiModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,

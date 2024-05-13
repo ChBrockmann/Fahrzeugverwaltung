@@ -26,13 +26,8 @@ export class CheckReservationStatus {
         return of(null);
       }
 
-      // let result = await firstValueFrom(
-      //   reservationService.checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId, startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD")));
-
       return reservationService.checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId, startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD")).pipe(
         map(value => {
-          console.log("TEST");
-          console.log(value);
           if (value.availability == "Available") {
             return null;
           }
