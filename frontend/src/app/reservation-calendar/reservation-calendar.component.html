@@ -1,5 +1,12 @@
-<h1>Kalendar</h1>
+<h1>Reservierungen</h1>
+<p>
+    Hier können die Reservierungen angezeigt und angelegt werden.
+    Eine Reservierung kann über das Auswählen der Daten im Kalendar, oder über den Schaltfläche "Reservierung" anlegen
+    erstellt werden.
+</p>
 
 <button mat-raised-button color="primary" (click)="createReservation()">Reservierung anlegen</button>
 
-<full-calendar [options]="calendarOptions" [deepChangeDetection]="true"></full-calendar>
+<mat-divider style="margin-top: 32px; margin-bottom: 32px;"></mat-divider>
+
+<full-calendar [options]="calendarOptions" [deepChangeDetection]="true" style="max-height: 65vh"></full-calendar>

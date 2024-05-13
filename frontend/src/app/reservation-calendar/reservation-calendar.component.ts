@@ -33,6 +33,9 @@ export class ReservationCalendarComponent{
     locale: 'de-DE',
     selectable: true,
     selectMirror: true,
+    buttonText: {
+      today: 'Aktueller Monat'
+    },
     datesSet: async (eventArgs) => this.dateChanged(eventArgs),
     select: (eventArgs) => this.createReservationWithSelevtEvent(eventArgs),
     eventClick: (eventArgs) => this.clickOnEvent(eventArgs)
