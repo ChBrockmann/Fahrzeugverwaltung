@@ -1,4 +1,4 @@
-<form [formGroup]="createReservationFormGroup" class="formgroup">
+<form [formGroup]="createReservationFormGroup" class="formgroup" *ngIf="vehicles !== undefined; else loader">
   <h2>Fahrzeug reservieren</h2>
   <mat-form-field style="width: 100%">
     <mat-label>Reservierungszeitraum auswählen</mat-label>
@@ -38,3 +38,10 @@
           [disabled]="!createReservationFormGroup.valid">Reservieren
   </button>
 </form>
+
+
+<ng-template #loader style="display: flex; justify-content: center; align-items: center;">
+  <div>
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
