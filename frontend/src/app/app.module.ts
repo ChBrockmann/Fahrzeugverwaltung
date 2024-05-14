@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ReservationCalendarComponent} from './reservation-calendar/reservation-calendar.component';
 import {FullCalendarModule} from "@fullcalendar/angular";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiModule, Configuration, ConfigurationParameters} from "./api";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, NG_VALIDATORS, ReactiveFormsModule} from "@angular/forms";
@@ -32,6 +32,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDividerModule} from '@angular/material/divider';
 import { LoginComponent } from './login/login.component';
 import {RouterModule} from "@angular/router";
+import {MatInputModule} from "@angular/material/input";
+import {AuthenticationHttpInterceptor} from "./authentication-http-interceptor/authentication-http-interceptor";
 
 
 export const MY_FORMATS = {
@@ -53,7 +55,7 @@ export const MY_FORMATS = {
  */
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    basePath: ""
+    basePath: "",
   };
   return new Configuration(params);
 }
@@ -70,9 +72,9 @@ export function apiConfigFactory(): Configuration {
   imports: [
     ApiModule.forRoot(apiConfigFactory),
     RouterModule.forRoot([
-      { path: '', component: ReservationCalendarComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'calendar', component: ReservationCalendarComponent },
+      {path: '', component: ReservationCalendarComponent},
+      {path: 'login', component: LoginComponent},
+      {path: 'calendar', component: ReservationCalendarComponent},
     ]),
     BrowserModule,
     BrowserAnimationsModule,
@@ -93,6 +95,7 @@ export function apiConfigFactory(): Configuration {
     MatIconModule,
     MatSidenavModule,
     MatDividerModule,
+    MatInputModule,
   ],
   providers: [
     {
@@ -103,6 +106,11 @@ export function apiConfigFactory(): Configuration {
     {
       provide: MAT_DATE_FORMATS,
       useValue: MY_FORMATS
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationHttpInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

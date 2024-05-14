@@ -16,7 +16,7 @@ public static class FastEndpointsRegistration
 
             opt.Endpoints.Configurator = endpointConfigurator =>
             {
-                endpointConfigurator.AllowAnonymous();
+                // endpointConfigurator.AllowAnonymous();
             };
             
             opt.Serializer.Options.Converters.Add(new JsonStringEnumConverter());

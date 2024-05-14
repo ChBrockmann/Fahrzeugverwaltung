@@ -1,1 +1,15 @@
-<p>login works!</p>
+<h1>Login</h1>
+
+<form [formGroup]="loginFormGroup">
+  <mat-form-field>
+    <mat-label>E-Mail</mat-label>
+    <input matInput placeholder="user@example.com" formControlName="email" required>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Passwort</mat-label>
+    <input type="password" matInput formControlName="password" required>
+  </mat-form-field>
+
+  <button (click)="login()" color="primary" mat-raised-button>Einloggen</button>
+</form>

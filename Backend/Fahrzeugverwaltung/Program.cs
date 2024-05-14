@@ -1,8 +1,10 @@
 global using FastEndpoints;
 global using IMapper = MapsterMapper.IMapper;
 global using ILogger = Serilog.ILogger;
+using System.IdentityModel.Tokens.Jwt;
 using DataAccess;
 using Fahrzeugverwaltung.Startup;
+using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Identity;
 using Model.Configuration;
@@ -16,7 +18,10 @@ Configuration configuration = builder.InitializeConfiguration();
 logger.Fatal(configuration.DatabaseConnectionString);
 
 builder.Services.RegisterAllServices(logger, configuration);
-builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthenticationJwtBearer(opt =>
+{
+    opt.SigningKey = "This is a secret key";
+});
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<UserModel>().AddEntityFrameworkStores<DatabaseContext>();
 builder.Services.Configure<IdentityOptions>(opt =>
@@ -28,6 +33,8 @@ builder.Services.Configure<IdentityOptions>(opt =>
 
     opt.User.RequireUniqueEmail = false;
 });
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policyBuilder =>
@@ -44,11 +51,12 @@ var app = builder.Build();
 app.InitializeDatabase();
 app.UseCors("CorsPolicy");
 
-app.MapGroup("identity").MapIdentityApi<UserModel>();
+app.MapGroup("api/identity").MapIdentityApi<UserModel>();
 
 app.UseHttpsRedirection();
 
-// app.UseAuthentication();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.SetupFastEndpoints();
 

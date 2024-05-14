@@ -115,10 +115,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public getIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public getIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public getIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public getApiIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public getApiIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public getApiIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public getApiIdentityConfirmEmail(userId?: string, code?: string, changedEmail?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (userId !== undefined && userId !== null) {
@@ -164,7 +164,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/identity/confirmEmail`,
+        return this.httpClient.get<any>(`${this.configuration.basePath}/api/identity/confirmEmail`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -181,10 +181,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getIdentityManageInfo(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InfoResponse>;
-    public getIdentityManageInfo(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InfoResponse>>;
-    public getIdentityManageInfo(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InfoResponse>>;
-    public getIdentityManageInfo(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getApiIdentityManageInfo(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InfoResponse>;
+    public getApiIdentityManageInfo(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InfoResponse>>;
+    public getApiIdentityManageInfo(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InfoResponse>>;
+    public getApiIdentityManageInfo(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -224,7 +224,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.get<InfoResponse>(`${this.configuration.basePath}/identity/manage/info`,
+        return this.httpClient.get<InfoResponse>(`${this.configuration.basePath}/api/identity/manage/info`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -241,10 +241,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
-    public postIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public postIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public postIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
+    public postApiIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public postApiIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public postApiIdentityForgotPassword(forgotPasswordRequest?: ForgotPasswordRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -286,7 +286,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/identity/forgotPassword`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/identity/forgotPassword`,
             forgotPasswordRequest,
             {
                 context: localVarHttpContext,
@@ -306,10 +306,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AccessTokenResponse>;
-    public postIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AccessTokenResponse>>;
-    public postIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AccessTokenResponse>>;
-    public postIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AccessTokenResponse>;
+    public postApiIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AccessTokenResponse>>;
+    public postApiIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AccessTokenResponse>>;
+    public postApiIdentityLogin(useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (useCookies !== undefined && useCookies !== null) {
@@ -361,7 +361,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<AccessTokenResponse>(`${this.configuration.basePath}/identity/login`,
+        return this.httpClient.post<AccessTokenResponse>(`${this.configuration.basePath}/api/identity/login`,
             loginRequest,
             {
                 context: localVarHttpContext,
@@ -380,10 +380,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<TwoFactorResponse>;
-    public postIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<TwoFactorResponse>>;
-    public postIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<TwoFactorResponse>>;
-    public postIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<TwoFactorResponse>;
+    public postApiIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<TwoFactorResponse>>;
+    public postApiIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<TwoFactorResponse>>;
+    public postApiIdentityManage2fa(twoFactorRequest?: TwoFactorRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -432,7 +432,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<TwoFactorResponse>(`${this.configuration.basePath}/identity/manage/2fa`,
+        return this.httpClient.post<TwoFactorResponse>(`${this.configuration.basePath}/api/identity/manage/2fa`,
             twoFactorRequest,
             {
                 context: localVarHttpContext,
@@ -450,10 +450,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityManageInfo(infoRequest?: InfoRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InfoResponse>;
-    public postIdentityManageInfo(infoRequest?: InfoRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InfoResponse>>;
-    public postIdentityManageInfo(infoRequest?: InfoRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InfoResponse>>;
-    public postIdentityManageInfo(infoRequest?: InfoRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityManageInfo(infoRequest?: InfoRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InfoResponse>;
+    public postApiIdentityManageInfo(infoRequest?: InfoRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InfoResponse>>;
+    public postApiIdentityManageInfo(infoRequest?: InfoRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InfoResponse>>;
+    public postApiIdentityManageInfo(infoRequest?: InfoRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -502,7 +502,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<InfoResponse>(`${this.configuration.basePath}/identity/manage/info`,
+        return this.httpClient.post<InfoResponse>(`${this.configuration.basePath}/api/identity/manage/info`,
             infoRequest,
             {
                 context: localVarHttpContext,
@@ -520,10 +520,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityRefresh(refreshRequest?: RefreshRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AccessTokenResponse>;
-    public postIdentityRefresh(refreshRequest?: RefreshRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AccessTokenResponse>>;
-    public postIdentityRefresh(refreshRequest?: RefreshRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AccessTokenResponse>>;
-    public postIdentityRefresh(refreshRequest?: RefreshRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityRefresh(refreshRequest?: RefreshRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AccessTokenResponse>;
+    public postApiIdentityRefresh(refreshRequest?: RefreshRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AccessTokenResponse>>;
+    public postApiIdentityRefresh(refreshRequest?: RefreshRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AccessTokenResponse>>;
+    public postApiIdentityRefresh(refreshRequest?: RefreshRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -565,7 +565,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<AccessTokenResponse>(`${this.configuration.basePath}/identity/refresh`,
+        return this.httpClient.post<AccessTokenResponse>(`${this.configuration.basePath}/api/identity/refresh`,
             refreshRequest,
             {
                 context: localVarHttpContext,
@@ -583,10 +583,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityRegister(registerRequest?: RegisterRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
-    public postIdentityRegister(registerRequest?: RegisterRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public postIdentityRegister(registerRequest?: RegisterRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public postIdentityRegister(registerRequest?: RegisterRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityRegister(registerRequest?: RegisterRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
+    public postApiIdentityRegister(registerRequest?: RegisterRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public postApiIdentityRegister(registerRequest?: RegisterRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public postApiIdentityRegister(registerRequest?: RegisterRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -628,7 +628,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/identity/register`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/identity/register`,
             registerRequest,
             {
                 context: localVarHttpContext,
@@ -646,10 +646,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public postIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public postIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public postIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public postApiIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public postApiIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public postApiIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public postApiIdentityResendConfirmationEmail(resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -690,7 +690,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/identity/resendConfirmationEmail`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/identity/resendConfirmationEmail`,
             resendConfirmationEmailRequest,
             {
                 context: localVarHttpContext,
@@ -708,10 +708,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
-    public postIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public postIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
-    public postIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public postApiIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any>;
+    public postApiIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public postApiIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public postApiIdentityResetPassword(resetPasswordRequest?: ResetPasswordRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -753,7 +753,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/identity/resetPassword`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/api/identity/resetPassword`,
             resetPasswordRequest,
             {
                 context: localVarHttpContext,
