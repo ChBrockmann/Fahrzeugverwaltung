@@ -94,6 +94,11 @@ export class ReservationCalendarComponent{
     });
 
     dialog.afterClosed().subscribe(result => {
+      if(result !== null && result.wasDeleted !== undefined && result.wasDeleted)
+      {
+        this.events = this.events.filter(value => value.id !== result.reservationId);
+        this.calendarOptions.events = this.events;
+      }
     });
   }
 

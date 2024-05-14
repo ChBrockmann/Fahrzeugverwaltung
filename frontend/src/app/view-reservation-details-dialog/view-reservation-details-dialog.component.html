@@ -11,6 +11,11 @@
     Reserviert für: {{ reservation.reservationMadeByUser?.organization }} <br>
     Reserviert von: {{ reservation.reservationMadeByUser?.fullname }} <br>
     Reservierung erstellt am: {{ reservation.reservationCreated | date: "dd.MM.YYYY HH:mm" }} <br>
+
+    <ng-container *ngIf="canDelete">
+      <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
+      <button mat-raised-button color="warn" (click)="delete()">Löschen</button>
+    </ng-container>
   </ng-container>
 
 </div>
