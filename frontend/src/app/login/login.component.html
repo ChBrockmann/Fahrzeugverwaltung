@@ -1,16 +1,25 @@
-<h1>Login</h1>
-<form [formGroup]="loginFormGroup">
-  <mat-form-field>
-    <mat-label>E-Mail</mat-label>
-    <input matInput placeholder="user@example.com" formControlName="email" required>
-  </mat-form-field>
+<div style="display: flex; justify-content: center; align-items: center; height: 89vh;">
 
-  <mat-form-field>
-    <mat-label>Passwort</mat-label>
-    <input type="password" matInput formControlName="password" required>
-  </mat-form-field>
+  <div style="padding: 32px; background: #f0f0f0; border-radius: 8px;">
+    <h1>Login</h1>
+    <form [formGroup]="loginFormGroup">
+      <mat-form-field style="display: block">
+        <mat-label>E-Mail</mat-label>
+        <input matInput placeholder="user@example.com" formControlName="email" required>
+      </mat-form-field>
 
-  <button (click)="login()" color="primary" mat-raised-button [disabled]="!loginFormGroup.valid || status == 'loading'">Einloggen</button>
+      <mat-form-field style="display: block">
+        <mat-label>Passwort</mat-label>
+        <input type="password" matInput formControlName="password" required>
+      </mat-form-field>
 
-  <mat-error *ngIf="status == 'error'">Falsche E-Mail oder Passwort!</mat-error>
-</form>
+      <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
+
+      <button (click)="login()" color="primary" mat-raised-button
+              [disabled]="!loginFormGroup.valid || status == 'loading'">Einloggen
+      </button>
+
+      <mat-error *ngIf="status == 'error'">Falsche E-Mail oder Passwort!</mat-error>
+    </form>
+  </div>
+</div>
