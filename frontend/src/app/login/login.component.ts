@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DefaultService} from "../api";
+import {DefaultService, UserService} from "../api";
 import {firstValueFrom} from "rxjs";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {Router} from "@angular/router";
@@ -28,7 +28,8 @@ export class LoginComponent {
 
   constructor(private readonly loginService: DefaultService,
               private readonly authService: AuthenticationService,
-              private readonly router: Router) {
+              private readonly router: Router,
+              private readonly userService: UserService) {
   }
 
   async login(): Promise<void> {
@@ -42,6 +43,10 @@ export class LoginComponent {
       if (result.accessToken) {
         this.status = Status.SUCCESS;
         this.authService.setToken(result.accessToken ?? "");
+
+        let user = await firstValueFrom(this.userService.getUserByEmailEndpoint(this.loginFormGroup.value.email ?? ""));
+        this.authService.setUser(user.user ?? {});
+
         this.router.navigate([""]);
       } else {
         this.status = Status.ERROR;

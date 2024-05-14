@@ -10,6 +10,7 @@ import {CreateReservationDialogComponent} from "../create-reservation-dialog/cre
 import {
   ViewReservationDetailsDialogComponent
 } from "../view-reservation-details-dialog/view-reservation-details-dialog.component";
+import {AuthenticationService} from "../services/authentication/authentication.service";
 
 interface loadedMonths {
   year: number,
@@ -42,6 +43,7 @@ export class ReservationCalendarComponent{
   }
 
   constructor(private readonly reservationService: ReservationService,
+              public readonly authService: AuthenticationService,
               public dialog: MatDialog) {
     this.events = [];
   }

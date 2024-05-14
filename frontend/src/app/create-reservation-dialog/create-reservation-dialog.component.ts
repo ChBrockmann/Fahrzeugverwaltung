@@ -5,6 +5,7 @@ import {firstValueFrom, Observable} from "rxjs";
 import * as moment from "moment";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CheckReservationStatus} from "../validator/check-reservation-status/check-reservation-status";
+import {AuthenticationService} from "../services/authentication/authentication.service";
 
 @Component({
   selector: 'app-create-reservation-dialog',
@@ -16,7 +17,7 @@ export class CreateReservationDialogComponent implements OnInit {
   createReservationFormGroup = new FormGroup({
     startDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
     endDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
-    requestingUser: new FormControl('4098D24F-0A17-4BAA-B895-B5C6E3926DE7', [Validators.required]),
+    requestingUser: new FormControl('', [Validators.required]),
     requestedVehicleId: new FormControl('', [Validators.required]),
   });
   public vehicles: VehicleModelDto[] | undefined;
@@ -24,6 +25,7 @@ export class CreateReservationDialogComponent implements OnInit {
   constructor(private readonly vehicleService: VehicleService,
               private readonly reservationService: ReservationService,
               private readonly dialogRef: MatDialogRef<CreateReservationDialogComponent>,
+              private readonly authService: AuthenticationService,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: {startDate: moment.Moment, endDate: moment.Moment} | undefined) {
 
     if(data !== null && data !== undefined) {
@@ -38,6 +40,7 @@ export class CreateReservationDialogComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.vehicles = (await firstValueFrom(this.vehicleService.getAllVehicleEndpoint())).vehicles;
+    this.createReservationFormGroup.patchValue({requestingUser: this.authService.getUserId()});
 
     if (this.vehicles) {
       this.createReservationFormGroup.patchValue({requestedVehicleId: this.vehicles[0].id});
