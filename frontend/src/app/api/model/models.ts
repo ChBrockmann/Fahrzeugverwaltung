@@ -8,6 +8,8 @@ export * from './getAllVehicleResponse';
 export * from './getReservationByIdResponse';
 export * from './getReservationsInMonthYearResponse';
 export * from './getReservationsInTimespanResponse';
+export * from './getUserByEmailResponse';
+export * from './getUserByEmailResponseUser';
 export * from './getVehicleStatusResponse';
 export * from './getVehicleStatusResponseCurrentReservation';
 export * from './httpValidationProblemDetails';

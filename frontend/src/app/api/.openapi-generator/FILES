@@ -21,6 +21,8 @@ model/getAllVehicleResponse.ts
 model/getReservationByIdResponse.ts
 model/getReservationsInMonthYearResponse.ts
 model/getReservationsInTimespanResponse.ts
+model/getUserByEmailResponse.ts
+model/getUserByEmailResponseUser.ts
 model/getVehicleStatusResponse.ts
 model/getVehicleStatusResponseCurrentReservation.ts
 model/httpValidationProblemDetails.ts
