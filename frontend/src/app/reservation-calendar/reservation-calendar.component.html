@@ -1,9 +1,9 @@
 <h1>Reservierungen</h1>
 <h3>{{authService.getUser()?.fullname ?? ""}} ({{authService.getUser()?.organization ?? ""}})</h3>
 <p>
-    Hier können die Reservierungen angezeigt und angelegt werden.
-    Eine Reservierung kann über das Auswählen der Daten im Kalendar, oder über den Schaltfläche "Reservierung" anlegen
-    erstellt werden.
+  Eine Reservierung kann über das Auswählen der Daten im Kalendar, oder über den Schaltfläche "Reservierung anlegen" erstellt werden. <br>
+  Reservierung im Kalender anklicken, um Details anzuzeigen. <br>
+  Eigene Reservierungen können dort ebenfalls gelöscht werden.
 </p>
 
 <button mat-raised-button color="primary" (click)="createReservation()">Reservierung anlegen</button>

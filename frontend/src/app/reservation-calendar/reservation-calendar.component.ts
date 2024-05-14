@@ -34,6 +34,7 @@ export class ReservationCalendarComponent{
     locale: 'de-DE',
     selectable: true,
     selectMirror: true,
+    editable: true,
     buttonText: {
       today: 'Aktueller Monat'
     },
