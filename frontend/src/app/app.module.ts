@@ -33,7 +33,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import { LoginComponent } from './login/login.component';
 import {RouterModule} from "@angular/router";
 import {MatInputModule} from "@angular/material/input";
-import {AuthenticationHttpInterceptor} from "./authentication-http-interceptor/authentication-http-interceptor";
+import {AuthenticationHttpInterceptor} from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
+import {isAuthorizedGuard} from "./authentication/is-authorized.guard";
 
 
 export const MY_FORMATS = {
@@ -72,9 +73,9 @@ export function apiConfigFactory(): Configuration {
   imports: [
     ApiModule.forRoot(apiConfigFactory),
     RouterModule.forRoot([
-      {path: '', component: ReservationCalendarComponent},
+      {path: '', redirectTo: 'calendar', pathMatch: 'full'},
       {path: 'login', component: LoginComponent},
-      {path: 'calendar', component: ReservationCalendarComponent},
+      {path: 'calendar', component: ReservationCalendarComponent, canActivate: [isAuthorizedGuard]},
     ]),
     BrowserModule,
     BrowserAnimationsModule,

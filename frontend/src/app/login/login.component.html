@@ -1,5 +1,4 @@
 <h1>Login</h1>
-
 <form [formGroup]="loginFormGroup">
   <mat-form-field>
     <mat-label>E-Mail</mat-label>
@@ -11,5 +10,7 @@
     <input type="password" matInput formControlName="password" required>
   </mat-form-field>
 
-  <button (click)="login()" color="primary" mat-raised-button>Einloggen</button>
+  <button (click)="login()" color="primary" mat-raised-button [disabled]="!loginFormGroup.valid || status == 'loading'">Einloggen</button>
+
+  <mat-error *ngIf="status == 'error'">Falsche E-Mail oder Passwort!</mat-error>
 </form>
