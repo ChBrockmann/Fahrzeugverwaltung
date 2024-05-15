@@ -253,19 +253,15 @@ export class ReservationService {
 
     /**
      * @param reservationId 
-     * @param userId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteReservationEndpoint(reservationId: string, userId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<object>;
-    public deleteReservationEndpoint(reservationId: string, userId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public deleteReservationEndpoint(reservationId: string, userId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public deleteReservationEndpoint(reservationId: string, userId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<any> {
+    public deleteReservationEndpoint(reservationId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<object>;
+    public deleteReservationEndpoint(reservationId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public deleteReservationEndpoint(reservationId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public deleteReservationEndpoint(reservationId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<any> {
         if (reservationId === null || reservationId === undefined) {
             throw new Error('Required parameter reservationId was null or undefined when calling deleteReservationEndpoint.');
-        }
-        if (userId === null || userId === undefined) {
-            throw new Error('Required parameter userId was null or undefined when calling deleteReservationEndpoint.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -307,7 +303,7 @@ export class ReservationService {
             }
         }
 
-        return this.httpClient.delete<object>(`${this.configuration.basePath}/api/reservation/${encodeURIComponent(String(reservationId))}/${encodeURIComponent(String(userId))}`,
+        return this.httpClient.delete<object>(`${this.configuration.basePath}/api/reservation/${encodeURIComponent(String(reservationId))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

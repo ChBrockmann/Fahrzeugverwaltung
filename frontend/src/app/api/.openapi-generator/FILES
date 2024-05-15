@@ -5,6 +5,7 @@ api/api.ts
 api/default.service.ts
 api/ical.service.ts
 api/reservation.service.ts
+api/test.service.ts
 api/user.service.ts
 api/vehicle.service.ts
 configuration.ts
@@ -21,8 +22,6 @@ model/getAllVehicleResponse.ts
 model/getReservationByIdResponse.ts
 model/getReservationsInMonthYearResponse.ts
 model/getReservationsInTimespanResponse.ts
-model/getUserByEmailResponse.ts
-model/getUserByEmailResponseUser.ts
 model/getVehicleStatusResponse.ts
 model/getVehicleStatusResponseCurrentReservation.ts
 model/httpValidationProblemDetails.ts

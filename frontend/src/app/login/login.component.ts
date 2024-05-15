@@ -44,9 +44,6 @@ export class LoginComponent {
         this.status = Status.SUCCESS;
         this.authService.setToken(result.accessToken ?? "");
 
-        let user = await firstValueFrom(this.userService.getUserByEmailEndpoint(this.loginFormGroup.value.email ?? ""));
-        this.authService.setUser(user.user ?? {});
-
         this.router.navigate([""]);
       } else {
         this.status = Status.ERROR;

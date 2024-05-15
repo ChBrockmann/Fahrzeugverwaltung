@@ -1,4 +1,5 @@
-﻿using DataAccess.ReservationService;
+﻿using System.Security.Claims;
+using DataAccess.ReservationService;
 using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.Reservation.Responses;
@@ -33,7 +34,8 @@ public class GetReservationByIdEndpoint : Endpoint<GetReservationByIdRequest, Ge
 
         GetReservationByIdResponse response = new()
         {
-            Reservation = _mapper.Map<ReservationModelDto>(result)
+            Reservation = _mapper.Map<ReservationModelDto>(result),
+            CanDelete = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value == result.ReservationMadeByUser.Id.ToString()
         };
         await SendOkAsync(response, ct);
     }

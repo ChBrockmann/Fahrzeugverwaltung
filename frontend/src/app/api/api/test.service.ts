@@ -18,8 +18,6 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-// @ts-ignore
-import { AllUserResponse } from '../model/allUserResponse';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -30,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class TestService {
 
     protected basePath = 'http://localhost:5133';
     public defaultHeaders = new HttpHeaders();
@@ -90,10 +88,10 @@ export class UserService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUserEndpoint(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AllUserResponse>;
-    public getAllUserEndpoint(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AllUserResponse>>;
-    public getAllUserEndpoint(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AllUserResponse>>;
-    public getAllUserEndpoint(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public testEndpoint(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<object>;
+    public testEndpoint(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public testEndpoint(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public testEndpoint(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -108,6 +106,7 @@ export class UserService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
                 'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
@@ -133,7 +132,7 @@ export class UserService {
             }
         }
 
-        return this.httpClient.get<AllUserResponse>(`${this.configuration.basePath}/api/user`,
+        return this.httpClient.get<object>(`${this.configuration.basePath}/api/test`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

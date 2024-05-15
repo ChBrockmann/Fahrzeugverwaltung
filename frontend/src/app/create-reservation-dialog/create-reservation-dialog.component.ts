@@ -17,7 +17,6 @@ export class CreateReservationDialogComponent implements OnInit {
   createReservationFormGroup = new FormGroup({
     startDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
     endDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
-    requestingUser: new FormControl('', [Validators.required]),
     requestedVehicleId: new FormControl('', [Validators.required]),
   });
   public vehicles: VehicleModelDto[] | undefined;
@@ -25,7 +24,6 @@ export class CreateReservationDialogComponent implements OnInit {
   constructor(private readonly vehicleService: VehicleService,
               private readonly reservationService: ReservationService,
               private readonly dialogRef: MatDialogRef<CreateReservationDialogComponent>,
-              private readonly authService: AuthenticationService,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: {startDate: moment.Moment, endDate: moment.Moment} | undefined) {
 
     if(data !== null && data !== undefined) {
@@ -40,7 +38,6 @@ export class CreateReservationDialogComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.vehicles = (await firstValueFrom(this.vehicleService.getAllVehicleEndpoint())).vehicles;
-    this.createReservationFormGroup.patchValue({requestingUser: this.authService.getUserId()});
 
     if (this.vehicles) {
       this.createReservationFormGroup.patchValue({requestedVehicleId: this.vehicles[0].id});
@@ -50,7 +47,6 @@ export class CreateReservationDialogComponent implements OnInit {
   createReservation() : void {
     let formValues = this.createReservationFormGroup.value;
     this.reservationService.createReservationEndpoint({
-      reservedBy: formValues.requestingUser ?? "",
       startDateInclusive: formValues.startDate?.format("YYYY-MM-DD") ?? "",
       endDateInclusive: formValues.endDate?.format("YYYY-MM-DD") ?? "",
       vehicle: formValues.requestedVehicleId ?? "",

@@ -6,4 +6,7 @@ public record GetReservationByIdResponse
 {
     [Required]
     public ReservationModelDto Reservation { get; set; } = new();
+
+    [Required]
+    public bool CanDelete { get; set; } = false;
 }

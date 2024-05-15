@@ -14,5 +14,6 @@ import { ReservationModelDto } from './reservationModelDto';
 
 export interface GetReservationByIdResponse { 
     reservation: ReservationModelDto;
+    canDelete: boolean;
 }
 

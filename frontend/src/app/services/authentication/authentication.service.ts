@@ -6,7 +6,6 @@ import {UserDto} from "../../api";
 })
 export class AuthenticationService {
   private readonly tokenKey = "token";
-  private readonly userKey = "user";
 
   constructor() {
   }
@@ -25,25 +24,5 @@ export class AuthenticationService {
 
   public claer(): void {
     localStorage.clear();
-  }
-
-  public setUser(user: UserDto): void {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
-  }
-
-  public getUser(): UserDto | null {
-    let user = localStorage.getItem(this.userKey);
-    if (user) {
-      return JSON.parse(user);
-    }
-    return null;
-  }
-
-  public getUserId() : string | null {
-    let user = this.getUser();
-    if (user) {
-      return user.id ?? "";
-    }
-    return null;
   }
 }
