@@ -29,6 +29,7 @@ export class ReservationCalendarComponent{
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
+    firstDay: 1,
     plugins: [dayGridPlugin, interactionPlugin],
     events: this.events,
     locale: 'de-DE',

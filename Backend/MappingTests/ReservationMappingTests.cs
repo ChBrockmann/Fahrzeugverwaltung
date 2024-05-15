@@ -40,7 +40,7 @@ public class ReservationMappingTests : TestBase
             EndDateInclusive = input.EndDateInclusive,
             ReservationCreated = DateTime.Now,
             VehicleReserved = new VehicleModel() {Id = VehicleModelId.Empty},
-            ReservationMadeByUser = new UserModel() {Id = input.ReservedBy}
+            ReservationMadeByUser = null!
         };
 
         ReservationModel actual = Mapper.Map<ReservationModel>(input);

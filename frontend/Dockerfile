@@ -1,13 +1,9 @@
 ﻿FROM node:18-alpine AS build
 
-RUN echo $(node -v)
-RUN echo $(npm -v)
-
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
 
 COPY . .
+RUN npm install
 RUN npm run build
 
 FROM nginx:alpine

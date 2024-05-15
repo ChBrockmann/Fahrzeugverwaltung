@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using System.Security.Claims;
+using DataAccess;
 using DataAccess.ReservationService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
@@ -46,10 +47,18 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
             return;
         }
 
-        UserModel? requestingUser = await _userService.Get(req.ReservedBy);
+        var claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        if (claimUserId is null)
+        {
+            await SendUnauthorizedAsync(ct);
+            return;
+        }
+
+        Guid userId = Guid.Parse(claimUserId);
+        UserModel? requestingUser = await _userService.Get(userId);
         if (requestingUser is null)
         {
-            _logger.LogWarning("Could not find User {UserId}", req.ReservedBy);
+            _logger.LogWarning("Could not find User {UserId}", userId);
             await SendNotFoundAsync(ct);
             return;
         }

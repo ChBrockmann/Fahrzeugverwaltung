@@ -12,4 +12,8 @@
       <PackageReference Include="StronglyTypedId" Version="1.0.0-beta08" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="User\Request\" />
+    </ItemGroup>
+
 </Project>

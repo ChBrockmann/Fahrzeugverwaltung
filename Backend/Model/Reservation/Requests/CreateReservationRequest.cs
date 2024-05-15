@@ -13,8 +13,5 @@ public record CreateReservationRequest
     public DateOnly EndDateInclusive { get; set; }
     
     [Required]
-    public Guid ReservedBy { get; set; }
-    
-    [Required]
     public VehicleModelId Vehicle { get; set; }
 }
