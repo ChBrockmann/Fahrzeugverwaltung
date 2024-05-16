@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Model.Reservation;
 using Model.Reservation.Requests;
+using Model.ReservationStatus;
 using Model.User;
 using Model.Vehicle;
 
@@ -18,14 +19,15 @@ public class ReservationMappingTests : TestBase
             Id = input.Id,
             EndDateInclusive = input.EndDateInclusive,
             StartDateInclusive = input.StartDateInclusive,
-            ReservationCreated = input.ReservationCreated,
             VehicleReserved = Mapper.Map<VehicleModelDto>(input.VehicleReserved),
-            ReservationMadeByUser = Mapper.Map<UserDto>(input.ReservationMadeByUser)
+            ReservationStatus = Mapper.Map<List<ReservationStatusModelDto>>(input.ReservationStatus),
         };
 
         ReservationModelDto actual = Mapper.Map<ReservationModelDto>(input);
-
-        actual.Should().BeEquivalentTo(expected);
+        
+        actual.Should().BeEquivalentTo(expected, opt => opt
+            .Excluding(x => x.ReservationCreated)
+            .Excluding(x => x.ReservationMadeByUser));
     }
 
 
@@ -38,18 +40,13 @@ public class ReservationMappingTests : TestBase
             Id = ReservationId.Empty,
             StartDateInclusive = input.StartDateInclusive,
             EndDateInclusive = input.EndDateInclusive,
-            ReservationCreated = DateTime.Now,
             VehicleReserved = new VehicleModel() {Id = VehicleModelId.Empty},
-            ReservationMadeByUser = null!
+            ReservationStatus = new(),
         };
 
         ReservationModel actual = Mapper.Map<ReservationModel>(input);
 
-        actual.Should().BeEquivalentTo(expected, opt => opt
-            .Excluding(o => o.ReservationCreated)
-            .Excluding(o => o.ReservationMadeByUser)
-            .Excluding(o => o.ReservationMadeByUser.SecurityStamp)
-            .Excluding(o => o.ReservationMadeByUser.ConcurrencyStamp)
-        );
+        actual.Should().BeEquivalentTo(expected, opt => opt)
+        ;
     }
 }

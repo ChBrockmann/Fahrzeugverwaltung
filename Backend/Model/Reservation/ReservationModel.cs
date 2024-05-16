@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Model.ReservationStatus;
 using Model.User;
 using Model.Vehicle;
 using StronglyTypedIds;
@@ -14,9 +15,10 @@ public sealed record ReservationModel : IDatabaseId<ReservationId>
 
     public DateOnly StartDateInclusive { get; set; } = DateOnly.MinValue;
     public DateOnly EndDateInclusive { get; set; } = DateOnly.MinValue;
-
-    public DateTime ReservationCreated { get; set; } = DateTime.Now;
-
-    public UserModel ReservationMadeByUser { get; set; } = new();
+    
+    
     public VehicleModel VehicleReserved { get; set; } = new() {Id = VehicleModelId.Empty};
+    
+    
+    public List<ReservationStatusModel> ReservationStatus { get; set; } = new();
 }
