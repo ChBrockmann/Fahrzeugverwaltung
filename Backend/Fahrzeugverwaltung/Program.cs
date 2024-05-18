@@ -18,10 +18,6 @@ Configuration configuration = builder.InitializeConfiguration();
 logger.Fatal(configuration.DatabaseConnectionString);
 
 builder.Services.RegisterAllServices(logger, configuration);
-builder.Services.AddAuthenticationJwtBearer(opt =>
-{
-    opt.SigningKey = "This is a secret key";
-});
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<UserModel>().AddEntityFrameworkStores<DatabaseContext>();
 builder.Services.Configure<IdentityOptions>(opt =>

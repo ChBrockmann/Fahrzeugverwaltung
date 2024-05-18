@@ -20,14 +20,14 @@ public class ReservationMappingTests : TestBase
             EndDateInclusive = input.EndDateInclusive,
             StartDateInclusive = input.StartDateInclusive,
             VehicleReserved = Mapper.Map<VehicleModelDto>(input.VehicleReserved),
-            ReservationStatus = Mapper.Map<List<ReservationStatusModelDto>>(input.ReservationStatus),
+            ReservationStatusChanges = Mapper.Map<List<ReservationStatusModelDto>>(input.ReservationStatusChanges),
+            ReservationCreated = input.ReservationCreated,
+            ReservationMadeByUser = Mapper.Map<UserDto>(input.ReservationMadeByUser)
         };
 
         ReservationModelDto actual = Mapper.Map<ReservationModelDto>(input);
         
-        actual.Should().BeEquivalentTo(expected, opt => opt
-            .Excluding(x => x.ReservationCreated)
-            .Excluding(x => x.ReservationMadeByUser));
+        actual.Should().BeEquivalentTo(expected);
     }
 
 
@@ -41,12 +41,13 @@ public class ReservationMappingTests : TestBase
             StartDateInclusive = input.StartDateInclusive,
             EndDateInclusive = input.EndDateInclusive,
             VehicleReserved = new VehicleModel() {Id = VehicleModelId.Empty},
-            ReservationStatus = new(),
+            ReservationStatusChanges = new(),
+            ReservationCreated = DateTime.Now,
         };
 
         ReservationModel actual = Mapper.Map<ReservationModel>(input);
 
-        actual.Should().BeEquivalentTo(expected, opt => opt)
-        ;
+        actual.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ReservationCreated).Excluding(x => x.ReservationMadeByUser.ConcurrencyStamp));
+        actual.ReservationCreated.Should().BeCloseTo(expected.ReservationCreated, new TimeSpan(0, 0, 1));
     }
 }

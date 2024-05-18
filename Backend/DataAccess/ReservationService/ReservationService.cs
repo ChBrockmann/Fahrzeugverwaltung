@@ -31,7 +31,8 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
-            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -39,7 +40,8 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
-            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
             .ToListAsync();
     }
 
@@ -47,7 +49,8 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
-            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive ||
                         x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive ||
                         x.StartDateInclusive < queryStartDateInclusive && x.EndDateInclusive > queryEndDateInclusive)
@@ -58,7 +61,8 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
-            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
             .Where(x => x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive ||
                         x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive ||
@@ -70,7 +74,8 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
-            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
             .Where(x => x.StartDateInclusive > date)
             .Take(limit)
@@ -81,7 +86,8 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
-            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
             .Where(x => x.EndDateInclusive >= date && x.StartDateInclusive <= date)
             .FirstOrDefaultAsync();

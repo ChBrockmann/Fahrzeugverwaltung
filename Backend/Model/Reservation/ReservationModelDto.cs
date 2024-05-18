@@ -13,12 +13,12 @@ public sealed record ReservationModelDto
     public DateOnly EndDateInclusive { get; set; } = DateOnly.MinValue;
 
 
-    public DateTime ReservationCreated => ReservationStatus.MinBy(x => x.StatusChanged)?.StatusChanged ?? DateTime.MinValue;
-    public UserDto ReservationMadeByUser => ReservationStatus.MinBy(x => x.StatusChanged)?.StatusChangedByUser ?? new();
+    public DateTime ReservationCreated { get; set; } = DateTime.Now;
+    public UserDto ReservationMadeByUser { get; set; } = new();
     
     
     public VehicleModelDto VehicleReserved { get; set; } = new();
     
-    public List<ReservationStatusModelDto> ReservationStatus { get; set; } = new();
+    public List<ReservationStatusModelDto> ReservationStatusChanges { get; set; } = new();
     
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Model.Reservation;
+using Model.ReservationStatus;
 using Model.User;
 using Model.Vehicle;
 
@@ -15,6 +16,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
 
     public DbSet<VehicleModel> VehicleModels { get; set; } = null!;
     public DbSet<UserModel> UserModels { get; set; } = null!;
+    public DbSet<ReservationStatusModel> ReservationStatusModels { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,12 +25,22 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<UserModel>()
             .HasMany(u => u.ReservationsMadeByUser)
             .WithOne(u => u.ReservationMadeByUser);
+        modelBuilder.Entity<UserModel>()
+            .HasMany(x => x.ReservationStatusChanges)
+            .WithOne(x => x.StatusChangedByUser);
+
+        modelBuilder.Entity<ReservationStatusModel>()
+            .Property(x => x.Id)
+            .HasConversion(x => x.Value, x => new ReservationStatusId(x));
         
         modelBuilder.Entity<ReservationModel>()
             .HasKey(u => u.Id);
         modelBuilder.Entity<ReservationModel>()
             .Property(x => x.Id)
             .HasConversion(x => x.Value, x => new ReservationId(x));
+        modelBuilder.Entity<ReservationModel>()
+            .HasMany(x => x.ReservationStatusChanges)
+            .WithOne(x => x.Reservation);
         
         modelBuilder.Entity<VehicleModel>()
             .HasKey(u => u.Id);
