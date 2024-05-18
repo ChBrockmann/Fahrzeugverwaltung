@@ -33,10 +33,13 @@ model/refreshRequest.ts
 model/registerRequest.ts
 model/resendConfirmationEmailRequest.ts
 model/reservationModelDto.ts
+model/reservationStatusEnum.ts
+model/reservationStatusModelDto.ts
 model/resetPasswordRequest.ts
 model/twoFactorRequest.ts
 model/twoFactorResponse.ts
 model/userDto.ts
 model/vehicleModelDto.ts
 model/vehicleStatus.ts
+model/whoAmIResponse.ts
 variables.ts

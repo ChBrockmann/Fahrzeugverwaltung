@@ -11,7 +11,9 @@
  */
 import { ReservationModelDto } from './reservationModelDto';
 import { UserDto } from './userDto';
+import { ReservationStatusModelDto } from './reservationStatusModelDto';
 import { VehicleModelDto } from './vehicleModelDto';
+import { ReservationStatusEnum } from './reservationStatusEnum';
 
 
 /**

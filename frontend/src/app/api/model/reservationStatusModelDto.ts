@@ -10,19 +10,14 @@
  * Do not edit the class manually.
  */
 import { UserDto } from './userDto';
-import { ReservationStatusModelDto } from './reservationStatusModelDto';
-import { VehicleModelDto } from './vehicleModelDto';
 import { ReservationStatusEnum } from './reservationStatusEnum';
 
 
-export interface ReservationModelDto { 
+export interface ReservationStatusModelDto { 
     id?: string;
-    startDateInclusive?: string;
-    endDateInclusive?: string;
-    reservationCreated?: Date;
-    reservationMadeByUser?: UserDto;
-    currentStatus?: ReservationStatusEnum;
-    vehicleReserved?: VehicleModelDto;
-    reservationStatusChanges?: Array<ReservationStatusModelDto>;
+    status?: ReservationStatusEnum;
+    statusChanged?: Date;
+    statusChangedByUser?: UserDto;
+    statusReason?: string | null;
 }
 
