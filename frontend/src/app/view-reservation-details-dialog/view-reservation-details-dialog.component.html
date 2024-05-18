@@ -4,6 +4,7 @@
     Reservierungsdetails laden...
   </ng-container>
   <ng-container *ngIf="reservation">
+    <h2>Status: {{getStatusText()}}</h2>
     <h2>Reservierungsdetails</h2>
     Fahrzeug: {{ reservation.reservation.vehicleReserved?.name }} <br>
     Startdatum: {{ reservation.reservation.startDateInclusive | date: "dd.MM.YYYY" }} <br>

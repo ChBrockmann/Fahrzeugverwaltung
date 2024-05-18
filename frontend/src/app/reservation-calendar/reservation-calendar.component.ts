@@ -22,7 +22,7 @@ interface loadedMonths {
   templateUrl: './reservation-calendar.component.html',
   styleUrls: ['./reservation-calendar.component.scss']
 })
-export class ReservationCalendarComponent{
+export class ReservationCalendarComponent {
 
   events: EventInput[] = [];
   loadedMonths: loadedMonths[] = [];
@@ -51,11 +51,11 @@ export class ReservationCalendarComponent{
   }
 
   async getEventsForMonthYear(startdate: moment.Moment, enddate: moment.Moment): Promise<EventInput[]> {
-    if(this.loadedMonths.find(value => value.year === startdate.year() && value.month === startdate.month())) {
+    if (this.loadedMonths.find(value => value.year === startdate.year() && value.month === startdate.month())) {
       return [];
     }
     let events = await firstValueFrom(
-        this.reservationService.getReservationsInTimespanEndpoint(startdate.format("yyyy-M-D"), enddate.format("yyyy-M-D")));
+      this.reservationService.getReservationsInTimespanEndpoint(startdate.format("yyyy-M-D"), enddate.format("yyyy-M-D")));
 
     this.loadedMonths.push({
       year: startdate.year(),
@@ -65,24 +65,55 @@ export class ReservationCalendarComponent{
     return events.reservations.map(event => this.mapReservationModelToEvent(event));
   }
 
-  mapReservationModelToEvent(input: ReservationModelDto) : EventInput {
+  mapReservationModelToEvent(input: ReservationModelDto): EventInput {
     return {
-      title: `${input.vehicleReserved?.name ?? "Fahrzeug"} reserviert für ${input.reservationMadeByUser?.organization} von ${input.reservationMadeByUser?.fullname}`,
+      title: this.getTitleForReservation(input),
       allDay: true,
       start: input.startDateInclusive,
       end: moment.utc(input.endDateInclusive).add(1, 'days').toISOString(),
-      id: input.id
+      id: input.id,
+      color: this.getColorForReservation(input)
     }
   }
 
-  async dateChanged(eventArgs: DatesSetArg) : Promise<void> {
+  getColorForReservation(reservation: ReservationModelDto): string {
+    switch (reservation.currentStatus) {
+      case 'Pending':
+        return '#A3A3A3'
+        // return '#FFB833';
+      case 'Confirmed':
+        return '#58B455';
+      case 'Denied':
+        return '#CF2626'
+    }
+    return '';
+  }
+
+  getTitleForReservation(reservation: ReservationModelDto): string {
+
+    let fahrzeug = reservation.vehicleReserved?.name ?? "Fahrzeug";
+    let organization = reservation.reservationMadeByUser?.organization ?? "Organisation";
+    let fullname = reservation.reservationMadeByUser?.fullname ?? "Unbekannter Nutzer";
+
+    switch (reservation.currentStatus) {
+      case 'Confirmed':
+        return `${fahrzeug} reserviert für ${organization} von ${fullname}`
+      case 'Pending':
+      default:
+        return `${fahrzeug} angefragt für ${organization} von ${fullname}`
+      case 'Denied':
+        return `${fahrzeug} Anfrage abgelehnt`
+    }
+  }
+
+  async dateChanged(eventArgs: DatesSetArg): Promise<void> {
     let startdate = moment.utc(eventArgs.start);
     let enddate = moment.utc(eventArgs.end);
 
     let monthYearEvents = await this.getEventsForMonthYear(startdate, enddate);
 
-    for(let event of monthYearEvents) {
-      if(!this.events.find(value => value.id === event.id)) {
+    for (let event of monthYearEvents) {
+      if (!this.events.find(value => value.id === event.id)) {
         this.events.push(event);
       }
     }
@@ -90,21 +121,20 @@ export class ReservationCalendarComponent{
     this.calendarOptions.events = this.events;
   }
 
-  clickOnEvent(eventArgs: any) : void {
+  clickOnEvent(eventArgs: any): void {
     const dialog = this.dialog.open(ViewReservationDetailsDialogComponent, {
       data: {reservationId: eventArgs.event.id}
     });
 
     dialog.afterClosed().subscribe(result => {
-      if(result !== undefined && result !== null && result.wasDeleted !== undefined && result.wasDeleted)
-      {
+      if (result !== undefined && result !== null && result.wasDeleted !== undefined && result.wasDeleted) {
         this.events = this.events.filter(value => value.id !== result.reservationId);
         this.calendarOptions.events = this.events;
       }
     });
   }
 
-  createReservation() : void {
+  createReservation(): void {
     this.openDialog(undefined);
   }
 
@@ -112,15 +142,14 @@ export class ReservationCalendarComponent{
     this.openDialog({startDate: moment.utc(eventArgs.start).add(1, 'day'), endDate: moment.utc(eventArgs.end)});
   }
 
-  openDialog(data: {startDate: moment.Moment, endDate: moment.Moment} | undefined): void {
+  openDialog(data: { startDate: moment.Moment, endDate: moment.Moment } | undefined): void {
     const dialog = this.dialog.open(CreateReservationDialogComponent, {
       autoFocus: false,
       data: data
     });
 
     dialog.afterClosed().subscribe(result => {
-      if(result == null)
-      {
+      if (result == null) {
         return;
       }
       let mapped = this.mapReservationModelToEvent(result);

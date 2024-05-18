@@ -38,4 +38,17 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
       wasDeleted: true
     });
   }
+
+  getStatusText() : string {
+    switch (this.reservation?.reservation.currentStatus) {
+      case 'Pending':
+        return 'Ausstehend';
+      case 'Confirmed':
+        return 'Bestätigt';
+      case 'Denied':
+        return 'Abgelehnt';
+      default:
+        return 'Unbekannt';
+    }
+  }
 }
