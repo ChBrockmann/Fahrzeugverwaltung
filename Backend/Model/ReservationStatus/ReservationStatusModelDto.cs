@@ -1,5 +1,4 @@
-﻿using Model.Reservation;
-using Model.User;
+﻿using Model.User;
 
 namespace Model.ReservationStatus;
 
@@ -11,8 +10,6 @@ public record ReservationStatusModelDto
 
     public DateTime StatusChanged { get; set; } = DateTime.Now;
     public UserDto StatusChangedByUser { get; set; } = new();
-    
+
     public string? StatusReason { get; set; } = string.Empty;
-    
-    public ReservationModelDto Reservation { get; set; } = new();
 }

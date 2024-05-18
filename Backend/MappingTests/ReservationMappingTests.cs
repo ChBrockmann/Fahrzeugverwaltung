@@ -22,14 +22,13 @@ public class ReservationMappingTests : TestBase
             VehicleReserved = Mapper.Map<VehicleModelDto>(input.VehicleReserved),
             ReservationStatusChanges = Mapper.Map<List<ReservationStatusModelDto>>(input.ReservationStatusChanges),
             ReservationCreated = input.ReservationCreated,
-            ReservationMadeByUser = Mapper.Map<UserDto>(input.ReservationMadeByUser)
+            ReservationMadeByUser = Mapper.Map<UserDto>(input.ReservationMadeByUser),
         };
 
         ReservationModelDto actual = Mapper.Map<ReservationModelDto>(input);
-        
+
         actual.Should().BeEquivalentTo(expected);
     }
-
 
     [Fact]
     public void CreateReservationRequest_To_ReservationModel()

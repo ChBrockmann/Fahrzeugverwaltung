@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.BaseService;
+using Microsoft.EntityFrameworkCore;
 using Model.Reservation;
-using DataAccess.BaseService;
+using Model.ReservationStatus;
 using Model.Vehicle;
 
 namespace DataAccess.ReservationService;
@@ -14,6 +15,23 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         reservation.Id = ReservationId.New();
 
         Database.ReservationModels.Add(reservation);
+
+        await Database.SaveChangesAsync();
+
+        var databaseObject = await Database.ReservationModels
+            .Include(x => x.ReservationStatusChanges)
+            .FirstAsync(x => x.Id == reservation.Id);
+        databaseObject.ReservationStatusChanges = new List<ReservationStatusModel>()
+        {
+            new()
+            {
+                Id = ReservationStatusId.New(),
+                StatusChangedByUser = reservation.ReservationMadeByUser,
+                Reservation = reservation,
+                Status = ReservationStatusEnum.Pending,
+                StatusChanged = reservation.ReservationCreated,
+            }
+        };
 
         await Database.SaveChangesAsync();
 
@@ -31,6 +49,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -40,6 +59,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .ToListAsync();
@@ -49,6 +69,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive ||
@@ -61,6 +82,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
@@ -74,6 +96,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
@@ -86,6 +109,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
     {
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
@@ -99,7 +123,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
 
         if (existing is null)
             return null;
-        
+
         Database.Entry(existing).CurrentValues.SetValues(reservation);
 
         await Database.SaveChangesAsync();
