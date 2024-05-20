@@ -1,8 +1,7 @@
-﻿using FluentAssertions;
-using Model.Reservation;
+﻿using AutoFixture;
+using FluentAssertions;
 using Model.ReservationStatus;
 using Model.User;
-using AutoFixture;
 
 namespace MappingTests;
 
@@ -19,7 +18,6 @@ public class ReservationStatusModelTests : TestBase
             StatusChanged = input.StatusChanged,
             StatusChangedByUser = Mapper.Map<UserDto>(input.StatusChangedByUser),
             StatusReason = input.StatusReason,
-            Reservation = Mapper.Map<ReservationModelDto>(input.Reservation),
         };
 
         ReservationStatusModelDto actual = Mapper.Map<ReservationStatusModelDto>(input);
