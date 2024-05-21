@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
-import {UserDto} from "../../api";
+import {UserDto, WhoAmIResponse} from "../../api";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   private readonly tokenKey = "token";
+  private readonly userKey = "user";
 
   constructor() {
   }
@@ -24,5 +25,17 @@ export class AuthenticationService {
 
   public claer(): void {
     localStorage.clear();
+  }
+
+  public setUser(user: WhoAmIResponse) {
+    localStorage.setItem(this.userKey, JSON.stringify(user));
+  }
+
+  public getUser(): WhoAmIResponse | null {
+    const user = localStorage.getItem(this.userKey);
+    if (user) {
+      return JSON.parse(user);
+    }
+    return null;
   }
 }

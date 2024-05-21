@@ -44,6 +44,9 @@ export class LoginComponent {
         this.status = Status.SUCCESS;
         this.authService.setToken(result.accessToken ?? "");
 
+        let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
+        this.authService.setUser(whoAmI);
+
         this.router.navigate([""]);
       } else {
         this.status = Status.ERROR;
