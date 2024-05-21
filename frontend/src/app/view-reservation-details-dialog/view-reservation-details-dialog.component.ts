@@ -1,6 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {GetReservationByIdResponse, ReservationModelDto, ReservationService} from "../api";
+import {
+  GetReservationByIdResponse,
+  ReservationModelDto,
+  ReservationService,
+  ReservationStatusEnum,
+  ReservationStatusModelDto
+} from "../api";
 import {firstValueFrom, map} from "rxjs";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 
@@ -11,7 +17,7 @@ import {AuthenticationService} from "../services/authentication/authentication.s
 })
 export class ViewReservationDetailsDialogComponent implements OnInit{
 
-  private readonly reservationId: string;
+  protected readonly reservationId: string;
   public reservation: GetReservationByIdResponse | undefined;
   public canDelete = false;
 
@@ -50,5 +56,19 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
       default:
         return 'Unbekannt';
     }
+  }
+
+  async statusChanged(newStatus: ReservationStatusEnum) {
+    console.log(newStatus);
+    this.dialogRef.close({
+      reservationId: this.reservationId,
+      wasChanged: true
+    });
+  }
+
+  getLatestStatusChange() : ReservationStatusModelDto | undefined {
+    return this.reservation?.reservation.reservationStatusChanges?.sort((a, b) => {
+      return new Date(b.statusChanged || 0).getTime() - new Date(a.statusChanged || 0).getTime();
+    })[0];
   }
 }

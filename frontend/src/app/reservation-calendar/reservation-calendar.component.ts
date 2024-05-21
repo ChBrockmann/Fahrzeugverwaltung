@@ -127,11 +127,29 @@ export class ReservationCalendarComponent {
     });
 
     dialog.afterClosed().subscribe(result => {
-      if (result !== undefined && result !== null && result.wasDeleted !== undefined && result.wasDeleted) {
+      if(result == undefined || result == null){
+        return;
+      }
+      if (result.wasDeleted !== undefined && result.wasDeleted) {
         this.events = this.events.filter(value => value.id !== result.reservationId);
         this.calendarOptions.events = this.events;
       }
+      if(result.wasChanged !== undefined && result.wasChanged) {
+        this.reloadSingleReservation(result.reservationId).then(r => {});
+      }
     });
+  }
+
+  async reloadSingleReservation(reservationId: string) {
+    console.log("reloadSingleReservation", reservationId);
+    this.events = this.events.filter(value => value.id !== reservationId);
+
+    let result = await firstValueFrom(this.reservationService.getReservationByIdEndpoint(reservationId));
+
+    let mapped = this.mapReservationModelToEvent(result.reservation);
+
+    this.events.push(mapped);
+    this.calendarOptions.events = this.events;
   }
 
   createReservation(): void {
