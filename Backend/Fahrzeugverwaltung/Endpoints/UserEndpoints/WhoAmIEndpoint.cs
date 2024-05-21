@@ -41,7 +41,8 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
 
         await SendOkAsync(new WhoAmIResponse
         {
-            User = _mapper.Map<UserDto>(requestingUser)
+            User = _mapper.Map<UserDto>(requestingUser),
+            Roles = await _userService.GetRolesOfUser(userId),
         }, ct);
     }
 }

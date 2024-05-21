@@ -6,4 +6,7 @@ public record WhoAmIResponse
 {
     [Required]
     public UserDto User { get; set; } = new();
+
+    [Required]
+    public List<string> Roles { get; set; } = new();
 }
