@@ -4,7 +4,7 @@ using StronglyTypedIds;
 namespace Model.Vehicle;
 
 [StronglyTypedId(Template.Guid)]
-public partial struct VehicleModelId {}
+public partial struct VehicleModelId { }
 
 public sealed record VehicleModel
 {

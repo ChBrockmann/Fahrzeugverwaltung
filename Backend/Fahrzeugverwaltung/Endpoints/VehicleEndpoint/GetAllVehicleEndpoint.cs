@@ -6,9 +6,9 @@ namespace Fahrzeugverwaltung.Endpoints.VehicleEndpoint;
 
 public class GetAllVehicleEndpoint : Endpoint<EmptyRequest, GetAllVehicleResponse>
 {
-    private readonly IVehicleService _vehicleService;
     private readonly IMapper _mapper;
-    
+    private readonly IVehicleService _vehicleService;
+
     public GetAllVehicleEndpoint(IVehicleService vehicleService, IMapper mapper)
     {
         _vehicleService = vehicleService;
@@ -22,7 +22,7 @@ public class GetAllVehicleEndpoint : Endpoint<EmptyRequest, GetAllVehicleRespons
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
-        var allVehicles = await _vehicleService.Get();
+        IEnumerable<VehicleModel> allVehicles = await _vehicleService.Get();
         GetAllVehicleResponse response = new()
         {
             Vehicles = _mapper.Map<List<VehicleModelDto>>(allVehicles)

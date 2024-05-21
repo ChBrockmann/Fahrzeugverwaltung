@@ -1,15 +1,12 @@
-﻿using Model.User;
-using DataAccess.BaseService;
+﻿using DataAccess.BaseService;
 using Microsoft.EntityFrameworkCore;
+using Model.User;
 
 namespace DataAccess.UserService;
 
 public class UserService : BaseService<UserModel, Guid>, IUserService
 {
-    public UserService(DatabaseContext databaseContext) : base(databaseContext)
-    {
-        
-    }
+    public UserService(DatabaseContext databaseContext) : base(databaseContext) { }
 
     public override async Task<UserModel?> Get(Guid id)
     {

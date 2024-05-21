@@ -7,9 +7,9 @@ namespace Fahrzeugverwaltung.Endpoints.UserEndpoints;
 
 public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
 {
-    private readonly IUserService _userService;
     private readonly IMapper _mapper;
-    
+    private readonly IUserService _userService;
+
     public WhoAmIEndpoint(IUserService userService, IMapper mapper)
     {
         _userService = userService;
@@ -23,7 +23,7 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
-        var claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         if (claimUserId is null)
         {
             await SendUnauthorizedAsync(ct);
@@ -32,14 +32,14 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
 
         Guid userId = Guid.Parse(claimUserId);
         UserModel? requestingUser = await _userService.Get(userId);
-        
+
         if (requestingUser is null)
         {
             await SendNotFoundAsync(ct);
             return;
         }
 
-        await SendOkAsync(new()
+        await SendOkAsync(new WhoAmIResponse
         {
             User = _mapper.Map<UserDto>(requestingUser)
         }, ct);

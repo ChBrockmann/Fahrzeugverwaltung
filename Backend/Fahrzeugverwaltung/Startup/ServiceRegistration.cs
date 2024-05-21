@@ -23,10 +23,7 @@ public static class ServiceRegistration
 
         webApplicationBuilder.Services.Configure<Configuration>(webApplicationBuilder.Configuration);
         Configuration? configuration = webApplicationBuilder.Configuration.Get<Configuration>();
-        if (configuration is null)
-        {
-            throw new Exception("Configuration is null");
-        }
+        if (configuration is null) throw new Exception("Configuration is null");
 
         return configuration;
     }

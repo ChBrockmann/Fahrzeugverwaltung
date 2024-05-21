@@ -1,6 +1,6 @@
-﻿using Model.Vehicle;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
+using Model.Vehicle;
 
 namespace MappingTests;
 

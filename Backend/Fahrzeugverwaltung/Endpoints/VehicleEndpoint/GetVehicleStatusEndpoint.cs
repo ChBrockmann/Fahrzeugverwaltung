@@ -9,10 +9,10 @@ namespace Fahrzeugverwaltung.Endpoints.VehicleEndpoint;
 
 public class GetVehicleStatusEndpoint : Endpoint<GetVehicleStatusRequest, GetVehicleStatusResponse>
 {
+    private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
     private readonly IVehicleService _vehicleService;
-    private readonly IMapper _mapper;
-    
+
     public GetVehicleStatusEndpoint(IReservationService reservationService, IMapper mapper, IVehicleService vehicleService)
     {
         _reservationService = reservationService;
@@ -35,9 +35,9 @@ public class GetVehicleStatusEndpoint : Endpoint<GetVehicleStatusRequest, GetVeh
         }
 
         DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-        var currentReservation = await _reservationService.GetCurrentReservationForVehicle(req.VehicleId, today);
-        var upcomingReservations = await _reservationService.GetUpcomingReservationsForVehicle(req.VehicleId, today);
-        
+        ReservationModel? currentReservation = await _reservationService.GetCurrentReservationForVehicle(req.VehicleId, today);
+        IEnumerable<ReservationModel> upcomingReservations = await _reservationService.GetUpcomingReservationsForVehicle(req.VehicleId, today);
+
         GetVehicleStatusResponse response = new()
         {
             Vehicle = _mapper.Map<VehicleModelDto>(vehicle),

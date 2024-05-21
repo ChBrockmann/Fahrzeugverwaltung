@@ -1,10 +1,8 @@
-﻿using DataAccess;
-using DataAccess.ReservationService;
+﻿using DataAccess.ReservationService;
 using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
-using Microsoft.EntityFrameworkCore;
 using Model.Reservation;
 
 namespace Fahrzeugverwaltung.Endpoints.ICalEndpoints;
@@ -25,19 +23,19 @@ public class GetICalEndpoint : Endpoint<EmptyRequest, EmptyResponse>
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
-        var calendar = new Calendar()
+        Calendar calendar = new Calendar
         {
             Name = "Fahrzeugverwaltung"
         };
 
-        var allReservations = await _reservationService.Get();
+        IEnumerable<ReservationModel> allReservations = await _reservationService.Get();
 
         foreach (ReservationModel reservationModel in allReservations)
         {
-            var iCalEvent = new CalendarEvent()
+            CalendarEvent iCalEvent = new CalendarEvent
             {
                 Uid = reservationModel.Id.ToString(),
-                
+
                 Summary = $"Reservierung von {reservationModel.VehicleReserved.Name}",
                 Description = $"Fahrzeug {reservationModel.VehicleReserved.Name} reserviert für {reservationModel.ReservationMadeByUser.Organization} " +
                               $"von {reservationModel.ReservationMadeByUser.Firstname} {reservationModel.ReservationMadeByUser.Lastname}." +
@@ -53,7 +51,7 @@ public class GetICalEndpoint : Endpoint<EmptyRequest, EmptyResponse>
         CalendarSerializer iCalSerializer = new();
         string result = iCalSerializer.SerializeToString(calendar);
 
-        await using var stream = GenerateStreamFromString(result);
+        await using Stream stream = GenerateStreamFromString(result);
         await SendStreamAsync(stream, "reservations.ics", contentType: "text/calendar", cancellation: ct);
     }
 
@@ -64,8 +62,8 @@ public class GetICalEndpoint : Endpoint<EmptyRequest, EmptyResponse>
 
     private Stream GenerateStreamFromString(string s)
     {
-        var stream = new MemoryStream();
-        var writer = new StreamWriter(stream);
+        MemoryStream stream = new MemoryStream();
+        StreamWriter writer = new StreamWriter(stream);
         writer.Write(s);
         writer.Flush();
         stream.Position = 0;

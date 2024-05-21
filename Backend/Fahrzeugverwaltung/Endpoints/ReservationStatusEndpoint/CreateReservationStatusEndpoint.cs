@@ -3,6 +3,7 @@ using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using Model;
+using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.ReservationStatus;
 using Model.User;
@@ -32,14 +33,14 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
 
     public override async Task HandleAsync(AddStatusToReservationRequest req, CancellationToken ct)
     {
-        var reservation = await _reservationService.Get(req.ReservationId);
+        ReservationModel? reservation = await _reservationService.Get(req.ReservationId);
         if (reservation is null)
         {
             await SendNotFoundAsync(ct);
             return;
         }
 
-        var claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         if (claimUserId is null)
         {
             await SendUnauthorizedAsync(ct);
@@ -61,7 +62,7 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
             StatusReason = req.Reason,
             Status = req.Status,
             StatusChanged = DateTime.Now,
-            StatusChangedByUser = requestingUser,
+            StatusChangedByUser = requestingUser
         };
         await _reservationStatusService.AddStatusToReservationAsync(status, ct);
 

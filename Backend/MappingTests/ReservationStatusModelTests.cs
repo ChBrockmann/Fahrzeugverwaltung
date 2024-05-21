@@ -17,7 +17,7 @@ public class ReservationStatusModelTests : TestBase
             Status = input.Status,
             StatusChanged = input.StatusChanged,
             StatusChangedByUser = Mapper.Map<UserDto>(input.StatusChangedByUser),
-            StatusReason = input.StatusReason,
+            StatusReason = input.StatusReason
         };
 
         ReservationStatusModelDto actual = Mapper.Map<ReservationStatusModelDto>(input);

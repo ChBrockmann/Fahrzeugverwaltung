@@ -8,7 +8,7 @@ public class TestBase
 {
     protected readonly Fixture Fixture;
     protected readonly IMapper Mapper;
-    
+
     public TestBase()
     {
         Mapper = new Mapper(MappingConfiguration.Get());

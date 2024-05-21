@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Model.Configuration;
 using Model.User;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-var logger = builder.SetupLogger();
+ILogger logger = builder.SetupLogger();
 
 Configuration configuration = builder.InitializeConfiguration();
 
@@ -44,7 +44,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.InitializeDatabase();
 app.UseCors("CorsPolicy");
@@ -58,9 +58,6 @@ app.UseAuthorization();
 
 app.SetupFastEndpoints();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwaggerGen();
-}
+if (app.Environment.IsDevelopment()) app.UseSwaggerGen();
 
 app.Run();

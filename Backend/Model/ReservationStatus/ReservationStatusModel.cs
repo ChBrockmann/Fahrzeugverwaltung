@@ -5,9 +5,8 @@ using StronglyTypedIds;
 
 namespace Model.ReservationStatus;
 
-
 [StronglyTypedId(Template.Guid)]
-public partial struct ReservationStatusId {}
+public partial struct ReservationStatusId { }
 
 public enum ReservationStatusEnum
 {
@@ -24,9 +23,9 @@ public record ReservationStatusModel
 
     public DateTime StatusChanged { get; set; } = DateTime.Now;
     public UserModel StatusChangedByUser { get; set; } = new();
-    
+
     [MaxLength(512)]
     public string? StatusReason { get; set; } = string.Empty;
-    
+
     public ReservationModel Reservation { get; set; } = new();
 }

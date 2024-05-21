@@ -18,10 +18,10 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
 
         await Database.SaveChangesAsync();
 
-        var databaseObject = await Database.ReservationModels
+        ReservationModel databaseObject = await Database.ReservationModels
             .Include(x => x.ReservationStatusChanges)
             .FirstAsync(x => x.Id == reservation.Id);
-        databaseObject.ReservationStatusChanges = new List<ReservationStatusModel>()
+        databaseObject.ReservationStatusChanges = new List<ReservationStatusModel>
         {
             new()
             {
@@ -29,7 +29,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
                 StatusChangedByUser = reservation.ReservationMadeByUser,
                 Reservation = reservation,
                 Status = ReservationStatusEnum.Pending,
-                StatusChanged = reservation.ReservationCreated,
+                StatusChanged = reservation.ReservationCreated
             }
         };
 
@@ -72,9 +72,9 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
             .Include(x => x.ReservationMadeByUser)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
-            .Where(x => x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive ||
-                        x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive ||
-                        x.StartDateInclusive < queryStartDateInclusive && x.EndDateInclusive > queryEndDateInclusive)
+            .Where(x => (x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive) ||
+                        (x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive) ||
+                        (x.StartDateInclusive < queryStartDateInclusive && x.EndDateInclusive > queryEndDateInclusive))
             .ToListAsync();
     }
 
@@ -86,9 +86,9 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
-            .Where(x => x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive ||
-                        x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive ||
-                        x.StartDateInclusive < queryStartDateInclusive && x.EndDateInclusive > queryEndDateInclusive)
+            .Where(x => (x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive) ||
+                        (x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive) ||
+                        (x.StartDateInclusive < queryStartDateInclusive && x.EndDateInclusive > queryEndDateInclusive))
             .ToListAsync();
     }
 

@@ -15,12 +15,12 @@ namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
 public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, ReservationModelDto>
 {
+    private readonly DatabaseContext _database;
+    private readonly ILogger<CreateReservationEndpoint> _logger;
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
-    private readonly IVehicleService _vehicleService;
     private readonly IUserService _userService;
-    private readonly ILogger<CreateReservationEndpoint> _logger;
-    private readonly DatabaseContext _database;
+    private readonly IVehicleService _vehicleService;
 
     public CreateReservationEndpoint(IMapper mapper, IReservationService reservationService, IVehicleService vehicleService, ILogger<CreateReservationEndpoint> logger, IUserService userService, DatabaseContext database)
     {
@@ -47,7 +47,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
             return;
         }
 
-        var claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         if (claimUserId is null)
         {
             await SendUnauthorizedAsync(ct);
@@ -62,7 +62,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
             await SendNotFoundAsync(ct);
             return;
         }
-        
+
         IEnumerable<ReservationModel>? existingReservation = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive, req.Vehicle);
         if (existingReservation is not null && existingReservation.Any())
         {
@@ -72,13 +72,13 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
             await SendErrorsAsync(400, ct);
             return;
         }
-        
+
         ReservationModel mapped = _mapper.Map<ReservationModel>(req);
         mapped.Id = ReservationId.New();
         mapped.VehicleReserved = requestedVehicle;
         mapped.ReservationMadeByUser = requestingUser;
 
-        var result = await _reservationService.Create(mapped);
+        ReservationModel result = await _reservationService.Create(mapped);
 
         await SendOkAsync(_mapper.Map<ReservationModelDto>(result), ct);
     }

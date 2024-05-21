@@ -10,7 +10,7 @@ public class GetReservationByIdEndpoint : Endpoint<GetReservationByIdRequest, Ge
 {
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
-    
+
     public GetReservationByIdEndpoint(IMapper mapper, IReservationService reservationService)
     {
         _mapper = mapper;

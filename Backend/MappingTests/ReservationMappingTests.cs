@@ -22,7 +22,7 @@ public class ReservationMappingTests : TestBase
             VehicleReserved = Mapper.Map<VehicleModelDto>(input.VehicleReserved),
             ReservationStatusChanges = Mapper.Map<List<ReservationStatusModelDto>>(input.ReservationStatusChanges),
             ReservationCreated = input.ReservationCreated,
-            ReservationMadeByUser = Mapper.Map<UserDto>(input.ReservationMadeByUser),
+            ReservationMadeByUser = Mapper.Map<UserDto>(input.ReservationMadeByUser)
         };
 
         ReservationModelDto actual = Mapper.Map<ReservationModelDto>(input);
@@ -39,9 +39,9 @@ public class ReservationMappingTests : TestBase
             Id = ReservationId.Empty,
             StartDateInclusive = input.StartDateInclusive,
             EndDateInclusive = input.EndDateInclusive,
-            VehicleReserved = new VehicleModel() {Id = VehicleModelId.Empty},
-            ReservationStatusChanges = new(),
-            ReservationCreated = DateTime.Now,
+            VehicleReserved = new VehicleModel {Id = VehicleModelId.Empty},
+            ReservationStatusChanges = new List<ReservationStatusModel>(),
+            ReservationCreated = DateTime.Now
         };
 
         ReservationModel actual = Mapper.Map<ReservationModel>(input);

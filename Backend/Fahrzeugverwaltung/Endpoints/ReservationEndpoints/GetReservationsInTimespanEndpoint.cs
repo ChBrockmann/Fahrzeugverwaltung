@@ -7,10 +7,10 @@ namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
 public class GetReservationsInTimespanEndpoint : Endpoint<GetReservationsInTimespanRequest, GetReservationsInTimespanResponse>
 {
+    private readonly ILogger _logger;
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
-    private readonly ILogger _logger;
-    
+
     public GetReservationsInTimespanEndpoint(IMapper mapper, IReservationService reservationService, ILogger logger)
     {
         _mapper = mapper;
@@ -25,11 +25,11 @@ public class GetReservationsInTimespanEndpoint : Endpoint<GetReservationsInTimes
 
     public override async Task HandleAsync(GetReservationsInTimespanRequest req, CancellationToken ct)
     {
-        _logger.Information("GetAllReservationsInTimespan Startdate: {StartDate} Enddate: {EndDate}", 
+        _logger.Information("GetAllReservationsInTimespan Startdate: {StartDate} Enddate: {EndDate}",
             req.StartDateInclusive.ToString("O"), req.EndDateInclusive.ToString("O"));
-        var reservations = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive);
-        
-        var response = new GetReservationsInTimespanResponse
+        IEnumerable<ReservationModel> reservations = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive);
+
+        GetReservationsInTimespanResponse response = new GetReservationsInTimespanResponse
         {
             Reservations = _mapper.Map<List<ReservationModelDto>>(reservations)
         };

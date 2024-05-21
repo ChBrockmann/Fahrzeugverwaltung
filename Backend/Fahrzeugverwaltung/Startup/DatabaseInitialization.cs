@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Model;
 using Model.Vehicle;
@@ -15,16 +16,16 @@ public static class DatabaseInitialization
 
         if (!database.VehicleModels.Any())
         {
-            database.VehicleModels.Add(new VehicleModel() {Id = VehicleModelId.New(), Name = "Initial Vehicle"});
+            database.VehicleModels.Add(new VehicleModel {Id = VehicleModelId.New(), Name = "Initial Vehicle"});
             database.SaveChanges();
         }
 
         if (!database.Roles.Any())
         {
-            database.Roles.Add(new()
+            database.Roles.Add(new IdentityRole<Guid>
             {
                 Id = Guid.NewGuid(),
-                Name = Security.AdminRoleName,
+                Name = Security.AdminRoleName
             });
             database.SaveChanges();
         }

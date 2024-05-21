@@ -7,9 +7,9 @@ namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
 public class CheckAvailabilityForVehicleAndTimespanEndpoint : Endpoint<CheckAvailabilityForVehicleAndTimespanRequest, CheckAvailabilityForVehicleAndTimespanResponse>
 {
-    private readonly IReservationService _reservationService;
     private readonly IMapper _mapper;
-    
+    private readonly IReservationService _reservationService;
+
     public CheckAvailabilityForVehicleAndTimespanEndpoint(IReservationService reservationService, IMapper mapper)
     {
         _reservationService = reservationService;
@@ -31,12 +31,12 @@ public class CheckAvailabilityForVehicleAndTimespanEndpoint : Endpoint<CheckAvai
             return;
         }
 
-        var mapped = _mapper.Map<List<ReservationModelDto>>(blockingReservations.ToList());
-        
+        List<ReservationModelDto> mapped = _mapper.Map<List<ReservationModelDto>>(blockingReservations.ToList());
+
         CheckAvailabilityForVehicleAndTimespanResponse response = new()
         {
             BlockingReservations = mapped,
-            Availability = mapped.Any()  ? Availability.NotAvailable : Availability.Available,
+            Availability = mapped.Any() ? Availability.NotAvailable : Availability.Available
         };
 
         await SendOkAsync(response, ct);

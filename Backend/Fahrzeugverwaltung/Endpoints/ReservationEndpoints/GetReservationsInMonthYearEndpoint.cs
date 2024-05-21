@@ -7,9 +7,9 @@ namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
 public class GetReservationsInMonthYearEndpoint : Endpoint<GetReservationsInMonthYearRequest, GetReservationsInMonthYearResponse>
 {
-    private readonly IReservationService _reservationService;
     private readonly IMapper _mapper;
-    
+    private readonly IReservationService _reservationService;
+
     public GetReservationsInMonthYearEndpoint(IReservationService reservationService, IMapper mapper)
     {
         _reservationService = reservationService;

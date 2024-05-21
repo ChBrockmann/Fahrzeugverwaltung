@@ -1,6 +1,6 @@
-﻿using Model.User;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
+using Model.User;
 
 namespace MappingTests;
 

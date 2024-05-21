@@ -21,7 +21,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+
         modelBuilder.Entity<UserModel>()
             .HasMany(u => u.ReservationsMadeByUser)
             .WithOne(u => u.ReservationMadeByUser);
@@ -32,7 +32,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<ReservationStatusModel>()
             .Property(x => x.Id)
             .HasConversion(x => x.Value, x => new ReservationStatusId(x));
-        
+
         modelBuilder.Entity<ReservationModel>()
             .HasKey(u => u.Id);
         modelBuilder.Entity<ReservationModel>()
@@ -41,7 +41,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<ReservationModel>()
             .HasMany(x => x.ReservationStatusChanges)
             .WithOne(x => x.Reservation);
-        
+
         modelBuilder.Entity<VehicleModel>()
             .HasKey(u => u.Id);
         modelBuilder.Entity<VehicleModel>()
