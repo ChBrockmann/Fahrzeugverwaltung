@@ -59,7 +59,6 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
   }
 
   async statusChanged(newStatus: ReservationStatusEnum) {
-    console.log(newStatus);
     this.dialogRef.close({
       reservationId: this.reservationId,
       wasChanged: true

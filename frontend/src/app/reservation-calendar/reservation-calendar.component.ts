@@ -141,7 +141,6 @@ export class ReservationCalendarComponent {
   }
 
   async reloadSingleReservation(reservationId: string) {
-    console.log("reloadSingleReservation", reservationId);
     this.events = this.events.filter(value => value.id !== reservationId);
 
     let result = await firstValueFrom(this.reservationService.getReservationByIdEndpoint(reservationId));
