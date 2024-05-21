@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using FastEndpoints;
-using FastEndpoints.Swagger;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Fahrzeugverwaltung.Startup;
 
@@ -18,7 +15,7 @@ public static class FastEndpointsRegistration
             {
                 // endpointConfigurator.AllowAnonymous();
             };
-            
+
             opt.Serializer.Options.Converters.Add(new JsonStringEnumConverter());
         });
     }

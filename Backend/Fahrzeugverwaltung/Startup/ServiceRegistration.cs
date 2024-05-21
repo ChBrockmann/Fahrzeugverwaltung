@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.ReservationService;
+using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using FastEndpoints.Swagger;
@@ -29,7 +30,7 @@ public static class ServiceRegistration
 
         return configuration;
     }
-    
+
     public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
         services.AddFastEndpoints();
@@ -39,10 +40,10 @@ public static class ServiceRegistration
             opt.RemoveEmptyRequestSchema = false;
             opt.FlattenSchema = true;
         });
-        
+
         services.AddSingleton(MappingConfiguration.GetFromAssembliesContaining(typeof(IMappingConfigurationInstaller)));
         services.AddScoped<IMapper, ServiceMapper>();
-        
+
         services.AddDbContext<DatabaseContext>(options =>
         {
             string connectionString = configuration.DatabaseConnectionString;
@@ -55,5 +56,6 @@ public static class ServiceRegistration
         services.AddScoped<IVehicleService, VehicleService>();
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IReservationStatusService, ReservationStatusService>();
     }
 }

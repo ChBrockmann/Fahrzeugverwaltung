@@ -1,11 +1,10 @@
 global using FastEndpoints;
 global using IMapper = MapsterMapper.IMapper;
 global using ILogger = Serilog.ILogger;
-using System.IdentityModel.Tokens.Jwt;
 using DataAccess;
 using Fahrzeugverwaltung.Startup;
-using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Model.Configuration;
 using Model.User;
@@ -15,11 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 var logger = builder.SetupLogger();
 
 Configuration configuration = builder.InitializeConfiguration();
-logger.Fatal(configuration.DatabaseConnectionString);
 
 builder.Services.RegisterAllServices(logger, configuration);
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<UserModel>().AddEntityFrameworkStores<DatabaseContext>();
+builder.Services
+    .AddIdentityApiEndpoints<UserModel>()
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<DatabaseContext>();
 builder.Services.Configure<IdentityOptions>(opt =>
 {
     opt.Password.RequiredLength = 8;
@@ -29,6 +30,7 @@ builder.Services.Configure<IdentityOptions>(opt =>
 
     opt.User.RequireUniqueEmail = false;
 });
+builder.Services.AddOptions<BearerTokenOptions>().Configure(opt => { opt.BearerTokenExpiration = TimeSpan.FromMinutes(configuration.BearerTokenExpirationInMinutes); });
 
 
 builder.Services.AddCors(options =>
