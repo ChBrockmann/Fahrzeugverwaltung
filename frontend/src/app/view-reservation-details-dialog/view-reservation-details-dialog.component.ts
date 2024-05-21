@@ -1,13 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {
-  GetReservationByIdResponse,
-  ReservationModelDto,
-  ReservationService,
-  ReservationStatusEnum,
-  ReservationStatusModelDto
-} from "../api";
-import {firstValueFrom, map} from "rxjs";
+import {GetReservationByIdResponse, ReservationService, ReservationStatusEnum, ReservationStatusModelDto} from "../api";
+import {firstValueFrom} from "rxjs";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 
 @Component({
@@ -19,7 +13,8 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
 
   protected readonly reservationId: string;
   public reservation: GetReservationByIdResponse | undefined;
-  public canDelete = false;
+  protected canDelete = false;
+  protected canChangeStatus = false;
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {reservationId: string},
@@ -34,6 +29,7 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
 
     if (this.reservation) {
       this.canDelete = this.reservation.canDelete;
+      this.canChangeStatus = this.reservation.canChangeStatus;
     }
   }
 

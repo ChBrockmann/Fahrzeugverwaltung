@@ -9,4 +9,7 @@ public record GetReservationByIdResponse
 
     [Required]
     public bool CanDelete { get; set; } = false;
+
+    [Required]
+    public bool CanChangeStatus { get; set; } = false;
 }

@@ -3,6 +3,7 @@ using DataAccess.ReservationService;
 using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.Reservation.Responses;
+using Model.ReservationStatus;
 
 namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
@@ -35,8 +36,20 @@ public class GetReservationByIdEndpoint : Endpoint<GetReservationByIdRequest, Ge
         GetReservationByIdResponse response = new()
         {
             Reservation = _mapper.Map<ReservationModelDto>(result),
-            CanDelete = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value == result.ReservationMadeByUser.Id.ToString()
+            CanDelete = CanDelete(result),
+            CanChangeStatus = CanChangeStatus(result)
         };
         await SendOkAsync(response, ct);
+    }
+
+    private bool CanDelete(ReservationModel reservationModel)
+    {
+        return User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value == reservationModel.ReservationMadeByUser.Id.ToString();
+    }
+
+    private bool CanChangeStatus(ReservationModel reservation)
+    {
+        return User.IsInRole(Model.Security.AdminRoleName) &&
+               reservation.ReservationStatusChanges.MaxBy(x => x.StatusChanged)?.Status != ReservationStatusEnum.Confirmed;
     }
 }
