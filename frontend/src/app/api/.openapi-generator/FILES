@@ -13,6 +13,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/accessTokenResponse.ts
+model/addStatusToReservationRequest.ts
 model/allUserResponse.ts
 model/availability.ts
 model/checkAvailabilityForVehicleAndTimespanResponse.ts

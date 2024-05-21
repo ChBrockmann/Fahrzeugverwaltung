@@ -35,6 +35,7 @@ import {RouterModule} from "@angular/router";
 import {MatInputModule} from "@angular/material/input";
 import {AuthenticationHttpInterceptor} from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
 import {isAuthorizedGuard} from "./authentication/is-authorized.guard";
+import { SetStatusForReservationActiongroupComponent } from './set-status-for-reservation-actiongroup/set-status-for-reservation-actiongroup.component';
 
 
 export const MY_FORMATS = {
@@ -68,6 +69,7 @@ export function apiConfigFactory(): Configuration {
     CreateReservationDialogComponent,
     ViewReservationDetailsDialogComponent,
     LoginComponent,
+    SetStatusForReservationActiongroupComponent,
 
   ],
   imports: [

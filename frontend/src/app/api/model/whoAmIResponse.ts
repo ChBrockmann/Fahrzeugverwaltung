@@ -14,5 +14,6 @@ import { UserDto } from './userDto';
 
 export interface WhoAmIResponse { 
     user: UserDto;
+    roles: Array<string>;
 }
 

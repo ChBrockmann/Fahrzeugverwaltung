@@ -1,4 +1,5 @@
 export * from './accessTokenResponse';
+export * from './addStatusToReservationRequest';
 export * from './allUserResponse';
 export * from './availability';
 export * from './checkAvailabilityForVehicleAndTimespanResponse';
