@@ -32,7 +32,13 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
         _logger.Information("Test Endpoint Called!");
-        IEnumerable<UserModel> user = await _userService.Get();
+
+
+        _logger.Information("UserClaims: {UserClaims}", User.Claims);
+        foreach (var ids in User.Identities)
+        {
+            _logger.Information("UserIdentities: {UserIdentities}", ids.Name);
+        }
 
         // var dbUser = _database.UserRoles.Add(new IdentityUserRole<Guid>()
         // {
@@ -42,7 +48,7 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
         // await _database.SaveChangesAsync(ct);
         //
         // await _userManager.RemoveFromRoleAsync(user.First(x => x.Firstname.Contains("Jeff")), "Admin");
-        foreach (Claim claim in User.Claims) _logger.Information("Claim {ClaimValueType} {ClaimType} {ClaimValue} {0} {1}", claim.ValueType, claim.Type, claim.Value, claim.Subject, claim.Properties);
+        foreach (Claim claim in User.Claims) _logger.Information("Claim {ClaimValueType} {ClaimType} {ClaimValue}", claim.ValueType, claim.Type, claim.Value);
 
         List<IdentityRole<Guid>> roles = await _roleManager.Roles.ToListAsync(ct);
         foreach (IdentityRole<Guid> role in roles) _logger.Information("Role {RoleName} Guid: {Guid} UserIsInRole: {UserIsInRole}", role.Name, role.Id, User.IsInRole(role.Name!));

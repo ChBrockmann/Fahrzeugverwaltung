@@ -14,6 +14,16 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ILogger logger = builder.SetupLogger();
 
 Configuration configuration = builder.InitializeConfiguration();
+bool authenticationEnabled = configuration.AuthenticationEnabled;
+
+if (authenticationEnabled)
+{
+    logger.Information("Authentication enabled");
+}
+else
+{
+    logger.Warning("Authentication disabled");
+}
 
 builder.Services.RegisterAllServices(logger, configuration);
 builder.Services.AddAuthorization();
@@ -53,10 +63,13 @@ app.MapGroup("api/identity").MapIdentityApi<UserModel>();
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+if (authenticationEnabled)
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+}
 
-app.SetupFastEndpoints();
+app.SetupFastEndpoints(configuration);
 
 if (app.Environment.IsDevelopment()) app.UseSwaggerGen();
 

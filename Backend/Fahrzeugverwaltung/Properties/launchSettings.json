@@ -9,14 +9,26 @@
     }
   },
   "profiles": {
-    "http": {
+    "http-authEnabled": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5133",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AuthenticationEnabled": "true"
+      }
+    },
+    "http-authDisabled": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5133",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AuthenticationEnabled": "false"
       }
     },
     "https": {

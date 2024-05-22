@@ -51,6 +51,7 @@
 
     <ItemGroup>
         <Folder Include="logs\"/>
+        <Folder Include="Validators\Reservation\"/>
     </ItemGroup>
 
 </Project>

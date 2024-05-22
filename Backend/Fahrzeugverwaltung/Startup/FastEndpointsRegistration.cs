@@ -1,10 +1,12 @@
 ﻿using System.Text.Json.Serialization;
+using Fahrzeugverwaltung.Endpoints.GlobalPreprocessor;
+using Model.Configuration;
 
 namespace Fahrzeugverwaltung.Startup;
 
 public static class FastEndpointsRegistration
 {
-    public static void SetupFastEndpoints(this WebApplication app)
+    public static void SetupFastEndpoints(this WebApplication app, Configuration configuration)
     {
         app
             .UseDefaultExceptionHandler()
@@ -15,7 +17,11 @@ public static class FastEndpointsRegistration
 
                 opt.Endpoints.Configurator = endpointConfigurator =>
                 {
-                    // endpointConfigurator.AllowAnonymous();
+                    if (!configuration.AuthenticationEnabled)
+                    {
+                        endpointConfigurator.AllowAnonymous();
+                        endpointConfigurator.PreProcessor<AddUserClaimToRequestPreProcessor>(Order.Before);
+                    }
                 };
 
                 opt.Serializer.Options.Converters.Add(new JsonStringEnumConverter());
