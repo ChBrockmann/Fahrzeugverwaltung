@@ -10,4 +10,6 @@ public interface IBaseService<TObject, in TId> where TObject : class
     public Task<TObject?> Update(TObject update);
 
     public Task<bool> Delete(TId id);
+
+    public Task<bool> Exists(TId id);
 }

@@ -63,6 +63,11 @@ public class BaseService<TObject, TId> : IBaseService<TObject, TId> where TObjec
         return true;
     }
 
+    public async Task<bool> Exists(TId id)
+    {
+        return await _dbSet.FindAsync(id) is not null;
+    }
+
     public TId CheckForNonDefaultValue(IDatabaseId<TId> input)
     {
         if (input.Id!.ToString() == Guid.Empty.ToString()) return (TId) Activator.CreateInstance(typeof(TId), Guid.NewGuid())!;
