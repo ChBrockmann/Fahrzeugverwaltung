@@ -3,6 +3,7 @@ using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
+using Fahrzeugverwaltung.Provider.DateTimeProvider;
 using FastEndpoints.Swagger;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -54,5 +55,7 @@ public static class ServiceRegistration
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IReservationStatusService, ReservationStatusService>();
+
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
     }
 }
