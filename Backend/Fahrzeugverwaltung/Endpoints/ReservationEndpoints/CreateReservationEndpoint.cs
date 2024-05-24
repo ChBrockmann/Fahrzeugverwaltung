@@ -43,8 +43,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         if (requestedVehicle is null)
         {
             _logger.LogWarning("Could not find Vehicle {VehicleId}", req.Vehicle);
-            await SendNotFoundAsync(ct);
-            return;
+            ThrowError(x => x.Vehicle, "Vehicle not found");
         }
 
         string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -59,8 +58,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         if (requestingUser is null)
         {
             _logger.LogWarning("Could not find User {UserId}", userId);
-            await SendNotFoundAsync(ct);
-            return;
+            ThrowError("User not found");
         }
 
         IEnumerable<ReservationModel>? existingReservation = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive, req.Vehicle);
