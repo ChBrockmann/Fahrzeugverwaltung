@@ -17,7 +17,7 @@ model/addStatusToReservationRequest.ts
 model/allUserResponse.ts
 model/availability.ts
 model/checkAvailabilityForVehicleAndTimespanResponse.ts
-model/createReservationRequest.ts
+model/errorResponse.ts
 model/forgotPasswordRequest.ts
 model/getAllVehicleResponse.ts
 model/getReservationByIdResponse.ts

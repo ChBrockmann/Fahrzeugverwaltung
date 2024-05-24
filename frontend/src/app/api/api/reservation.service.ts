@@ -23,7 +23,7 @@ import { AddStatusToReservationRequest } from '../model/addStatusToReservationRe
 // @ts-ignore
 import { CheckAvailabilityForVehicleAndTimespanResponse } from '../model/checkAvailabilityForVehicleAndTimespanResponse';
 // @ts-ignore
-import { CreateReservationRequest } from '../model/createReservationRequest';
+import { ErrorResponse } from '../model/errorResponse';
 // @ts-ignore
 import { GetReservationByIdResponse } from '../model/getReservationByIdResponse';
 // @ts-ignore
@@ -99,18 +99,18 @@ export class ReservationService {
     }
 
     /**
-     * @param requestedVehicleId 
+     * @param vehicle 
      * @param startDateInclusive 
      * @param endDateInclusive 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId: string, startDateInclusive: string, endDateInclusive: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CheckAvailabilityForVehicleAndTimespanResponse>;
-    public checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId: string, startDateInclusive: string, endDateInclusive: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CheckAvailabilityForVehicleAndTimespanResponse>>;
-    public checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId: string, startDateInclusive: string, endDateInclusive: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CheckAvailabilityForVehicleAndTimespanResponse>>;
-    public checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId: string, startDateInclusive: string, endDateInclusive: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (requestedVehicleId === null || requestedVehicleId === undefined) {
-            throw new Error('Required parameter requestedVehicleId was null or undefined when calling checkAvailabilityForVehicleAndTimespanEndpoint.');
+    public checkAvailabilityForVehicleAndTimespanEndpoint(vehicle: string, startDateInclusive: string, endDateInclusive: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<CheckAvailabilityForVehicleAndTimespanResponse>;
+    public checkAvailabilityForVehicleAndTimespanEndpoint(vehicle: string, startDateInclusive: string, endDateInclusive: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpResponse<CheckAvailabilityForVehicleAndTimespanResponse>>;
+    public checkAvailabilityForVehicleAndTimespanEndpoint(vehicle: string, startDateInclusive: string, endDateInclusive: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpEvent<CheckAvailabilityForVehicleAndTimespanResponse>>;
+    public checkAvailabilityForVehicleAndTimespanEndpoint(vehicle: string, startDateInclusive: string, endDateInclusive: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<any> {
+        if (vehicle === null || vehicle === undefined) {
+            throw new Error('Required parameter vehicle was null or undefined when calling checkAvailabilityForVehicleAndTimespanEndpoint.');
         }
         if (startDateInclusive === null || startDateInclusive === undefined) {
             throw new Error('Required parameter startDateInclusive was null or undefined when calling checkAvailabilityForVehicleAndTimespanEndpoint.');
@@ -142,7 +142,8 @@ export class ReservationService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'application/json'
+                'application/json',
+                'application/problem+json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -167,7 +168,7 @@ export class ReservationService {
             }
         }
 
-        return this.httpClient.get<CheckAvailabilityForVehicleAndTimespanResponse>(`${this.configuration.basePath}/api/reservation/checkAvailability/${encodeURIComponent(String(requestedVehicleId))}`,
+        return this.httpClient.get<CheckAvailabilityForVehicleAndTimespanResponse>(`${this.configuration.basePath}/api/reservation/checkAvailability/${encodeURIComponent(String(vehicle))}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -181,17 +182,13 @@ export class ReservationService {
     }
 
     /**
-     * @param createReservationRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createReservationEndpoint(createReservationRequest: CreateReservationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ReservationModelDto>;
-    public createReservationEndpoint(createReservationRequest: CreateReservationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ReservationModelDto>>;
-    public createReservationEndpoint(createReservationRequest: CreateReservationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ReservationModelDto>>;
-    public createReservationEndpoint(createReservationRequest: CreateReservationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (createReservationRequest === null || createReservationRequest === undefined) {
-            throw new Error('Required parameter createReservationRequest was null or undefined when calling createReservationEndpoint.');
-        }
+    public createReservationEndpoint(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<ReservationModelDto>;
+    public createReservationEndpoint(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpResponse<ReservationModelDto>>;
+    public createReservationEndpoint(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpEvent<ReservationModelDto>>;
+    public createReservationEndpoint(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -206,7 +203,8 @@ export class ReservationService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'application/json'
+                'application/json',
+                'application/problem+json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -220,15 +218,6 @@ export class ReservationService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -241,7 +230,7 @@ export class ReservationService {
         }
 
         return this.httpClient.post<ReservationModelDto>(`${this.configuration.basePath}/api/reservation`,
-            createReservationRequest,
+            null,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
