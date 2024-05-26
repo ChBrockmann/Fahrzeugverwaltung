@@ -5,7 +5,7 @@ using Model.Reservation.Responses;
 
 namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
-public class CheckAvailabilityForVehicleAndTimespanEndpoint : Endpoint<CreateReservationRequest, CheckAvailabilityForVehicleAndTimespanResponse>
+public class CheckAvailabilityForVehicleAndTimespanEndpoint : Endpoint<CheckAvailabilityForVehicleAndTimespanRequest, CheckAvailabilityForVehicleAndTimespanResponse>
 {
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
@@ -18,12 +18,12 @@ public class CheckAvailabilityForVehicleAndTimespanEndpoint : Endpoint<CreateRes
 
     public override void Configure()
     {
-        Get("reservation/checkAvailability/{Vehicle}");
+        Get("reservation/checkAvailability/{VehicleId}");
     }
 
-    public override async Task HandleAsync(CreateReservationRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CheckAvailabilityForVehicleAndTimespanRequest req, CancellationToken ct)
     {
-        IEnumerable<ReservationModel>? blockingReservations = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive, req.Vehicle);
+        IEnumerable<ReservationModel>? blockingReservations = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive, req.VehicleId);
 
         if (blockingReservations is null)
         {
