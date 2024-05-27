@@ -8,7 +8,7 @@ public record InvitationModelDto
 
     public string Token { get; set; } = string.Empty;
 
-    public UserDto CreatedBy { get; set; } = new();
+    public UserDto? CreatedBy { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public UserDto? AcceptedBy { get; set; }

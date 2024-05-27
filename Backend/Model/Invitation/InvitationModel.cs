@@ -11,7 +11,7 @@ public record InvitationModel : IDatabaseId<InivitationId>
 {
     public string Token { get; set; } = string.Empty;
 
-    public UserModel CreatedBy { get; set; } = new();
+    public UserModel? CreatedBy { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public UserModel? AcceptedBy { get; set; }
