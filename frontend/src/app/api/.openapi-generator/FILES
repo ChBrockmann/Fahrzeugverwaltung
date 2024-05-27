@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/default.service.ts
 api/ical.service.ts
+api/invitation.service.ts
 api/reservation.service.ts
 api/test.service.ts
 api/user.service.ts
@@ -12,13 +13,16 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/acceptInvitationRequest.ts
 model/accessTokenResponse.ts
 model/addStatusToReservationRequest.ts
 model/allUserResponse.ts
 model/availability.ts
 model/checkAvailabilityForVehicleAndTimespanResponse.ts
+model/createReservationRequest.ts
 model/errorResponse.ts
 model/forgotPasswordRequest.ts
+model/getAllInvitationsResponse.ts
 model/getAllVehicleResponse.ts
 model/getReservationByIdResponse.ts
 model/getReservationsInMonthYearResponse.ts
@@ -28,6 +32,8 @@ model/getVehicleStatusResponseCurrentReservation.ts
 model/httpValidationProblemDetails.ts
 model/infoRequest.ts
 model/infoResponse.ts
+model/invitationModelDto.ts
+model/invitationModelDtoCreatedBy.ts
 model/loginRequest.ts
 model/models.ts
 model/refreshRequest.ts

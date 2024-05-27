@@ -18,6 +18,12 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+// @ts-ignore
+import { AcceptInvitationRequest } from '../model/acceptInvitationRequest';
+// @ts-ignore
+import { ErrorResponse } from '../model/errorResponse';
+// @ts-ignore
+import { GetAllInvitationsResponse } from '../model/getAllInvitationsResponse';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -28,7 +34,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TestService {
+export class InvitationService {
 
     protected basePath = 'http://localhost:5133';
     public defaultHeaders = new HttpHeaders();
@@ -85,13 +91,17 @@ export class TestService {
     }
 
     /**
+     * @param acceptInvitationRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public testEndpoint(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<object>;
-    public testEndpoint(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public testEndpoint(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public testEndpoint(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<any> {
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<object>;
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<any> {
+        if (acceptInvitationRequest === null || acceptInvitationRequest === undefined) {
+            throw new Error('Required parameter acceptInvitationRequest was null or undefined when calling acceptInvitationEndpoint.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -100,6 +110,69 @@ export class TestService {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
+                'application/json',
+                'application/problem+json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        return this.httpClient.post<object>(`${this.configuration.basePath}/api/invitation/accept`,
+            acceptInvitationRequest,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllInvitationsEndpoint(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<GetAllInvitationsResponse>;
+    public getAllInvitationsEndpoint(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<GetAllInvitationsResponse>>;
+    public getAllInvitationsEndpoint(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<GetAllInvitationsResponse>>;
+    public getAllInvitationsEndpoint(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
@@ -125,7 +198,7 @@ export class TestService {
             }
         }
 
-        return this.httpClient.get<object>(`${this.configuration.basePath}/api/test`,
+        return this.httpClient.get<GetAllInvitationsResponse>(`${this.configuration.basePath}/api/invitation`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
