@@ -36,6 +36,7 @@ import {MatInputModule} from "@angular/material/input";
 import {AuthenticationHttpInterceptor} from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
 import {isAuthorizedGuard} from "./authentication/is-authorized.guard";
 import { SetStatusForReservationActiongroupComponent } from './set-status-for-reservation-actiongroup/set-status-for-reservation-actiongroup.component';
+import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
 
 
 export const MY_FORMATS = {
@@ -70,15 +71,11 @@ export function apiConfigFactory(): Configuration {
     ViewReservationDetailsDialogComponent,
     LoginComponent,
     SetStatusForReservationActiongroupComponent,
+    AcceptInvitationComponent,
 
   ],
   imports: [
     ApiModule.forRoot(apiConfigFactory),
-    RouterModule.forRoot([
-      {path: '', redirectTo: 'calendar', pathMatch: 'full'},
-      {path: 'login', component: LoginComponent},
-      {path: 'calendar', component: ReservationCalendarComponent, canActivate: [isAuthorizedGuard]},
-    ]),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,

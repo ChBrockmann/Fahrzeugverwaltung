@@ -1,0 +1,46 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 89vh;">
+  <div style="padding: 32px; background: #f0f0f0; border-radius: 8px;">
+    <h1>Account erstellen</h1>
+
+    <form [formGroup]="acceptInvitationFormGroup" class="formgroup">
+      <mat-form-field class="input">
+        <mat-label>Token</mat-label>
+        <input matInput formControlName="token"/>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Vorname</mat-label>
+        <input matInput formControlName="firstname"/>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Nachname</mat-label>
+        <input matInput formControlName="lastname"/>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Organization</mat-label>
+        <input matInput formControlName="organization"/>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>E-Mail</mat-label>
+        <input matInput formControlName="email" type="email"/>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Passwort</mat-label>
+        <input matInput formControlName="password" type="password"/>
+      </mat-form-field>
+
+      <mat-error *ngIf="errorText != '' && !isLoading">
+        {{errorText}}
+      </mat-error>
+
+      <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
+
+
+      <button mat-raised-button color="primary" (click)="click()" [disabled]="!acceptInvitationFormGroup.valid || isLoading">Account erstellen</button>
+    </form>
+  </div>
+</div>

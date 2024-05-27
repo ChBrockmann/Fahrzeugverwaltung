@@ -14,7 +14,7 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
     private readonly IUserService _userService;
     private readonly ILogger _logger;
     private UserManager<UserModel> _userManager;
-    
+
     public AcceptInvitationEndpoint(ILogger logger, IInvitationService invitationService, UserManager<UserModel> userManager, IUserService userService)
     {
         _logger = logger;
@@ -46,10 +46,18 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
             UserName = req.Email
         }, req.Password);
 
-        var dbUser = await _userManager.FindByEmailAsync(req.Email) ?? throw new ArgumentNullException();
-
-        await _invitationService.SetAcceptedByUser(invitation.Id, dbUser);
-        
         _logger.Information(result.Succeeded ? "User created successfully" : "User creation failed");
+        if (result.Succeeded)
+        {
+            var dbUser = await _userManager.FindByEmailAsync(req.Email) ?? throw new ArgumentNullException();
+
+            await _invitationService.SetAcceptedByUser(invitation.Id, dbUser);
+        }
+        else
+        {
+            var error = result.Errors.First();
+            _logger.Information("User creation failed with error {Code}: {Description}", error.Code, error.Description);
+            ThrowError(new ValidationFailure(error.Code, error.Description));
+        }
     }
 }
