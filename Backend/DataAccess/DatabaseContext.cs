@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Model.Invitation;
 using Model.Reservation;
 using Model.ReservationStatus;
 using Model.User;
@@ -17,10 +18,18 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
     public DbSet<VehicleModel> VehicleModels { get; set; } = null!;
     public DbSet<UserModel> UserModels { get; set; } = null!;
     public DbSet<ReservationStatusModel> ReservationStatusModels { get; set; } = null!;
+    public DbSet<InvitationModel> InvitationModels { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<InvitationModel>()
+            .Property(x => x.Id)
+            .HasConversion(x => x.Value, x => new InivitationId(x));
+        modelBuilder.Entity<InvitationModel>()
+            .HasOne(x => x.CreatedBy);
+
 
         modelBuilder.Entity<UserModel>()
             .HasMany(u => u.ReservationsMadeByUser)
