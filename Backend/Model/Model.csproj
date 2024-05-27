@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Invitation\Requests\"/>
         <Folder Include="User\Request\"/>
     </ItemGroup>
 

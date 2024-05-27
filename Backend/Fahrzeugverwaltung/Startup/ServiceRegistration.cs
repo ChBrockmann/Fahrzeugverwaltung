@@ -1,4 +1,5 @@
 ﻿using DataAccess;
+using DataAccess.InvitationService;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
@@ -55,6 +56,7 @@ public static class ServiceRegistration
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IReservationStatusService, ReservationStatusService>();
+        services.AddScoped<IInvitationService, InvitationService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
     }
