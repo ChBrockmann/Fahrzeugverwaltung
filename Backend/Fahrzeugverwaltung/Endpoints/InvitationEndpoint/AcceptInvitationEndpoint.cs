@@ -1,0 +1,55 @@
+﻿using DataAccess.InvitationService;
+using DataAccess.UserService;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Identity;
+using Model.Invitation;
+using Model.Invitation.Requests;
+using Model.User;
+
+namespace Fahrzeugverwaltung.Endpoints.InvitationEndpoint;
+
+public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyResponse>
+{
+    private readonly IInvitationService _invitationService;
+    private readonly IUserService _userService;
+    private readonly ILogger _logger;
+    private UserManager<UserModel> _userManager;
+    
+    public AcceptInvitationEndpoint(ILogger logger, IInvitationService invitationService, UserManager<UserModel> userManager, IUserService userService)
+    {
+        _logger = logger;
+        _invitationService = invitationService;
+        _userManager = userManager;
+        _userService = userService;
+    }
+
+    public override void Configure()
+    {
+        Post("invitation/accept");
+        AllowAnonymous();
+        Throttle(100, new TimeSpan(1, 0, 0, 0).TotalSeconds);
+    }
+
+    public override async Task HandleAsync(AcceptInvitationRequest req, CancellationToken ct)
+    {
+        _logger.Information("Accepting invitation with token {Token}", req.Token);
+
+        InvitationModel invitation = await _invitationService.GetByToken(req.Token) ?? throw new ArgumentNullException();
+        _logger.Information("Token {Token} is valid. Request data: {0} {1} {2}", req.Token, req.Firstname, req.Lastname, req.Organization);
+
+        var result = await _userManager.CreateAsync(new UserModel()
+        {
+            Firstname = req.Firstname,
+            Lastname = req.Lastname,
+            Organization = req.Organization,
+            Email = req.Email,
+            UserName = req.Email
+        }, req.Password);
+
+        var dbUser = await _userManager.FindByEmailAsync(req.Email) ?? throw new ArgumentNullException();
+
+        await _invitationService.SetAcceptedByUser(invitation.Id, dbUser);
+        
+        _logger.Information(result.Succeeded ? "User created successfully" : "User creation failed");
+    }
+}

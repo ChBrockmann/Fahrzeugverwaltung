@@ -25,4 +25,9 @@ public class UserService : BaseService<UserModel, Guid>, IUserService
 
         return await Database.Roles.Where(x => roleIds.Contains(x.Id)).Select(x => x.Name ?? "").ToListAsync();
     }
+
+    public async Task<UserModel?> GetUserByEmail(string email)
+    {
+        return await Database.UserModels.FirstOrDefaultAsync(x => x.Email == email);
+    }
 }
