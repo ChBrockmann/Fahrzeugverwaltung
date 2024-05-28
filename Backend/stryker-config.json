@@ -1,0 +1,11 @@
+{
+  "stryker-config":
+  {
+    "solution": "./Fahrzeugverwaltung.sln",
+    "project": "Fahrzeugverwaltung.csproj",
+    "reporters": [
+      "progress",
+      "html"
+    ]
+  }
+}
