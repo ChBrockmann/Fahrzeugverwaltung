@@ -1,4 +1,5 @@
-﻿using DataAccess.InvitationService;
+﻿using DataAccess;
+using DataAccess.InvitationService;
 using DataAccess.UserService;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
@@ -12,15 +13,17 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
 {
     private readonly IInvitationService _invitationService;
     private readonly IUserService _userService;
+    private readonly DatabaseContext _databaseContext;
     private readonly ILogger _logger;
     private UserManager<UserModel> _userManager;
 
-    public AcceptInvitationEndpoint(ILogger logger, IInvitationService invitationService, UserManager<UserModel> userManager, IUserService userService)
+    public AcceptInvitationEndpoint(ILogger logger, IInvitationService invitationService, UserManager<UserModel> userManager, IUserService userService, DatabaseContext databaseContext)
     {
         _logger = logger;
         _invitationService = invitationService;
         _userManager = userManager;
         _userService = userService;
+        _databaseContext = databaseContext;
     }
 
     public override void Configure()
@@ -51,6 +54,8 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
         {
             var dbUser = await _userManager.FindByEmailAsync(req.Email) ?? throw new ArgumentNullException();
 
+            await _userManager.AddToRolesAsync(dbUser, invitation.Roles.Where(x => x.Name is not null).Select(x => x.Name).ToList()!);
+            
             await _invitationService.SetAcceptedByUser(invitation.Id, dbUser);
         }
         else

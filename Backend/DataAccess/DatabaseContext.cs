@@ -29,6 +29,9 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
             .HasConversion(x => x.Value, x => new InivitationId(x));
         modelBuilder.Entity<InvitationModel>()
             .HasOne(x => x.CreatedBy);
+        modelBuilder.Entity<InvitationModel>()
+            .HasMany(x => x.Roles)
+            .WithMany();
 
 
         modelBuilder.Entity<UserModel>()
