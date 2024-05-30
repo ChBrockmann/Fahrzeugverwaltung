@@ -3,6 +3,8 @@ using DataAccess.ReservationService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Extensions;
+using Fahrzeugverwaltung.Validators.Reservation;
+using FluentValidation;
 using FluentValidation.Results;
 using Model.Reservation;
 using Model.Reservation.Requests;
@@ -18,14 +20,18 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
     private readonly IReservationService _reservationService;
     private readonly IUserService _userService;
     private readonly IVehicleService _vehicleService;
+    private readonly IValidator<CreateReservationRequest> _validator;
 
-    public CreateReservationEndpoint(IMapper mapper, IReservationService reservationService, IVehicleService vehicleService, ILogger<CreateReservationEndpoint> logger, IUserService userService)
+    public CreateReservationEndpoint(IMapper mapper, IReservationService reservationService, 
+        IVehicleService vehicleService, ILogger<CreateReservationEndpoint> logger, 
+        IUserService userService, IValidator<CreateReservationRequest> validator)
     {
         _mapper = mapper;
         _reservationService = reservationService;
         _vehicleService = vehicleService;
         _logger = logger;
         _userService = userService;
+        _validator = validator;
     }
 
     public override void Configure()
@@ -35,6 +41,13 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
 
     public override async Task HandleAsync(CreateReservationRequest req, CancellationToken ct)
     {
+        var validationResult = await _validator.ValidateAsync(req, ct);
+        if (!validationResult.IsValid)
+        {
+            ValidationFailures.AddRange(validationResult.Errors);
+            ThrowIfAnyErrors();
+        }
+        
         VehicleModel requestedVehicle = await _vehicleService.Get(req.Vehicle) ?? throw new ArgumentNullException(nameof(req.Vehicle), "Vehicle not found");
 
         string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;

@@ -9,7 +9,7 @@ using Model.Vehicle;
 
 namespace Fahrzeugverwaltung.Validators.Reservation;
 
-public class CreateReservationValidator : Validator<CreateReservationRequest>
+public class CreateReservationValidator : AbstractValidator<CreateReservationRequest>
 {
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IOptionsMonitor<Configuration> _optionsMonitor;

@@ -5,10 +5,16 @@ using Model.Invitation.Requests;
 
 namespace Fahrzeugverwaltung.Validators.Invitation;
 
-public class AcceptInvitationValidator : Validator<AcceptInvitationRequest>
+public class AcceptInvitationValidator : AbstractValidator<AcceptInvitationRequest>
 {
-    public AcceptInvitationValidator()
+    private readonly IInvitationService _invitationService;
+    private readonly IDateTimeProvider _dateTimeProvider;
+    
+    
+    public AcceptInvitationValidator(IDateTimeProvider dateTimeProvider, IInvitationService invitationService)
     {
+        _dateTimeProvider = dateTimeProvider;
+        _invitationService = invitationService;
         RuleFor(x => x.Token)
             .MustAsync(async (x, ct) => await CheckIfTokenIsValid(x, ct))
             .WithMessage("Token is invalid");
@@ -16,15 +22,11 @@ public class AcceptInvitationValidator : Validator<AcceptInvitationRequest>
 
     private async Task<bool> CheckIfTokenIsValid(string token, CancellationToken ct)
     {
-        using var scope = CreateScope();
-        var invitationService = scope.Resolve<IInvitationService>();
-        var dateTimeProvider = scope.Resolve<IDateTimeProvider>();
-        
-        var invitation = await invitationService.GetByToken(token);
+        var invitation = await _invitationService.GetByToken(token);
 
         if (invitation is null)
             return false;
 
-        return invitation.AcceptedBy is null && invitation.ExpiresAt >= dateTimeProvider.Now;
+        return invitation.AcceptedBy is null && invitation.ExpiresAt >= _dateTimeProvider.Now;
     }
 }

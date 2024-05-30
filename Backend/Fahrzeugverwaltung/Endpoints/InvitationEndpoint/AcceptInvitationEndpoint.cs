@@ -1,6 +1,8 @@
 ﻿using DataAccess;
 using DataAccess.InvitationService;
 using DataAccess.UserService;
+using Fahrzeugverwaltung.Validators.Invitation;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using Model.Invitation;
@@ -12,18 +14,17 @@ namespace Fahrzeugverwaltung.Endpoints.InvitationEndpoint;
 public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyResponse>
 {
     private readonly IInvitationService _invitationService;
-    private readonly IUserService _userService;
-    private readonly DatabaseContext _databaseContext;
     private readonly ILogger _logger;
     private UserManager<UserModel> _userManager;
+    private readonly IValidator<AcceptInvitationRequest> _validator;
 
-    public AcceptInvitationEndpoint(ILogger logger, IInvitationService invitationService, UserManager<UserModel> userManager, IUserService userService, DatabaseContext databaseContext)
+    public AcceptInvitationEndpoint(ILogger logger, IInvitationService invitationService, 
+        UserManager<UserModel> userManager, IValidator<AcceptInvitationRequest> validator)
     {
         _logger = logger;
         _invitationService = invitationService;
         _userManager = userManager;
-        _userService = userService;
-        _databaseContext = databaseContext;
+        _validator = validator;
     }
 
     public override void Configure()
@@ -35,6 +36,12 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
 
     public override async Task HandleAsync(AcceptInvitationRequest req, CancellationToken ct)
     {
+        var validationResult = await _validator.ValidateAsync(req, ct);
+        if (!validationResult.IsValid)
+        {
+            ValidationFailures.AddRange(validationResult.Errors);
+            ThrowIfAnyErrors();
+        }
         _logger.Information("Accepting invitation with token {Token}", req.Token);
 
         InvitationModel invitation = await _invitationService.GetByToken(req.Token) ?? throw new ArgumentNullException();

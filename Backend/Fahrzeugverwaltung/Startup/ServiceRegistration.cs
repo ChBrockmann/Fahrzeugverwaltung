@@ -5,7 +5,9 @@ using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Provider.DateTimeProvider;
+using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
+using FluentValidation;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Model.Configuration;
@@ -39,6 +41,7 @@ public static class ServiceRegistration
             opt.RemoveEmptyRequestSchema = false;
             opt.FlattenSchema = true;
         });
+        services.AddValidatorsFromAssemblyContaining<CreateReservationValidator>();
 
         services.AddSingleton(MappingConfiguration.GetFromAssembliesContaining(typeof(IMappingConfigurationInstaller)));
         services.AddScoped<IMapper, ServiceMapper>();
