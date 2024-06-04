@@ -4,6 +4,7 @@ global using ILogger = Serilog.ILogger;
 using DataAccess;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
+using FastEndpoints.Security;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Model.Configuration;
@@ -26,7 +27,8 @@ else
 }
 
 builder.Services.RegisterAllServices(logger, configuration);
-builder.Services.AddAuthorization();
+builder.Services
+    .AddAuthorization();
 builder.Services
     .AddIdentityApiEndpoints<UserModel>()
     .AddRoles<IdentityRole<Guid>>()

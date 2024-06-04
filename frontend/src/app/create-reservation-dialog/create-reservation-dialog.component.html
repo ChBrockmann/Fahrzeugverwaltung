@@ -34,9 +34,15 @@
     </mat-error>
   </div>
 
+
+
   <button style="margin-top: 32px" mat-raised-button color="primary" type="submit" (click)="createReservation()"
           [disabled]="!createReservationFormGroup.valid">Reservieren
   </button>
+
+  <mat-error *ngIf="errorText != ''" style="margin-top: 16px">
+    {{errorText}}
+  </mat-error>
 </form>
 
 

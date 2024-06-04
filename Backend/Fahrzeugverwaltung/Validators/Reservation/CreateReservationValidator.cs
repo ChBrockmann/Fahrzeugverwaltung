@@ -25,12 +25,14 @@ public class CreateReservationValidator : AbstractValidator<CreateReservationReq
 
         RuleFor(x => x.StartDateInclusive)
             .LessThanOrEqualTo(x => x.EndDateInclusive)
+            .WithName("startDateBeforeEnddate")
             .WithMessage("Startdate has to be before Enddate")
             .Must((request, startDate) => CheckMaxReservationDays(request.StartDateInclusive, request.EndDateInclusive))
             .WithMessage("Reservation exceeds maximum reservation days")
             .Must((request, startDate) => CheckMinReservationDays(request.StartDateInclusive, request.EndDateInclusive))
             .WithMessage("Reservation is below minimum reservation days")
             .Must(CheckMinReservationTimeInAdvance)
+            .WithName("minReservationTimeInAdvance")
             .WithMessage("Reservation is below minimum reservation time in advance")
             .Must(CheckMaxReservationTimeInAdvance)
             .WithMessage("Reservation is above maximum reservation time in advance");
