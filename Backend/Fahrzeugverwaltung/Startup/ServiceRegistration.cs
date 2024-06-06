@@ -66,7 +66,7 @@ public static class ServiceRegistration
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
-        services.AddScoped<BusinessLogic.Validators.Reservation.CreateReservationValidatorLogic>();
+        services.AddScoped<CreateReservationValidatorLogic>();
         services.AddScoped<VehicleValidator>();
     }
 }

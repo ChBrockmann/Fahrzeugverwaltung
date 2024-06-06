@@ -1,6 +1,7 @@
 global using FastEndpoints;
 global using IMapper = MapsterMapper.IMapper;
 global using ILogger = Serilog.ILogger;
+global using FluentValidation;
 using DataAccess;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;

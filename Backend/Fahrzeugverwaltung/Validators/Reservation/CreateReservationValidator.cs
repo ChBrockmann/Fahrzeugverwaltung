@@ -5,14 +5,10 @@ using Model.Reservation.Requests;
 
 namespace Fahrzeugverwaltung.Validators.Reservation;
 
-public class CreateReservationValidator : Validator<CreateReservationRequest>
+public class CreateReservationValidator : AbstractValidator<CreateReservationRequest>
 {
-    public CreateReservationValidator()
+    public CreateReservationValidator(CreateReservationValidatorLogic reservationValidator, VehicleValidator vehicleValidator)
     {
-        using var scope = CreateScope();
-        var reservationValidator = scope.Resolve<CreateReservationValidatorLogic>();
-        var vehicleValidator = scope.Resolve<VehicleValidator>();
-
         RuleFor(x => x.StartDateInclusive)
             .LessThanOrEqualTo(x => x.EndDateInclusive)
             .WithName("startDateBeforeEnddate")
