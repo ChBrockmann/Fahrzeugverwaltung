@@ -1,10 +1,13 @@
-﻿using DataAccess;
+﻿using BusinessLogic.Validators;
+using BusinessLogic.Validators.Reservation;
+using BusinessLogic.Validators.Vehicle;
+using DataAccess;
 using DataAccess.InvitationService;
+using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
-using Fahrzeugverwaltung.Provider.DateTimeProvider;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
 using FluentValidation;
@@ -62,5 +65,8 @@ public static class ServiceRegistration
         services.AddScoped<IInvitationService, InvitationService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
+        services.AddScoped<BusinessLogic.Validators.Reservation.CreateReservationValidatorLogic>();
+        services.AddScoped<VehicleValidator>();
     }
 }

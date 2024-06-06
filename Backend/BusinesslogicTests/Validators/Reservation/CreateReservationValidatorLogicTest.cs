@@ -1,19 +1,17 @@
 ﻿using AutoFixture;
+using BusinessLogic.Validators.Reservation;
+using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
-using DataAccess.VehicleService;
-using Fahrzeugverwaltung.Provider.DateTimeProvider;
-using Fahrzeugverwaltung.Validators.Reservation;
-using FluentValidation.TestHelper;
+using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Model.Configuration;
 using Model.Reservation;
 using Model.Reservation.Requests;
-using Model.Vehicle;
 using Moq;
 
 namespace BusinesslogicTests.Validators.Reservation;
 
-public class CreateReservationValidatorTest
+public class CreateReservationValidatorLogicTest
 {
     private readonly Mock<IDateTimeProvider> _dateTimeProviderMock = new();
     private readonly IFixture _fixture;
@@ -28,73 +26,14 @@ public class CreateReservationValidatorTest
 
     private readonly Mock<IOptionsMonitor<Configuration>> _optionsMonitorMock = new();
     private readonly Mock<IReservationService> _reservationServiceMock = new();
-    private readonly CreateReservationValidator _sut;
-    private readonly Mock<IVehicleService> _vehicleServiceMock = new();
+    private readonly CreateReservationValidatorLogic _sut;
 
-    public CreateReservationValidatorTest()
+    public CreateReservationValidatorLogicTest()
     {
         _fixture = new Fixture();
         _optionsMonitorMock.Setup(x => x.CurrentValue).Returns(new Configuration() {ReservationRestrictions = _noRestrictions});
-        _vehicleServiceMock.Setup(x => x.Exists(It.IsAny<VehicleModelId>())).ReturnsAsync(true);
         _dateTimeProviderMock.Setup(x => x.DateToday).Returns(new DateOnly(2024, 05, 1));
-        _sut = new(_vehicleServiceMock.Object, _reservationServiceMock.Object, _optionsMonitorMock.Object, _dateTimeProviderMock.Object);
-    }
-
-    [Fact]
-    public async Task Startdate_HasToBeBefore_Enddate_NotFullfiled()
-    {
-        var model = new CreateReservationRequest()
-        {
-            StartDateInclusive = new DateOnly(2024, 05, 20),
-            EndDateInclusive = new DateOnly(2024, 05, 10),
-            Vehicle = new VehicleModelId()
-        };
-        _vehicleServiceMock
-            .Setup(x => x.Exists(It.IsAny<VehicleModelId>()))
-            .ReturnsAsync(true);
-
-
-        TestValidationResult<CreateReservationRequest>? result = await _sut.TestValidateAsync(model);
-
-
-        result.ShouldHaveValidationErrorFor(x => x.StartDateInclusive).Only();
-    }
-
-    [Fact]
-    public async Task Startdate_HasToBeBefore_Enddate_Fullfiled()
-    {
-        var model = new CreateReservationRequest()
-        {
-            StartDateInclusive = new DateOnly(2024, 05, 10),
-            EndDateInclusive = new DateOnly(2024, 05, 20),
-            Vehicle = new VehicleModelId()
-        };
-
-
-        TestValidationResult<CreateReservationRequest>? result = await _sut.TestValidateAsync(model);
-
-
-        result.ShouldNotHaveValidationErrorFor(x => x.StartDateInclusive);
-        result.ShouldNotHaveValidationErrorFor(x => x.EndDateInclusive);
-    }
-
-    [Fact]
-    public async Task VehicleId_IsInvalid()
-    {
-        var input = _fixture
-            .Build<CreateReservationRequest>()
-            .With(x => x.StartDateInclusive, new DateOnly(2024, 05, 10))
-            .With(x => x.EndDateInclusive, new DateOnly(2024, 05, 20))
-            .Create();
-        _vehicleServiceMock
-            .Setup(x => x.Exists(It.IsAny<VehicleModelId>()))
-            .ReturnsAsync(false);
-
-
-        var result = await _sut.TestValidateAsync(input);
-
-
-        result.ShouldHaveValidationErrorFor(x => x.Vehicle).Only();
+        _sut = new(_reservationServiceMock.Object, _optionsMonitorMock.Object, _dateTimeProviderMock.Object);
     }
 
     [Fact]
@@ -105,9 +44,6 @@ public class CreateReservationValidatorTest
             .With(x => x.StartDateInclusive, new DateOnly(2024, 05, 10))
             .With(x => x.EndDateInclusive, new DateOnly(2024, 05, 20))
             .Create();
-        _vehicleServiceMock
-            .Setup(x => x.Exists(It.IsAny<VehicleModelId>()))
-            .ReturnsAsync(true);
         _reservationServiceMock
             .Setup(x => x.GetReservationsInTimespan(input.StartDateInclusive, input.EndDateInclusive, input.Vehicle))
             .ReturnsAsync(new[]
@@ -120,9 +56,9 @@ public class CreateReservationValidatorTest
             });
 
 
-        var result = await _sut.TestValidateAsync(input);
+        var result = await _sut.CheckIfVehicleIsAvailable(input.Vehicle, input.StartDateInclusive, input.EndDateInclusive, default);
 
-        result.ShouldHaveValidationErrorFor(x => x.Vehicle).Only();
+        result.Should().BeFalse();
     }
 
     public static IEnumerable<object[]> GetNumbers()
@@ -189,9 +125,6 @@ public class CreateReservationValidatorTest
             .With(x => x.StartDateInclusive, startDate)
             .With(x => x.EndDateInclusive, endDate)
             .Create();
-        _vehicleServiceMock
-            .Setup(x => x.Exists(It.IsAny<VehicleModelId>()))
-            .ReturnsAsync(true);
         _optionsMonitorMock.Setup(x => x.CurrentValue)
             .Returns(new Configuration()
             {
@@ -199,15 +132,8 @@ public class CreateReservationValidatorTest
             });
         _dateTimeProviderMock.Setup(x => x.DateToday).Returns(todayMock);
 
-        var result = await _sut.TestValidateAsync(input);
+        var result = _sut.CheckReservationAgainstConfiguration(input.StartDateInclusive, input.EndDateInclusive);
 
-        if (shouldBeValid)
-        {
-            result.ShouldNotHaveValidationErrorFor(x => x.StartDateInclusive);
-        }
-        else
-        {
-            result.ShouldHaveValidationErrorFor(x => x.StartDateInclusive);
-        }
+        result.Should().Be(shouldBeValid);
     }
 }

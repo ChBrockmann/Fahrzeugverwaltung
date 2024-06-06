@@ -1,4 +1,4 @@
-﻿namespace Fahrzeugverwaltung.Provider.DateTimeProvider;
+﻿namespace DataAccess.Provider.DateTimeProvider;
 
 public interface IDateTimeProvider
 {

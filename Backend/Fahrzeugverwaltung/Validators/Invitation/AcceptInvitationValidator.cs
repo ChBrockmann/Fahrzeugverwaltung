@@ -1,5 +1,5 @@
 ﻿using DataAccess.InvitationService;
-using Fahrzeugverwaltung.Provider.DateTimeProvider;
+using DataAccess.Provider.DateTimeProvider;
 using FluentValidation;
 using Model.Invitation.Requests;
 
