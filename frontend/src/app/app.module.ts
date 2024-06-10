@@ -33,10 +33,12 @@ import {MatDividerModule} from '@angular/material/divider';
 import { LoginComponent } from './login/login.component';
 import {RouterModule} from "@angular/router";
 import {MatInputModule} from "@angular/material/input";
-import {AuthenticationHttpInterceptor} from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
 import {isAuthorizedGuard} from "./authentication/is-authorized.guard";
 import { SetStatusForReservationActiongroupComponent } from './set-status-for-reservation-actiongroup/set-status-for-reservation-actiongroup.component';
 import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
+import {
+  AuthenticationHttpInterceptor
+} from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
 
 
 export const MY_FORMATS = {

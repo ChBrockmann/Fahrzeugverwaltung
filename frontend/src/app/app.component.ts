@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthenticationService} from "./services/authentication/authentication.service";
+import {IdentityService} from "./api";
 
 @Component({
   selector: 'app-root',
@@ -11,11 +12,13 @@ export class AppComponent {
   title = 'Fahrzeugverwaltung';
 
   constructor(private readonly router: Router,
-              private readonly authService: AuthenticationService) {
+              private readonly authService: AuthenticationService,
+              private readonly logoutService: IdentityService) {
   }
 
   logout() : void {
-    this.authService.claer();
+    this.logoutService.logoutEndpoint().subscribe();
+    this.authService.clear();
     this.router.navigate(["login"]);
   }
 }

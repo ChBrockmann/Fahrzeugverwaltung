@@ -32,27 +32,28 @@ export class LoginComponent {
               private readonly userService: UserService) {
   }
 
+  async test() {
+    let result = await firstValueFrom(this.loginService.postApiIdentityRefresh({
+      refreshToken: "",
+    }));
+    console.log(result);
+  }
+
   async login(): Promise<void> {
     this.status = Status.LOADING;
     try {
-      let result = await firstValueFrom(this.loginService.postApiIdentityLogin(false, false, {
+      let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, true, {
         email: this.loginFormGroup.value.email ?? "",
         password: this.loginFormGroup.value.password ?? ""
       }));
 
-      if (result.accessToken) {
-        this.status = Status.SUCCESS;
-        this.authService.setToken(result.accessToken ?? "");
+      this.status = Status.SUCCESS;
 
-        let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
-        this.authService.setUser(whoAmI);
+      let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
+      this.authService.setUser(whoAmI);
 
-        this.router.navigate([""]);
-      } else {
-        this.status = Status.ERROR;
-      }
-    }
-    catch(e) {
+      this.router.navigate([""]);
+    } catch (e) {
       this.status = Status.ERROR;
     }
   }

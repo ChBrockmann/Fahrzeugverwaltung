@@ -7,6 +7,7 @@ using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
 using FastEndpoints.Security;
 using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Model.Configuration;
 using Model.User;
@@ -43,8 +44,17 @@ builder.Services.Configure<IdentityOptions>(opt =>
 
     opt.User.RequireUniqueEmail = false;
 });
-builder.Services.AddOptions<BearerTokenOptions>().Configure(opt => { opt.BearerTokenExpiration = TimeSpan.FromMinutes(configuration.BearerTokenExpirationInMinutes); });
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.ExpireTimeSpan = TimeSpan.FromHours(configuration.CookieExpirationInHours);
+    opt.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    opt.Cookie.Name = "YourAppCookieName";
+    opt.Cookie.HttpOnly = true;
+    opt.LoginPath = "/Identity/Account/Login";
+    opt.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+    opt.SlidingExpiration = true;
+});
 
 builder.Services.AddCors(options =>
 {

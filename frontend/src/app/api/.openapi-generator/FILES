@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/default.service.ts
 api/ical.service.ts
+api/identity.service.ts
 api/invitation.service.ts
 api/reservation.service.ts
 api/test.service.ts

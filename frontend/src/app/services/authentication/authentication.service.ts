@@ -23,7 +23,7 @@ export class AuthenticationService {
     return this.getToken() !== null;
   }
 
-  public claer(): void {
+  public clear(): void {
     localStorage.clear();
   }
 
