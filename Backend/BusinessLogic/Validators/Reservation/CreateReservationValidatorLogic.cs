@@ -30,6 +30,12 @@ public class CreateReservationValidatorLogic
         return !result.Any();
     }
 
+    public bool CheckIfStartdateIsAfterToday(DateOnly startDate)
+    {
+        DateOnly today = _dateTimeProvider.DateToday;
+        return startDate >= today;
+    }
+
     public bool CheckReservationAgainstConfiguration(DateOnly startDate, DateOnly endDate)
     {
         return CheckMaxReservationDays(startDate, endDate) &&

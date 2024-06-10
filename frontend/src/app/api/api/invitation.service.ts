@@ -21,8 +21,6 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { AcceptInvitationRequest } from '../model/acceptInvitationRequest';
 // @ts-ignore
-import { ErrorResponse } from '../model/errorResponse';
-// @ts-ignore
 import { GetAllInvitationsResponse } from '../model/getAllInvitationsResponse';
 
 // @ts-ignore
@@ -95,10 +93,10 @@ export class InvitationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<object>;
-    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'application/problem+json', context?: HttpContext}): Observable<any> {
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<object>;
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public acceptInvitationEndpoint(acceptInvitationRequest: AcceptInvitationRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json', context?: HttpContext}): Observable<any> {
         if (acceptInvitationRequest === null || acceptInvitationRequest === undefined) {
             throw new Error('Required parameter acceptInvitationRequest was null or undefined when calling acceptInvitationEndpoint.');
         }
@@ -110,8 +108,7 @@ export class InvitationService {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'text/plain',
-                'application/json',
-                'application/problem+json'
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }

@@ -28,11 +28,17 @@ export class CheckReservationStatus {
 
       return reservationService.checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId, startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD")).pipe(
         map(value => {
-          if (value.availability == "Available") {
+          if (value.isAvailable) {
             return null;
           }
           else {
+            if(value.errors == null) {
             return {notAvailable: true};
+
+            }
+            else {
+            return {notAvailable: true, validationErrors: value.errors};
+            }
           }
         })
       );

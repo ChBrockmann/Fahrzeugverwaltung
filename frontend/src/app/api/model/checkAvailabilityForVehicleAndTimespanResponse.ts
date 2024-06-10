@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Availability } from './availability';
 import { ReservationModelDto } from './reservationModelDto';
 
 
 export interface CheckAvailabilityForVehicleAndTimespanResponse { 
-    availability: Availability;
+    isAvailable: boolean;
     blockingReservations?: Array<ReservationModelDto> | null;
+    errors?: Array<string>;
 }
 

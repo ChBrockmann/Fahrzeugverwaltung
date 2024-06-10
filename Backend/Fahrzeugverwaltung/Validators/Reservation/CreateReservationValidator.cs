@@ -9,9 +9,12 @@ public class CreateReservationValidator : AbstractValidator<CreateReservationReq
 {
     public CreateReservationValidator(CreateReservationValidatorLogic reservationValidator, VehicleValidator vehicleValidator)
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
+        
         RuleFor(x => x.StartDateInclusive)
+            .Must(reservationValidator.CheckIfStartdateIsAfterToday)
+            .WithMessage("Startdate has to be after today")
             .LessThanOrEqualTo(x => x.EndDateInclusive)
-            .WithName("startDateBeforeEnddate")
             .WithMessage("Startdate has to be before Enddate")
             .Must((request, startDate) => reservationValidator.CheckMaxReservationDays(request.StartDateInclusive, request.EndDateInclusive))
             .WithMessage("Reservation exceeds maximum reservation days")
@@ -28,6 +31,6 @@ public class CreateReservationValidator : AbstractValidator<CreateReservationReq
             .WithMessage("Vehicle does not exist")
             .MustAsync(async (request, vehicleId, ct) =>
                 await reservationValidator.CheckIfVehicleIsAvailable(vehicleId, request.StartDateInclusive, request.EndDateInclusive, ct))
-            .WithMessage("Vehicle is not available in the given time frame");
+            .WithMessage("Vehicle is already reserved during (part of) this timespan");
     }
 }

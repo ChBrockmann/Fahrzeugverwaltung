@@ -85,4 +85,37 @@ export class CreateReservationDialogComponent implements OnInit {
         return error;
     }
   }
+
+  localizeValidationErrors() : string[] {
+    let validationErrors: string[] = this.createReservationFormGroup.errors?.['validationErrors'] ;
+
+    let localizedValidationErrors: string[] = [];
+    for(let validationError of validationErrors)
+    {
+      localizedValidationErrors.push(this.localizeErrorMessage(validationError));
+    }
+
+    return localizedValidationErrors;
+  }
+
+  private localizeErrorMessage(error: string) : string {
+    switch (error) {
+      default:
+        return "Es ist ein unbekannter Fehler aufgetreten:\n"+error;
+      case "Startdate has to be before Enddate":
+        return "Startdatum muss vor Enddatum liegen";
+      case "Startdate has to be after today":
+        return "Startdatum muss in der Zukunft liegen";
+      case "Reservation exceeds maximum reservation days":
+        return "Reservierungsdauer überschreitet maximale Reservierungsdauer";
+      case "Reservation is below minimum reservation days":
+        return "Reservierungsdauer liegt unterhalb der minimalen Reservierungsdauer";
+      case "Reservation is below minimum reservation time in advance":
+        return "Die Reservierung ist zu kurzfristig";
+      case "Reservation is above maximum reservation time in advance":
+        return "Die Reservierung liegt zu weit in der Zukunft";
+      case "Vehicle is already reserved during (part of) this timespan":
+        return "Fahrzeug ist bereits (teilweise) während dieses Zeitraums reserviert";
+    }
+  }
 }

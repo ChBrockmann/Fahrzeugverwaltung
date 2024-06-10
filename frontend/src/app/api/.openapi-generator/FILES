@@ -17,10 +17,8 @@ model/acceptInvitationRequest.ts
 model/accessTokenResponse.ts
 model/addStatusToReservationRequest.ts
 model/allUserResponse.ts
-model/availability.ts
 model/checkAvailabilityForVehicleAndTimespanResponse.ts
 model/createReservationRequest.ts
-model/errorResponse.ts
 model/forgotPasswordRequest.ts
 model/getAllInvitationsResponse.ts
 model/getAllVehicleResponse.ts

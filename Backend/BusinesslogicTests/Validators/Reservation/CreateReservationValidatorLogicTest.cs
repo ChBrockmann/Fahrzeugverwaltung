@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Model.Configuration;
 using Model.Reservation;
 using Model.Reservation.Requests;
+using Model.Vehicle;
 using Moq;
 
 namespace BusinesslogicTests.Validators.Reservation;
@@ -59,6 +60,38 @@ public class CreateReservationValidatorLogicTest
         var result = await _sut.CheckIfVehicleIsAvailable(input.Vehicle, input.StartDateInclusive, input.EndDateInclusive, default);
 
         result.Should().BeFalse();
+    }
+    
+    [Fact]
+    public async Task FullTest_ShouldBeValid()
+    {
+        CreateReservationRequest input = new()
+        {
+            StartDateInclusive = new DateOnly(2024, 06, 04),
+            EndDateInclusive = new DateOnly(2024, 06, 04),
+            Vehicle = VehicleModelId.New()
+        };
+        _reservationServiceMock
+            .Setup(x => x.GetReservationsInTimespan(input.StartDateInclusive, input.EndDateInclusive, input.Vehicle))
+            .ReturnsAsync(Array.Empty<ReservationModel>());
+        _optionsMonitorMock.Setup(x => x.CurrentValue).Returns(new Configuration()
+        {
+            ReservationRestrictions = new()
+            {
+                MinReservationDays = 0,
+                MaxReservationDays = 30,
+                MinReservationTimeInAdvanceInDays = 1,
+                MaxReservationTimeInAdvanceInDays = 365
+            }
+        });
+        _dateTimeProviderMock.Setup(x => x.DateToday).Returns(new DateOnly(2024, 06, 10));
+
+
+        var resultVehicleAvailable = await _sut.CheckIfVehicleIsAvailable(input.Vehicle, input.StartDateInclusive, input.EndDateInclusive, default);
+        var resultConfig = _sut.CheckReservationAgainstConfiguration(input.StartDateInclusive, input.EndDateInclusive);
+
+        resultVehicleAvailable.Should().BeTrue();
+        resultConfig.Should().BeTrue();
     }
 
     public static IEnumerable<object[]> GetNumbers()

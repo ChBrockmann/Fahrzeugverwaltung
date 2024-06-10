@@ -29,9 +29,11 @@
     <ng-container *ngIf="createReservationFormGroup.status == 'VALID'">
       Fahrzeug ist im gewählten Zeitraum verfügbar.
     </ng-container>
-    <mat-error *ngIf="createReservationFormGroup.hasError('notAvailable')">
-      Das Fahrzeug ist im gewählten Zeitraum nicht verfügbar.
+    <ng-container *ngIf="createReservationFormGroup.hasError('validationErrors')">
+    <mat-error *ngFor="let error of localizeValidationErrors()">
+      {{error}}
     </mat-error>
+    </ng-container>
   </div>
 
 
@@ -44,7 +46,6 @@
     {{errorText}}
   </mat-error>
 </form>
-
 
 <ng-template #loader style="display: flex; justify-content: center; align-items: center;">
   <div>
