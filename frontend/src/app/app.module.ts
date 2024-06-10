@@ -39,6 +39,8 @@ import { AcceptInvitationComponent } from './accept-invitation/accept-invitation
 import {
   AuthenticationHttpInterceptor
 } from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
+import { NotFoundComponent } from './not-found/not-found.component';
+import {MatCardModule} from "@angular/material/card";
 
 
 export const MY_FORMATS = {
@@ -74,6 +76,7 @@ export function apiConfigFactory(): Configuration {
     LoginComponent,
     SetStatusForReservationActiongroupComponent,
     AcceptInvitationComponent,
+    NotFoundComponent,
 
   ],
   imports: [
@@ -98,6 +101,7 @@ export function apiConfigFactory(): Configuration {
     MatSidenavModule,
     MatDividerModule,
     MatInputModule,
+    MatCardModule,
   ],
   providers: [
     {
