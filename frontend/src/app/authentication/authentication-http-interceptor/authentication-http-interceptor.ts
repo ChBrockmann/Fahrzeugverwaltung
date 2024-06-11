@@ -23,6 +23,7 @@ export class AuthenticationHttpInterceptor implements HttpInterceptor {
 
     if (err.status === 401 || err.status === 403) {
       this.router.navigate(["/login"]);
+      this.authService.clear();
 
       return of();
     }

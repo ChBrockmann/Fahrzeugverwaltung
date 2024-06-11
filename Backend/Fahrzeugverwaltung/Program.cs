@@ -54,6 +54,7 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.LoginPath = "/Identity/Account/Login";
     opt.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
     opt.SlidingExpiration = true;
+    opt.Cookie.IsEssential = true;
 });
 
 builder.Services.AddCors(options =>

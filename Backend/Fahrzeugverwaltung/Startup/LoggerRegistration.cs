@@ -16,7 +16,7 @@ public static class LoggerRegistration
             //     configure.Mode = MaskingMode.Globally;
             // })
             .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
+            // .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
             .WriteTo.Console(LogEventLevel.Verbose, "[{Timestamp:HH:mm:ss} {SourceContext} {Level:u3}] {Message:lj}{NewLine}{Exception}")
             .WriteTo.File("./logs/info/info-.txt", LogEventLevel.Information,
                 rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30)

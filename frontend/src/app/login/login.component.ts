@@ -42,7 +42,7 @@ export class LoginComponent {
   async login(): Promise<void> {
     this.status = Status.LOADING;
     try {
-      let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, true, {
+      let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, false, {
         email: this.loginFormGroup.value.email ?? "",
         password: this.loginFormGroup.value.password ?? ""
       }));

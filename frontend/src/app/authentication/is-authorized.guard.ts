@@ -5,16 +5,29 @@ import {AuthenticationService} from "../services/authentication/authentication.s
 
 
 export const isAuthorizedGuard: CanActivateFn = (route, state) => {
-  return true;
   let authService = inject(AuthenticationService);
   let router = inject(Router);
-  if (authService.hasToken())
+  if (authService.hasUser())
   {
     return true;
   }
   else
   {
-    router.navigate(["login"]);
+    router.navigate(["login"]).then(r => console.log("Navigated to login"));
     return false;
+  }
+};
+
+export const isUnAuthorizedGuard: CanActivateFn = (route, state) => {
+  let authService = inject(AuthenticationService);
+  let router = inject(Router);
+  if (authService.hasUser())
+  {
+    router.navigate(["/"]).then(r => console.log("Navigated to /"));
+    return false;
+  }
+  else
+  {
+    return true;
   }
 };

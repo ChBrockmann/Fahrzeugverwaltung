@@ -1,3 +1,13 @@
 .calendar {
     margin: 16px;
 }
+
+.route-item {
+  height: 48px !important;
+  display: flex;
+  align-items: center;
+}
+
+.route-item-active {
+  background: #949494;
+}

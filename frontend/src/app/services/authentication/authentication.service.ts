@@ -5,23 +5,11 @@ import {UserDto, WhoAmIResponse} from "../../api";
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private readonly tokenKey = "token";
   private readonly userKey = "user";
 
   constructor() {
   }
 
-  public setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-  }
-
-  public getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  public hasToken(): boolean {
-    return this.getToken() !== null;
-  }
 
   public clear(): void {
     localStorage.clear();
@@ -37,5 +25,9 @@ export class AuthenticationService {
       return JSON.parse(user);
     }
     return null;
+  }
+
+  public hasUser() : boolean {
+    return this.getUser() !== null;
   }
 }
