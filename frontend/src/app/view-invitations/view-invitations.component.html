@@ -1,0 +1,26 @@
+<h1>Einladungen</h1>
+
+<div *ngIf="getAllInvitationResponse != undefined; else loader" style="display: flex">
+  <mat-card *ngFor="let invitation of getAllInvitationResponse.invitations" class="invitation-card">
+    <mat-card-content>
+      <mat-card-title>Einladungen</mat-card-title>
+      <mat-card-subtitle>Status: {{ getStatusText(invitation) }}</mat-card-subtitle>
+      <mat-divider style="margin-top: 8px; margin-bottom: 8px;"></mat-divider>
+    </mat-card-content>
+    <mat-card-content *ngIf="getStatusText(invitation) == 'Angenommen'">
+      <p>Durch {{ invitation.acceptedBy?.fullname }} Organisation: {{ invitation.acceptedBy?.organization }}</p>
+      <p>Angenommen am: {{ invitation.acceptedAt | date: "dd.mm.yyyy hh:mm:ss" }}</p>
+    </mat-card-content>
+    <mat-card-content *ngIf="getStatusText(invitation) == 'Abgelaufen'">
+      <p>Abgelaufen am: {{ invitation.expiresAt | date: "dd.mm.yyyy hh:mm:ss" }}</p>
+      <p>Die Einladung wurde nicht angenommen</p>
+    </mat-card-content>
+    <mat-card-content *ngIf="getStatusText(invitation) == 'Offen'">
+      Token: {{ invitation.token }}
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

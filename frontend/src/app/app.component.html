@@ -12,20 +12,21 @@
   </button>
 </mat-toolbar>
 
-<mat-drawer-container autosize>
-  <mat-drawer #drawer mode="over">
-      <mat-nav-list>
-    <div *ngFor="let menuItem of getMenuItems()">
-        <div (click)="drawer.close()" class="route-item" mat-list-item routerLink="{{menuItem.path}}" routerLinkActive="route-item-active">
-          <mat-icon>{{menuItem.icon}}</mat-icon>
-          <span mat-line style="margin-right: 16px; margin-left: 16px;">{{menuItem.title}}</span>
+<mat-sidenav-container>
+  <mat-sidenav #drawer mode="over">
+    <mat-nav-list>
+      <div *ngFor="let menuItem of getMenuItems()">
+        <div (click)="drawer.close()" class="route-item" mat-list-item routerLink="{{menuItem.path}}"
+             routerLinkActive="route-item-active">
+          <mat-icon>{{ menuItem.icon }}</mat-icon>
+          <span mat-line style="margin-right: 16px; margin-left: 16px;">{{ menuItem.title }}</span>
         </div>
-    </div>
-      </mat-nav-list>
-  </mat-drawer>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
 
-  <div style="padding: 16px">
+  <mat-sidenav-content>
     <router-outlet></router-outlet>
-  </div>
+  </mat-sidenav-content>
 
-</mat-drawer-container>
+</mat-sidenav-container>

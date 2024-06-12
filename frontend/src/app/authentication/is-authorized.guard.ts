@@ -31,3 +31,11 @@ export const isUnAuthorizedGuard: CanActivateFn = (route, state) => {
     return true;
   }
 };
+
+export const hasRoleGuard: CanActivateFn = (route, state) => {
+  let authService = inject(AuthenticationService);
+  let requiredRoles: string[] = route.data['roles'];
+  let userRoles = authService.getUser()?.roles ?? [];
+
+  return requiredRoles.some(role => userRoles.includes(role));
+};

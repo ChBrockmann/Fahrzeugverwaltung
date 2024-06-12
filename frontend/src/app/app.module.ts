@@ -42,6 +42,7 @@ import {
 import { NotFoundComponent } from './not-found/not-found.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
+import { ViewInvitationsComponent } from './view-invitations/view-invitations.component';
 
 
 export const MY_FORMATS = {
@@ -78,6 +79,7 @@ export function apiConfigFactory(): Configuration {
     SetStatusForReservationActiongroupComponent,
     AcceptInvitationComponent,
     NotFoundComponent,
+    ViewInvitationsComponent,
 
   ],
   imports: [
