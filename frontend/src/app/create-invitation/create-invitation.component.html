@@ -1,0 +1,32 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 89vh;">
+  <div style="padding: 32px; background: #f0f0f0; border-radius: 8px;">
+    <h1>Einladung erstellen</h1>
+    <form [formGroup]="createInvitationFormGroup" class="formgroup">
+      <mat-form-field class="input">
+        <mat-label>Anzahl - Token</mat-label>
+        <input matInput formControlName="count" type="number"/>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Rollen</mat-label>
+        <mat-select formControlName="roles">
+          <mat-option value="none">Standard-Benutzer</mat-option>
+          <mat-option value="admin">Admin</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="input">
+        <mat-label>Token gültig bis</mat-label>
+        <input matInput [matDatepicker]="picker">
+        <mat-hint>DD.MM.YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <button (click)="createInvitations()" type="submit" [disabled]="!createInvitationFormGroup.valid"
+              mat-raised-button
+              color="primary">Einladung erstellen
+      </button>
+    </form>
+  </div>
+</div>

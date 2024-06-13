@@ -1,5 +1,9 @@
 <h1>Einladungen</h1>
 
+<button mat-raised-button color="primary" routerLink="/create-invitation">Einladung erstellen</button>
+
+<mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
+
 <div *ngIf="getAllInvitationResponse != undefined; else loader" style="display: flex">
   <mat-card *ngFor="let invitation of getAllInvitationResponse.invitations" class="invitation-card">
     <mat-card-content>
@@ -17,6 +21,7 @@
     </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Offen'">
       Token: {{ invitation.token }}
+      <button mat-raised-button color="primary" (click)="downloadInvitationPdf(invitation.id)">Einladung herunterladen</button>
     </mat-card-content>
   </mat-card>
 </div>

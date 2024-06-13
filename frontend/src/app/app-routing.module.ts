@@ -7,13 +7,17 @@ import {AcceptInvitationComponent} from "./accept-invitation/accept-invitation.c
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {ViewInvitationsComponent} from "./view-invitations/view-invitations.component";
 import {environment} from "../environments/environment";
+import {CreateInvitationComponent} from "./create-invitation/create-invitation.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'calendar', pathMatch: 'full'},
   {path: 'login', component: LoginComponent, canActivate: [isUnAuthorizedGuard]},
-  {path: 'calendar', component: ReservationCalendarComponent, canActivate: [isAuthorizedGuard]},
-  {path: 'invitations', component: ViewInvitationsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin]}},
   {path: 'accept-invitation', component: AcceptInvitationComponent},
+  {path: 'calendar', component: ReservationCalendarComponent, canActivate: [isAuthorizedGuard]},
+
+  {path: 'invitations', component: ViewInvitationsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin]}},
+  {path: 'create-invitation', component: CreateInvitationComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin]}},
+
   {path: '**', component: NotFoundComponent}
 ];
 

@@ -3,6 +3,7 @@ export * from './accessTokenResponse';
 export * from './addStatusToReservationRequest';
 export * from './allUserResponse';
 export * from './checkAvailabilityForVehicleAndTimespanResponse';
+export * from './createInvitationRequest';
 export * from './createReservationRequest';
 export * from './forgotPasswordRequest';
 export * from './getAllInvitationsResponse';

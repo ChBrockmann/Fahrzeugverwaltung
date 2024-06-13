@@ -33,4 +33,12 @@ export class ViewInvitationsComponent implements OnInit {
     return "Offen";
   }
 
+  downloadInvitationPdf(id: string | undefined) : void {
+    if(id == null) {
+      return;
+    }
+    this.invitationService.getInvitationPdfEndpoint(id).subscribe();
+  }
+
+
 }
