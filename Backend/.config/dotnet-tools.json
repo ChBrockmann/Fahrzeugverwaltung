@@ -15,6 +15,13 @@
         "dotnet-stryker"
       ],
       "rollForward": false
+    },
+    "questpdf.previewer": {
+      "version": "2024.6.0",
+      "commands": [
+        "questpdf-previewer"
+      ],
+      "rollForward": false
     }
   }
 }

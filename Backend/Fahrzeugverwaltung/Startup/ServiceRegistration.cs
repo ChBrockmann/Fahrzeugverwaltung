@@ -15,6 +15,7 @@ using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Model.Configuration;
 using Model.Mapping;
+using QuestPDF.Infrastructure;
 
 namespace Fahrzeugverwaltung.Startup;
 
@@ -37,6 +38,7 @@ public static class ServiceRegistration
 
     public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
+        QuestPDF.Settings.License = LicenseType.Community;
         services.AddFastEndpoints();
         services.SwaggerDocument(opt =>
         {
