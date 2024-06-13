@@ -2,6 +2,7 @@
 
 public record Configuration
 {
+    public string RootOrganizationName { get; set; } = string.Empty;
     public string DatabaseConnectionString { get; set; } = string.Empty;
 
     public int CookieExpirationInHours { get; set; }

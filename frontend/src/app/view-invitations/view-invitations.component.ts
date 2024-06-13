@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {GetAllInvitationsResponse, InvitationModelDto, InvitationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import * as moment from "moment/moment";
+import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {CreateInvitationComponent} from "../create-invitation/create-invitation.component";
 
 @Component({
   selector: 'app-view-invitations',
@@ -12,7 +15,8 @@ export class ViewInvitationsComponent implements OnInit {
 
   public getAllInvitationResponse: GetAllInvitationsResponse | undefined;
 
-  constructor(private readonly invitationService: InvitationService) {
+  constructor(private readonly invitationService: InvitationService,
+              public dialog: MatDialog) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -22,6 +26,14 @@ export class ViewInvitationsComponent implements OnInit {
   async loadData(): Promise<void> {
     this.getAllInvitationResponse = await firstValueFrom(this.invitationService.getAllInvitationsEndpoint());
   }
+
+  createInvitation() {
+    this.dialog.open<CreateInvitationComponent>(CreateInvitationComponent)
+      .afterClosed().subscribe(async () => {
+        await this.loadData();
+    });
+  }
+
 
   getStatusText(invitation: InvitationModelDto) : "Angenommen" | "Offen" | "Abgelaufen" {
     if(invitation.acceptedBy != null) {
@@ -33,11 +45,35 @@ export class ViewInvitationsComponent implements OnInit {
     return "Offen";
   }
 
+  getTypeText(invitation: InvitationModelDto) : string {
+    if(invitation.roles == undefined || invitation.roles.length === 0) {
+      return "Standard";
+    }
+    return invitation.roles.join(", ").trimEnd();
+  }
+
+  loadingPdfs: string[] = [];
+
+  isDisabled(invitationId: string | undefined) : boolean {
+    if(invitationId == null) {
+      return true;
+    }
+    return this.loadingPdfs.includes(invitationId);
+  }
+
   downloadInvitationPdf(id: string | undefined) : void {
     if(id == null) {
       return;
     }
-    this.invitationService.getInvitationPdfEndpoint(id).subscribe();
+    this.loadingPdfs.push(id);
+    this.invitationService.getInvitationPdfEndpoint(id, window.location.origin).subscribe(data => {
+      console.log(data)
+      // @ts-ignore
+      const file = new Blob([data], {type: 'application/pdf'});
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL, '_blank')?.focus();
+      this.loadingPdfs = this.loadingPdfs.filter(value => value !== id);
+    });
   }
 
 

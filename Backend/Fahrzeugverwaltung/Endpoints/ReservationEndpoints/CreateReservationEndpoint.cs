@@ -8,6 +8,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Model.Reservation;
 using Model.Reservation.Requests;
+using Model.ReservationStatus;
 using Model.User;
 using Model.Vehicle;
 
@@ -65,7 +66,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
             ThrowError("User not found");
         }
 
-        IEnumerable<ReservationModel> existingReservation = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive, req.Vehicle) ?? throw new ArgumentNullException();
+        IEnumerable<ReservationModel> existingReservation = await _reservationService.GetReservationsInTimespanWithoutDenied(req.StartDateInclusive, req.EndDateInclusive, req.Vehicle) ?? throw new ArgumentNullException();
         List<ReservationModel> existingReservationList = existingReservation.ToList();
 
         if (existingReservationList.Any())

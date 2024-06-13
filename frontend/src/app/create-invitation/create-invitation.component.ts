@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import * as moment from 'moment';
 import {InvitationService} from "../api";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-create-invitation',
@@ -16,7 +17,8 @@ export class CreateInvitationComponent {
     expiresAt: new FormControl(moment().add(7, 'days'), {nonNullable: true, validators: [Validators.required]})
   });
 
-  constructor(private readonly invitationService: InvitationService) {
+  constructor(private readonly invitationService: InvitationService,
+              private readonly dialogRef: MatDialogRef<CreateInvitationComponent>) {
   }
 
   createInvitations() : void {
@@ -25,10 +27,9 @@ export class CreateInvitationComponent {
     this.invitationService.createInvitationEndpoint({
       count: this.createInvitationFormGroup.value.count ?? 1,
       roles: this.mapRoles(),
-      expiresAfterDay: this.createInvitationFormGroup.value.expiresAt?.toDate() ?? moment().add(7, 'days').toDate()
-    }, "response", false ).subscribe(data => {
-      console.log("TEPKIJAoksdjokjds");
-      console.log(data);
+      expiresAfterDay: this.createInvitationFormGroup.value.expiresAt?.add(1, 'day')?.toDate() ?? moment().add(7, 'days').toDate()
+    }).subscribe(data => {
+      this.dialogRef.close();
     });
   }
 

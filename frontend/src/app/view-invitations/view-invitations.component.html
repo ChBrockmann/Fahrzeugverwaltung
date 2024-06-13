@@ -1,27 +1,33 @@
 <h1>Einladungen</h1>
 
-<button mat-raised-button color="primary" routerLink="/create-invitation">Einladung erstellen</button>
+<button mat-raised-button color="primary" (click)="createInvitation()">Einladung erstellen</button>
 
 <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
 
-<div *ngIf="getAllInvitationResponse != undefined; else loader" style="display: flex">
+<div *ngIf="getAllInvitationResponse != undefined; else loader" style="display: flex; flex-wrap: wrap;">
   <mat-card *ngFor="let invitation of getAllInvitationResponse.invitations" class="invitation-card">
     <mat-card-content>
       <mat-card-title>Einladungen</mat-card-title>
       <mat-card-subtitle>Status: {{ getStatusText(invitation) }}</mat-card-subtitle>
       <mat-divider style="margin-top: 8px; margin-bottom: 8px;"></mat-divider>
     </mat-card-content>
+    <mat-card-content>
+      Erstellt am: {{ invitation.createdAt | date: "dd.MM.yyyy hh:mm" }} <br>
+      Gültig bis: {{ invitation.expiresAt | date: "dd.MM.yyyy" }} <br>
+      Erstellt von {{ invitation.createdBy?.fullname }} <br>
+      <span style="margin-bottom: 8px; margin-top: 8px">Typ: {{ getTypeText(invitation) }}</span>
+
+      <mat-divider style="margin-top: 8px; margin-bottom: 8px;"></mat-divider>
+    </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Angenommen'">
+      <p>Angenommen am: {{ invitation.acceptedAt | date: "dd.MM.yyyy hh:mm" }}</p>
       <p>Durch {{ invitation.acceptedBy?.fullname }} Organisation: {{ invitation.acceptedBy?.organization }}</p>
-      <p>Angenommen am: {{ invitation.acceptedAt | date: "dd.mm.yyyy hh:mm:ss" }}</p>
     </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Abgelaufen'">
-      <p>Abgelaufen am: {{ invitation.expiresAt | date: "dd.mm.yyyy hh:mm:ss" }}</p>
       <p>Die Einladung wurde nicht angenommen</p>
     </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Offen'">
-      Token: {{ invitation.token }}
-      <button mat-raised-button color="primary" (click)="downloadInvitationPdf(invitation.id)">Einladung herunterladen</button>
+      <button mat-raised-button color="primary" (click)="downloadInvitationPdf(invitation.id)" [disabled]="isDisabled(invitation.id)" style="margin-top: 16px">Einladung herunterladen</button>
     </mat-card-content>
   </mat-card>
 </div>

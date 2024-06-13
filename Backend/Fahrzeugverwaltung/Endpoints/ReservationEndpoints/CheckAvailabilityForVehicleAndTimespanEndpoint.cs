@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.Reservation.Responses;
+using Model.ReservationStatus;
 
 namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
@@ -38,7 +39,7 @@ public class CheckAvailabilityForVehicleAndTimespanEndpoint : Endpoint<CheckAvai
         ValidationResult? validationResult = await _validator.ValidateAsync(mappedForValidator, ct);
         
         
-        IEnumerable<ReservationModel>? blockingReservations = await _reservationService.GetReservationsInTimespan(req.StartDateInclusive, req.EndDateInclusive, req.VehicleId);
+        IEnumerable<ReservationModel>? blockingReservations = await _reservationService.GetReservationsInTimespanWithoutDenied(req.StartDateInclusive, req.EndDateInclusive, req.VehicleId);
 
         if (blockingReservations is null)
         {

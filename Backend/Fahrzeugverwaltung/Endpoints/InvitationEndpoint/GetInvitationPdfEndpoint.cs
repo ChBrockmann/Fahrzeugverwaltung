@@ -1,5 +1,7 @@
 ﻿using DataAccess.InvitationService;
+using Microsoft.Extensions.Options;
 using Model;
+using Model.Configuration;
 using Model.Invitation;
 using Model.Invitation.Requests;
 using QRCoder;
@@ -12,10 +14,12 @@ namespace Fahrzeugverwaltung.Endpoints.InvitationEndpoint;
 public class GetInvitationPdfEndpoint : Endpoint<GetInvitationPdfRequest, EmptyResponse>
 {
     private readonly IInvitationService _invitationService;
+    private readonly IOptionsMonitor<Configuration> _options;
 
-    public GetInvitationPdfEndpoint(IInvitationService invitationService)
+    public GetInvitationPdfEndpoint(IInvitationService invitationService, IOptionsMonitor<Configuration> options)
     {
         _invitationService = invitationService;
+        _options = options;
     }
 
     public override void Configure()
@@ -36,16 +40,16 @@ public class GetInvitationPdfEndpoint : Endpoint<GetInvitationPdfRequest, EmptyR
             return;
         }
 
-        var pdfDocument = GetDocument(inv);
+        var pdfDocument = GetDocument(inv, req.BaseUrl);
         
         await SendBytesAsync(pdfDocument.GeneratePdf(), "Einladung.pdf", "application/pdf", cancellation: ct);
     }
 
-    public Document GetDocument(InvitationModel inv)
+    public Document GetDocument(InvitationModel inv, string baseUrl)
     {
-        string url = $"https://www.dasIstDeineUrl.com/token={inv.Token}";
+        string url = $"{baseUrl.TrimEnd('/')}/accept-invitation?token={inv.Token}";
         string toolname = "Fahrzeugverwaltung";
-        string rootOrganization = "Feuerwehr Stadt Winterberg";
+        string rootOrganization = _options.CurrentValue.RootOrganizationName;
 
         using (QRCodeGenerator qrGenerator = new())
         using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q))
@@ -80,25 +84,29 @@ public class GetInvitationPdfEndpoint : Endpoint<GetInvitationPdfRequest, EmptyR
                         x.Item().Row(row =>
                         {
                             row.Spacing(5);
-                            row.AutoItem().Text("3."); // text or image
+                            row.AutoItem().Text("3.");
                             row.RelativeItem().Text("Fülle die benötigten Daten aus.");
                         });
                         x.Item().Row(row =>
                         {
                             row.Spacing(5);
-                            row.AutoItem().Text("4."); // text or image
+                            row.AutoItem().Text("4.");
                             row.RelativeItem().Text("Verwende ein sicheres Passwort.");
                         });
                         x.Item().Row(row =>
                         {
                             row.Spacing(5);
-                            row.AutoItem().Text("5."); // text or image
+                            row.AutoItem().Text("5.");
                             row.RelativeItem().Text("Schließe deine Registrierung ab. Anschließend kannst du dich mit deinem gerade angelegtem Login in der Anwendung einloggen.");
                         });
                         x.Item().Padding(10).AlignCenter().MaxWidth(200).Image(qrCodeImage).FitArea();
                         x.Item().PaddingBottom(12).Hyperlink($"{url}").Text($"{url}").Underline().FontColor(Colors.Blue.Medium).AlignCenter().FontSize(18).Bold();
-                        x.Item().PaddingBottom(8).Text($"Token : {inv.Token}");
-                        x.Item().Text($"Die Einladung wurde am {inv.CreatedAt:DD.MM.YYYY hh:mm} von {inv.CreatedBy?.Firstname} {inv.CreatedBy?.Lastname} erstellt. Diese Einladung ist bis zum {inv.ExpiresAt:DD.MM.YYYY hh:mm} gültig. Danach kann sie nicht mehr verwendet werden.");
+                        x.Item().PaddingBottom(8).Text(text =>
+                        {
+                            text.Span("Token: ");
+                            text.Span($"{inv.Token}").FontFamily("Courier New").Bold();
+                        });
+                        x.Item().Text($"Die Einladung wurde am {inv.CreatedAt:dd.MM.yyyy hh:mm} von {inv.CreatedBy?.Firstname} {inv.CreatedBy?.Lastname} erstellt. Diese Einladung ist bis zum {inv.ExpiresAt:dd.MM.yyyy} gültig. Danach kann sie nicht mehr verwendet werden.");
                     });
                 });
             });

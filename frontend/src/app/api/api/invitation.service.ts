@@ -278,21 +278,29 @@ export class InvitationService {
 
     /**
      * @param id 
+     * @param baseUrl 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getInvitationPdfEndpoint(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<object>;
-    public getInvitationPdfEndpoint(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public getInvitationPdfEndpoint(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public getInvitationPdfEndpoint(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<any> {
+    public getInvitationPdfEndpoint(id: string, baseUrl: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<object>;
+    public getInvitationPdfEndpoint(id: string, baseUrl: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public getInvitationPdfEndpoint(id: string, baseUrl: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public getInvitationPdfEndpoint(id: string, baseUrl: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/pdf', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getInvitationPdfEndpoint.');
+        }
+        if (baseUrl === null || baseUrl === undefined) {
+            throw new Error('Required parameter baseUrl was null or undefined when calling getInvitationPdfEndpoint.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>id, 'id');
+        }
+        if (baseUrl !== undefined && baseUrl !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>baseUrl, 'baseUrl');
         }
 
         let localVarHeaders = this.defaultHeaders;

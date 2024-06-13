@@ -18,6 +18,15 @@ public class InvitationService : BaseService<InvitationModel, InivitationId>, II
             .ToListAsync();
     }
 
+    public override async Task<InvitationModel?> Get(InivitationId id)
+    {
+        return await Database.InvitationModels
+            .Include(x => x.AcceptedBy)
+            .Include(x => x.Roles)
+            .Include(x => x.CreatedBy)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<InvitationModel?> GetByToken(string token)
     {
         return await Database.InvitationModels

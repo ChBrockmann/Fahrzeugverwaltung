@@ -21,7 +21,7 @@ public class CreateReservationValidatorLogic
 
     public async Task<bool> CheckIfVehicleIsAvailable(VehicleModelId vehicleId, DateOnly startDate, DateOnly endDate, CancellationToken ct)
     {
-        var result = await _reservationService.GetReservationsInTimespan(startDate, endDate, vehicleId);
+        var result = await _reservationService.GetReservationsInTimespanWithoutDenied(startDate, endDate, vehicleId);
         if (result is null)
         {
             return true;

@@ -92,6 +92,22 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<ReservationModel>?> GetReservationsInTimespanWithoutDenied(DateOnly queryStartDateInclusive, DateOnly queryEndDateInclusive, VehicleModelId vehicleId)
+    {
+        var allDataInTimespan =  await Database.ReservationModels
+            .Include(x => x.VehicleReserved)
+            .Include(x => x.ReservationMadeByUser)
+            .Include(x => x.ReservationStatusChanges)
+            .ThenInclude(x => x.StatusChangedByUser)
+            .Where(x => x.VehicleReserved.Id == vehicleId)
+            .Where(x => (x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive) ||
+                        (x.EndDateInclusive >= queryStartDateInclusive && x.EndDateInclusive <= queryEndDateInclusive) ||
+                        (x.StartDateInclusive < queryStartDateInclusive && x.EndDateInclusive > queryEndDateInclusive))
+            .ToListAsync();
+
+        return allDataInTimespan.Where(x => x.ReservationStatusChanges.MaxBy(y => y.StatusChanged)?.Status != ReservationStatusEnum.Denied);
+    }
+
     public async Task<IEnumerable<ReservationModel>> GetUpcomingReservationsForVehicle(VehicleModelId vehicleId, DateOnly date, int limit = 2)
     {
         return await Database.ReservationModels
