@@ -2,7 +2,9 @@
 using DataAccess.InvitationService;
 using DataAccess.UserService;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Model;
+using Model.Configuration;
 using Model.Invitation;
 using Model.Invitation.Requests;
 using Model.User;
@@ -15,13 +17,15 @@ public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyR
     private readonly IUserService _userService;
     private readonly ILogger _logger;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+    private readonly IOptionsMonitor<Configuration> _optionsMonitor;
     
-    public CreateInvitationEndpoint(IInvitationService invitationService, ILogger logger, IUserService userService, RoleManager<IdentityRole<Guid>> roleManager)
+    public CreateInvitationEndpoint(IInvitationService invitationService, ILogger logger, IUserService userService, RoleManager<IdentityRole<Guid>> roleManager, IOptionsMonitor<Configuration> optionsMonitor)
     {
         _invitationService = invitationService;
         _logger = logger;
         _userService = userService;
         _roleManager = roleManager;
+        _optionsMonitor = optionsMonitor;
     }
 
     public override void Configure()
@@ -79,14 +83,19 @@ public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyR
 
         return roles;
     }
-    
-    private static readonly Random Random = new();
 
-    public static string RandomString(int length)
+    private string RandomString()
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new();
+        var tokenGenerationOptions = _optionsMonitor.CurrentValue.Invitation.TokenGenerationOptions;
+        int length = tokenGenerationOptions.TokenLength;
+        
+        string chars = tokenGenerationOptions.Uppercase ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : string.Empty;
+        chars += tokenGenerationOptions.Lowercase ? "abcdefghijklmnopqrstuvwxyz" : string.Empty;
+        chars += tokenGenerationOptions.Numbers || chars.Length == 0 ? "0123456789" : string.Empty;
+        
         return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[Random.Next(s.Length)]).ToArray());
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
     
     private async Task<string> GenerateUniqueToken()
@@ -95,7 +104,7 @@ public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyR
         
         do
         {
-            token = RandomString(8);
+            token = RandomString();
         } while (await _invitationService.GetByToken(token) is not null);
 
         return token;
