@@ -4,7 +4,7 @@ namespace Model.Invitation;
 
 public record InvitationModelDto
 {
-    public InivitationId Id { get; set; } = InivitationId.Empty;
+    public InvitationId Id { get; set; } = InvitationId.Empty;
 
     public string Token { get; set; } = string.Empty;
 

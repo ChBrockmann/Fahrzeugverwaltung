@@ -50,7 +50,7 @@ public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyR
         {
             InvitationModel invitationModel = new()
             {
-                Id = InivitationId.New(),
+                Id = InvitationId.New(),
                 CreatedAt = DateTime.Now,
                 CreatedBy = requestingUser,
                 ExpiresAt = new DateTime(req.ExpiresAfterDay.Year, req.ExpiresAfterDay.Month, req.ExpiresAfterDay.Day, 0, 0, 0),

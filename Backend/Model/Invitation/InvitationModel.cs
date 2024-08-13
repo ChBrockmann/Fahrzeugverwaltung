@@ -5,9 +5,9 @@ using StronglyTypedIds;
 namespace Model.Invitation;
 
 [StronglyTypedId(Template.Guid)]
-public partial struct InivitationId { }
+public partial struct InvitationId { }
 
-public record InvitationModel : IDatabaseId<InivitationId>
+public record InvitationModel : IDatabaseId<InvitationId>
 {
     public string Token { get; set; } = string.Empty;
 
@@ -20,5 +20,5 @@ public record InvitationModel : IDatabaseId<InivitationId>
     public List<IdentityRole<Guid>> Roles { get; set; } = new();
 
     public DateTime ExpiresAt { get; set; }
-    public InivitationId Id { get; set; } = InivitationId.Empty;
+    public InvitationId Id { get; set; } = InvitationId.Empty;
 }

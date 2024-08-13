@@ -4,9 +4,9 @@ using Model.User;
 
 namespace DataAccess.InvitationService;
 
-public interface IInvitationService : IBaseService<InvitationModel, InivitationId>
+public interface IInvitationService : IBaseService<InvitationModel, InvitationId>
 {
     Task<InvitationModel?> GetByToken(string token);
 
-    Task<bool> SetAcceptedByUser(InivitationId id, UserModel user);
+    Task<bool> SetAcceptedByUser(InvitationId id, UserModel user);
 }

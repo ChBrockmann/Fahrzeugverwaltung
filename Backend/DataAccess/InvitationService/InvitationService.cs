@@ -5,7 +5,7 @@ using Model.User;
 
 namespace DataAccess.InvitationService;
 
-public class InvitationService : BaseService<InvitationModel, InivitationId>, IInvitationService
+public class InvitationService : BaseService<InvitationModel, InvitationId>, IInvitationService
 {
     public InvitationService(DatabaseContext database) : base(database) { }
 
@@ -18,7 +18,7 @@ public class InvitationService : BaseService<InvitationModel, InivitationId>, II
             .ToListAsync();
     }
 
-    public override async Task<InvitationModel?> Get(InivitationId id)
+    public override async Task<InvitationModel?> Get(InvitationId id)
     {
         return await Database.InvitationModels
             .Include(x => x.AcceptedBy)
@@ -35,7 +35,7 @@ public class InvitationService : BaseService<InvitationModel, InivitationId>, II
             .FirstOrDefaultAsync(x => x.Token == token);
     }
 
-    public async Task<bool> SetAcceptedByUser(InivitationId id, UserModel user)
+    public async Task<bool> SetAcceptedByUser(InvitationId id, UserModel user)
     {
         var invitation = await Database.InvitationModels
             .FirstOrDefaultAsync(x => x.Id == id);
