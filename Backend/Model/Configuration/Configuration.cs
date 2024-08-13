@@ -10,23 +10,19 @@ public record Configuration
     public bool AuthenticationEnabled { get; set; }
 
     public ReservationRestrictions ReservationRestrictions { get; set; } = new();
+    
+    public Invitation Invitation { get; set; } = new();
 }
 
-public record ReservationRestrictions
+public record Invitation
 {
-    public ReservationRestrictions() : this(0, 0, 0, 0) { }
+    public TokenGenerationOptions TokenGenerationOptions { get; set; } = new();
+}
 
-    public ReservationRestrictions(int minReservationDays = 0, int maxReservationDays = 0, int minReservationTimeInAdvanceInDays = 0, int maxReservationTimeInAdvanceInDays = 0)
-    {
-        MinReservationDays = minReservationDays;
-        MaxReservationDays = maxReservationDays;
-        MinReservationTimeInAdvanceInDays = minReservationTimeInAdvanceInDays;
-        MaxReservationTimeInAdvanceInDays = maxReservationTimeInAdvanceInDays;
-    }
-
-    public int MinReservationDays { get; set; }
-    public int MaxReservationDays { get; set; }
-
-    public int MinReservationTimeInAdvanceInDays { get; set; }
-    public int MaxReservationTimeInAdvanceInDays { get; set; }
+public record TokenGenerationOptions
+{
+    public int TokenLength { get; set; }
+    public bool Numbers { get; set; }
+    public bool Uppercase { get; set; }
+    public bool Lowercase { get; set; }
 }
