@@ -1,21 +1,24 @@
-﻿using BusinessLogic.Validators.Reservation;
+﻿using BusinessLogic.Validators;
+using BusinessLogic.Validators.Reservation;
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
-using DataAccess.OrganizationService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
-using DataAccess.RoleService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
+using Fahrzeugverwaltung.Endpoints;
+using Fahrzeugverwaltung.Endpoints.tmp;
 using Fahrzeugverwaltung.Keycloak;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
+using FluentValidation;
 using MapsterMapper;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Model.Configuration;
 using Model.Mapping;
-using QuestPDF;
 using QuestPDF.Infrastructure;
 
 namespace Fahrzeugverwaltung.Startup;
@@ -39,7 +42,7 @@ public static class ServiceRegistration
 
     public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
-        Settings.License = LicenseType.Community;
+        QuestPDF.Settings.License = LicenseType.Community;
         services.AddFastEndpoints();
         services.SwaggerDocument(opt =>
         {
@@ -75,5 +78,24 @@ public static class ServiceRegistration
 
         services.AddScoped<CreateReservationValidatorLogic>();
         services.AddScoped<VehicleValidator>();
+
+
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumers(typeof(TestEndpoint).Assembly);
+            // x.AddConsumer<TestConsumer>();
+            
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("localhost", "/", c =>
+                {
+                    c.Username("user");
+                    c.Password("password");
+                });
+                
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+        services.AddHostedService<TestWorker>();
     }
 }
