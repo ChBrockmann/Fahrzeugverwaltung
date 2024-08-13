@@ -8,10 +8,13 @@ using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
+using Fahrzeugverwaltung.Endpoints;
+using Fahrzeugverwaltung.Endpoints.tmp;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
 using FluentValidation;
 using MapsterMapper;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Model.Configuration;
 using Model.Mapping;
@@ -70,5 +73,24 @@ public static class ServiceRegistration
 
         services.AddScoped<CreateReservationValidatorLogic>();
         services.AddScoped<VehicleValidator>();
+
+
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumers(typeof(TestEndpoint).Assembly);
+            // x.AddConsumer<TestConsumer>();
+            
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("localhost", "/", c =>
+                {
+                    c.Username("user");
+                    c.Password("password");
+                });
+                
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+        services.AddHostedService<TestWorker>();
     }
 }
