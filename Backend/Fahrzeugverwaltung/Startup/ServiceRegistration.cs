@@ -3,6 +3,7 @@ using BusinessLogic.Validators.Reservation;
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
+using DataAccess.LogBookEntryService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
@@ -68,6 +69,7 @@ public static class ServiceRegistration
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IReservationStatusService, ReservationStatusService>();
         services.AddScoped<IInvitationService, InvitationService>();
+        services.AddScoped<ILogBookEntryService, LogBookEntryService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
