@@ -80,6 +80,7 @@ export class CreateReservationDialogComponent implements OnInit {
   }
 
   getGermanErrorText(error: string) : string {
+    //TODO: Implement localization
     switch (error) {
       default:
         return error;

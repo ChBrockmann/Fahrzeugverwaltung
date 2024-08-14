@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, NonNullableFormBuilder, Validators} from "@angular/forms";
-import {InvitationService} from "../api";
+import {DefaultService, InvitationService, UserService} from "../api";
 import {firstValueFrom} from "rxjs";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AuthenticationService} from "../services/authentication/authentication.service";
 
 @Component({
   selector: 'app-accept-invitation',
@@ -19,7 +20,11 @@ export class AcceptInvitationComponent {
 
   constructor(private readonly invitationService: InvitationService,
               private readonly nonNullableFormBuilder: NonNullableFormBuilder,
-              private readonly route: ActivatedRoute) {
+              private readonly route: ActivatedRoute,
+              private readonly router: Router,
+              private readonly loginService: DefaultService,
+              private readonly authService: AuthenticationService,
+              private readonly userService: UserService) {
     this.acceptInvitationFormGroup = this.nonNullableFormBuilder.group({
       token: new FormControl(this.route.snapshot.queryParamMap.get('token') ?? '', [Validators.required]),
       firstname: new FormControl('', [Validators.required]),
@@ -44,8 +49,8 @@ export class AcceptInvitationComponent {
       password: values.password
     })
       .subscribe({
-        next: data => {
-          //Happy path
+        next: async data => {
+          await this.login(values.email, values.password);
         },
         error: error => {
           this.handleError(error);
@@ -57,12 +62,53 @@ export class AcceptInvitationComponent {
       });
   }
 
-  handleError(error: Error) {
-    if (error instanceof HttpErrorResponse) {
-      this.errorText = JSON.stringify(error.error.errors);
+  async login(email: string, password: string): Promise<void> {
+    try {
+      let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, false, {
+        email: email ?? "",
+        password: password ?? ""
+      }));
+
+      let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
+      this.authService.setUser(whoAmI);
+
+      this.router.navigate([""]);
+    } catch (e) {
+      this.errorText = "Anmeldung fehlgeschlagen.";
     }
-    else {
-      this.errorText = error.message;
+  }
+
+  handleError(error: HttpErrorResponse) {
+    if (error.status == 500) {
+      this.errorText = "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es später erneut.";
+    } else {
+      let errors = error.error.errors;
+      if (errors?.passwordTooShort) {
+        this.errorText = this.getGermanErrorText(errors.passwordTooShort[0]);
+      }
+      if(errors?.passwordRequiresLower) {
+        this.errorText = this.getGermanErrorText(errors.passwordRequiresLower[0]);
+      }
+      if(errors?.passwordRequiresUpper) {
+        this.errorText = this.getGermanErrorText(errors.passwordRequiresUpper[0]);
+      }
+      if(errors?.passwordRequiresDigit) {
+        this.errorText = this.getGermanErrorText(errors.passwordRequiresDigit[0]);
+      }
+      if(errors?.token) {
+        this.errorText = this.getGermanErrorText(errors.token[0]);
+      }
+      if(errors?.duplicateUserName) {
+        this.errorText = this.getGermanErrorText(errors.duplicateUserName[0]);
+      }
+    }
+  }
+
+  getGermanErrorText(error: string) : string {
+    //TODO: Implement
+    switch (error) {
+      default:
+        return error;
     }
   }
 }
