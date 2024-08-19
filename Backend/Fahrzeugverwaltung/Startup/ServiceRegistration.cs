@@ -1,5 +1,4 @@
-﻿using BusinessLogic.Validators;
-using BusinessLogic.Validators.Reservation;
+﻿using BusinessLogic.Validators.Reservation;
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
@@ -10,15 +9,14 @@ using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Endpoints;
-using Fahrzeugverwaltung.Endpoints.tmp;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
-using FluentValidation;
 using MapsterMapper;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Model.Configuration;
 using Model.Mapping;
+using QuestPDF;
 using QuestPDF.Infrastructure;
 
 namespace Fahrzeugverwaltung.Startup;
@@ -42,7 +40,7 @@ public static class ServiceRegistration
 
     public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
-        QuestPDF.Settings.License = LicenseType.Community;
+        Settings.License = LicenseType.Community;
         services.AddFastEndpoints();
         services.SwaggerDocument(opt =>
         {
@@ -77,22 +75,22 @@ public static class ServiceRegistration
         services.AddScoped<VehicleValidator>();
 
 
+        RabbitMqConfiguration rabbitMqConfiguration = configuration.RabbitMq;
         services.AddMassTransit(x =>
         {
             x.AddConsumers(typeof(TestEndpoint).Assembly);
-            // x.AddConsumer<TestConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("localhost", "/", c =>
+                cfg.Host(rabbitMqConfiguration.Host, rabbitMqConfiguration.Port, rabbitMqConfiguration.VirtualHost, c =>
                 {
-                    c.Username("user");
-                    c.Password("password");
+                    c.Username(rabbitMqConfiguration.Username);
+                    c.Password(rabbitMqConfiguration.Password);
                 });
                 
                 cfg.ConfigureEndpoints(context);
             });
         });
-        services.AddHostedService<TestWorker>();
+        // services.AddHostedService<TestWorker>();
     }
 }
