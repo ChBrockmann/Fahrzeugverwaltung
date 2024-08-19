@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Model.Reservation;
 using Model.User;
 using StronglyTypedIds;
 
@@ -15,4 +15,6 @@ public sealed record LogBookEntry : IDatabaseId<LogBookEntryId>
     public UserModel CreatedBy { get; set; } = new();
     
     public int? EndMileageInKm { get; set; }
+
+    public ReservationModel AssociatedReservation { get; set; } = new();
 }

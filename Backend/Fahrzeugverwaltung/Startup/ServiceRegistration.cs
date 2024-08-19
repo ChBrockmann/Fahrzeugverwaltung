@@ -3,6 +3,7 @@ using BusinessLogic.Validators.Reservation;
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
+using DataAccess.LogBookEntryService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
@@ -13,12 +14,12 @@ using Fahrzeugverwaltung.Endpoints.tmp;
 using Fahrzeugverwaltung.Keycloak;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
-using FluentValidation;
 using MapsterMapper;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Model.Configuration;
 using Model.Mapping;
+using QuestPDF;
 using QuestPDF.Infrastructure;
 
 namespace Fahrzeugverwaltung.Startup;
@@ -83,11 +84,10 @@ public static class ServiceRegistration
         services.AddMassTransit(x =>
         {
             x.AddConsumers(typeof(TestEndpoint).Assembly);
-            // x.AddConsumer<TestConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("localhost", "/", c =>
+                cfg.Host(rabbitMqConfiguration.Host, rabbitMqConfiguration.Port, rabbitMqConfiguration.VirtualHost, c =>
                 {
                     c.Username("user");
                     c.Password("password");
