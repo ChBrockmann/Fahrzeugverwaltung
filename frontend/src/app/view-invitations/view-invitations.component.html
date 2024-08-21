@@ -12,7 +12,7 @@
       <mat-divider style="margin-top: 8px; margin-bottom: 8px;"></mat-divider>
     </mat-card-content>
     <mat-card-content>
-      Erstellt am: {{ invitation.createdAt | date: "dd.MM.yyyy hh:mm" }} <br>
+      Erstellt am: {{ invitation.createdAt | date: "dd.MM.yyyy HH:mm" }} <br>
       Gültig bis: {{ invitation.expiresAt | date: "dd.MM.yyyy" }} <br>
       Erstellt von {{ invitation.createdBy?.fullname }} <br>
       <span style="margin-bottom: 8px; margin-top: 8px">Typ: {{ getTypeText(invitation) }}</span>

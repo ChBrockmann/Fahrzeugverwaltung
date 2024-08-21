@@ -21,7 +21,7 @@ public record Invitation
 
 public record TokenGenerationOptions
 {
-    public int TokenLength { get; set; }
+    public int Length { get; set; }
     public bool Numbers { get; set; }
     public bool Uppercase { get; set; }
     public bool Lowercase { get; set; }
