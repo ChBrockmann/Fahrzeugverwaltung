@@ -1,8 +1,8 @@
-﻿using BusinessLogic.Validators;
-using BusinessLogic.Validators.Reservation;
+﻿using BusinessLogic.Validators.Reservation;
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
+using DataAccess.OrganizationService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
@@ -10,11 +10,11 @@ using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
-using FluentValidation;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Model.Configuration;
 using Model.Mapping;
+using QuestPDF;
 using QuestPDF.Infrastructure;
 
 namespace Fahrzeugverwaltung.Startup;
@@ -38,7 +38,7 @@ public static class ServiceRegistration
 
     public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
-        QuestPDF.Settings.License = LicenseType.Community;
+        Settings.License = LicenseType.Community;
         services.AddFastEndpoints();
         services.SwaggerDocument(opt =>
         {
@@ -65,6 +65,7 @@ public static class ServiceRegistration
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IReservationStatusService, ReservationStatusService>();
         services.AddScoped<IInvitationService, InvitationService>();
+        services.AddScoped<IOrganizationService, OrganizationService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
