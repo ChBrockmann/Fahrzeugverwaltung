@@ -6,6 +6,7 @@ api/default.service.ts
 api/ical.service.ts
 api/identity.service.ts
 api/invitation.service.ts
+api/organization.service.ts
 api/reservation.service.ts
 api/test.service.ts
 api/user.service.ts
@@ -23,6 +24,7 @@ model/createInvitationRequest.ts
 model/createReservationRequest.ts
 model/forgotPasswordRequest.ts
 model/getAllInvitationsResponse.ts
+model/getAllOrganizationsResponse.ts
 model/getAllVehicleResponse.ts
 model/getReservationByIdResponse.ts
 model/getReservationsInMonthYearResponse.ts
@@ -36,6 +38,7 @@ model/invitationModelDto.ts
 model/invitationModelDtoCreatedBy.ts
 model/loginRequest.ts
 model/models.ts
+model/organizationDto.ts
 model/refreshRequest.ts
 model/registerRequest.ts
 model/resendConfirmationEmailRequest.ts
