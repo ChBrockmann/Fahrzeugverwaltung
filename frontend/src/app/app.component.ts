@@ -14,7 +14,7 @@ export class AppComponent {
 
   routes: { path: string; allowedRoles: string[]; icon: string; title: string }[] = [
     {
-      path: "/",
+      path: "/calendar",
       allowedRoles: [],
       icon: "home",
       title: "Startseite"

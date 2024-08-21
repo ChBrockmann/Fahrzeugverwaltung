@@ -12,20 +12,19 @@
   </button>
 </mat-toolbar>
 
-<mat-sidenav-container>
+<mat-sidenav-container style="min-height: 90%">
   <mat-sidenav #drawer mode="over">
     <mat-nav-list>
       <div *ngFor="let menuItem of getMenuItems()">
-        <div (click)="drawer.close()" class="route-item" mat-list-item routerLink="{{menuItem.path}}"
-             routerLinkActive="route-item-active">
+        <a (click)="drawer.close()" class="route-item" mat-list-item routerLink="{{menuItem.path}}" routerLinkActive="route-item-active" [routerLinkActiveOptions]="{exact: true}">
           <mat-icon>{{ menuItem.icon }}</mat-icon>
-          <span mat-line style="margin-right: 16px; margin-left: 16px;">{{ menuItem.title }}</span>
-        </div>
+          <span mat-line class="route-item-link">{{ menuItem.title }}</span>
+        </a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content style="padding: 16px;">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 
