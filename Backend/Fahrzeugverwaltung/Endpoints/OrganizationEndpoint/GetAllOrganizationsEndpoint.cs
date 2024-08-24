@@ -18,6 +18,7 @@ public class GetAllOrganizationsEndpoint : Endpoint<EmptyRequest, GetAllOrganiza
     public override void Configure()
     {
         Get("organization");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
