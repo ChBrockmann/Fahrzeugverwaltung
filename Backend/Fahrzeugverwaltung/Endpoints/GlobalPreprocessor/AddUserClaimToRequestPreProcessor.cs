@@ -6,7 +6,7 @@ public class AddUserClaimToRequestPreProcessor : IGlobalPreProcessor
 {
     public async Task PreProcessAsync(IPreProcessorContext context, CancellationToken ct)
     {
-        Guid userId = Guid.Parse("4098D24F-0A17-4BAA-B895-B5C6E3926DE7");
+        Guid userId = Guid.Parse("08dccc2e-0381-456b-85ec-701fa598af33");
         string[] userRoles =
         [
             "Admin"

@@ -12,5 +12,8 @@ public record CreateReservationRequest
     public DateOnly EndDateInclusive { get; set; }
 
     [Required]
+    public string Reason { get; set; } = string.Empty;
+
+    [Required]
     public VehicleModelId Vehicle { get; set; }
 }

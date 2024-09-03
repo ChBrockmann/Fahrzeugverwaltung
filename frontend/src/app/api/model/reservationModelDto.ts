@@ -17,6 +17,7 @@ import { ReservationStatusEnum } from './reservationStatusEnum';
 
 export interface ReservationModelDto { 
     id?: string;
+    reason?: string;
     startDateInclusive?: string;
     endDateInclusive?: string;
     reservationCreated?: Date;

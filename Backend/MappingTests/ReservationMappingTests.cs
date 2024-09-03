@@ -17,6 +17,7 @@ public class ReservationMappingTests : TestBase
         ReservationModelDto expected = new()
         {
             Id = input.Id,
+            Reason = input.Reason,
             EndDateInclusive = input.EndDateInclusive,
             StartDateInclusive = input.StartDateInclusive,
             VehicleReserved = Mapper.Map<VehicleModelDto>(input.VehicleReserved),
@@ -39,6 +40,7 @@ public class ReservationMappingTests : TestBase
             Id = ReservationId.Empty,
             StartDateInclusive = input.StartDateInclusive,
             EndDateInclusive = input.EndDateInclusive,
+            Reason = input.Reason,
             VehicleReserved = new VehicleModel {Id = VehicleModelId.Empty},
             ReservationStatusChanges = new List<ReservationStatusModel>(),
             ReservationCreated = DateTime.Now

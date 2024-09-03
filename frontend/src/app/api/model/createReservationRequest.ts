@@ -14,6 +14,7 @@
 export interface CreateReservationRequest { 
     startDateInclusive: string;
     endDateInclusive: string;
+    reason: string;
     vehicle: string;
 }
 

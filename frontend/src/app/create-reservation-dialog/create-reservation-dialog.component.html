@@ -20,6 +20,15 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field style="margin-top: 32px; display: block">
+    <mat-label>Fahrzeug</mat-label>
+    <mat-select formControlName="requestedVehicleId">
+      <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.id">
+        {{ vehicle.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <div style="display: block; margin-top: 32px">
     <h3>Verfügbarkeit</h3>
     <ng-container *ngIf="createReservationFormGroup.status == 'PENDING'">
