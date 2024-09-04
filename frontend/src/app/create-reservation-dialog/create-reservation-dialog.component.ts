@@ -19,6 +19,7 @@ export class CreateReservationDialogComponent implements OnInit {
     startDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
     endDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
     requestedVehicleId: new FormControl('', [Validators.required]),
+    reason: new FormControl('', {nonNullable: true, validators: [Validators.required]})
   });
   public vehicles: VehicleModelDto[] | undefined;
   public errorText = '';
@@ -55,6 +56,7 @@ export class CreateReservationDialogComponent implements OnInit {
       startDateInclusive: formValues.startDate?.format("YYYY-MM-DD") ?? "",
       endDateInclusive: formValues.endDate?.format("YYYY-MM-DD") ?? "",
       vehicle: formValues.requestedVehicleId ?? "",
+      reason: formValues.reason ?? ""
     }).subscribe({
       next: (response) => {
         this.dialogRef.close(response);

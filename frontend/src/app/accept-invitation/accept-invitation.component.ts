@@ -46,7 +46,8 @@ export class AcceptInvitationComponent {
       firstname: values.firstname,
       lastname: values.lastname,
       organization: values.organization,
-      password: values.password
+      password: values.password,
+      phoneNumber: ''
     })
       .subscribe({
         next: async data => {

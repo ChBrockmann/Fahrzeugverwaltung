@@ -18,5 +18,6 @@ export interface AcceptInvitationRequest {
     organization: string;
     email: string;
     password: string;
+    phoneNumber: string;
 }
 
