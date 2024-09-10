@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Contracts;
+using MassTransit;
 
 namespace Fahrzeugverwaltung.Endpoints.LogBookEntryEndpoint;
 
@@ -8,21 +9,17 @@ public record CreateLogBookRequest
     public IFormFile ImageFile { get; set; } = null!;
 }
 
-public record TestEvent
-{
-    public string Message { get; set; } = string.Empty;
-    public string ImageFile { get; set; } = null!;
-}
+
 
 public class CreateLogBookEntryEndpoint : Endpoint<CreateLogBookRequest, EmptyResponse>
 {
     private readonly ILogger _logger;
-    private readonly IBus _bus;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public CreateLogBookEntryEndpoint(ILogger logger, IBus bus)
+    public CreateLogBookEntryEndpoint(ILogger logger, IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
-        _bus = bus;
+        _publishEndpoint = publishEndpoint;
     }
 
     public override void Configure()
@@ -35,16 +32,17 @@ public class CreateLogBookEntryEndpoint : Endpoint<CreateLogBookRequest, EmptyRe
     {
         _logger.Information("Creating log book entry...");
 
-        StreamReader reader = new(req.ImageFile.OpenReadStream());
-        string text = await reader.ReadToEndAsync(ct);
+        using MemoryStream memoryStream = new MemoryStream();
+        await req.ImageFile.CopyToAsync(memoryStream, ct);
+        byte[] bytes = memoryStream.ToArray();
 
-        TestEvent testEvent = new()
+        LogbookEntryCreatedEvent logBookEntryCreated = new()
         {
-            Message = req.Message,
-            ImageFile = text
+            ImageAsBase64 = Convert.ToBase64String(bytes),
+            ImageType = req.ImageFile.ContentType
         };
 
-        await _bus.Publish(testEvent, ct);
+        await _publishEndpoint.Publish(logBookEntryCreated, ct);
 
         await SendOkAsync(ct);
     }
