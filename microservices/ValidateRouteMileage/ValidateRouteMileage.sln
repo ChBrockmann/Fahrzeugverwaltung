@@ -1,8 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "..\..\Backend\shared\Contracts\Contracts.csproj", "{41E51148-F9F9-4D1E-8647-974CFFDB82BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidateRouteMileage.Service", "ValidateRouteMileage.Service\ValidateRouteMileage.Service.csproj", "{3B2A0BDE-078C-4666-856B-7DD57BA4F01C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidateRouteMileage.Model", "ValidateRouteMileage.Model\ValidateRouteMileage.Model.csproj", "{EE8BB5F0-CC88-4BBC-8EE2-CD9952C18060}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41E51148-F9F9-4D1E-8647-974CFFDB82BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E51148-F9F9-4D1E-8647-974CFFDB82BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41E51148-F9F9-4D1E-8647-974CFFDB82BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41E51148-F9F9-4D1E-8647-974CFFDB82BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B2A0BDE-078C-4666-856B-7DD57BA4F01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B2A0BDE-078C-4666-856B-7DD57BA4F01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B2A0BDE-078C-4666-856B-7DD57BA4F01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2A0BDE-078C-4666-856B-7DD57BA4F01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE8BB5F0-CC88-4BBC-8EE2-CD9952C18060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE8BB5F0-CC88-4BBC-8EE2-CD9952C18060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE8BB5F0-CC88-4BBC-8EE2-CD9952C18060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE8BB5F0-CC88-4BBC-8EE2-CD9952C18060}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
