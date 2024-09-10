@@ -3,12 +3,9 @@ using DataAccess.ReservationService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Extensions;
-using Fahrzeugverwaltung.Validators.Reservation;
-using FluentValidation;
 using FluentValidation.Results;
 using Model.Reservation;
 using Model.Reservation.Requests;
-using Model.ReservationStatus;
 using Model.User;
 using Model.Vehicle;
 

@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using DataAccess.ReservationService;
+using Model;
 using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.Reservation.Responses;
@@ -49,7 +50,7 @@ public class GetReservationByIdEndpoint : Endpoint<GetReservationByIdRequest, Ge
 
     private bool CanChangeStatus(ReservationModel reservation)
     {
-        return User.IsInRole(Model.Security.AdminRoleName) &&
+        return User.IsInRole(Security.AdminRoleName) &&
                reservation.ReservationStatusChanges.MaxBy(x => x.StatusChanged)?.Status != ReservationStatusEnum.Confirmed;
     }
 }

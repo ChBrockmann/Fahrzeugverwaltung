@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, NonNullableFormBuilder, Validators} from "@angular/forms";
-import {DefaultService, InvitationService, UserService} from "../api";
+import {DefaultService, InvitationService, OrganizationDto, OrganizationService, UserService} from "../api";
 import {firstValueFrom} from "rxjs";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -16,6 +16,7 @@ export class AcceptInvitationComponent {
   public acceptInvitationFormGroup: FormGroup;
   public isLoading = false;
   public errorText = '';
+  public organizations: OrganizationDto[] = [];
 
 
   constructor(private readonly invitationService: InvitationService,
@@ -24,7 +25,8 @@ export class AcceptInvitationComponent {
               private readonly router: Router,
               private readonly loginService: DefaultService,
               private readonly authService: AuthenticationService,
-              private readonly userService: UserService) {
+              private readonly userService: UserService,
+              private readonly organizationService: OrganizationService) {
     this.acceptInvitationFormGroup = this.nonNullableFormBuilder.group({
       token: new FormControl(this.route.snapshot.queryParamMap.get('token') ?? '', [Validators.required]),
       firstname: new FormControl('', [Validators.required]),
@@ -33,6 +35,12 @@ export class AcceptInvitationComponent {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
     });
+
+    this.load();
+  }
+
+  async load() {
+    this.organizations = (await firstValueFrom(this.organizationService.getAllOrganizationsEndpoint())).organizations ?? [];
   }
 
 

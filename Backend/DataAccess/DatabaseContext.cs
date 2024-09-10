@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Model.Invitation;
+using Model.Organization;
 using Model.Reservation;
 using Model.ReservationStatus;
 using Model.User;
@@ -19,6 +20,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
     public DbSet<UserModel> UserModels { get; set; } = null!;
     public DbSet<ReservationStatusModel> ReservationStatusModels { get; set; } = null!;
     public DbSet<InvitationModel> InvitationModels { get; set; } = null!;
+    public DbSet<Organization> Organizations { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -62,5 +64,17 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<VehicleModel>()
             .HasMany(x => x.Reservations)
             .WithOne(x => x.VehicleReserved);
+
+        modelBuilder.Entity<Organization>()
+            .Property(x => x.Id)
+            .HasConversion(x => x.Value, x => new OrganizationId(x));
+        modelBuilder.Entity<Organization>()
+            .HasKey(u => u.Id);
+        modelBuilder.Entity<Organization>()
+            .HasOne(x => x.Owner)
+            .WithMany();
+        modelBuilder.Entity<Organization>()
+            .HasMany(x => x.Users)
+            .WithMany();
     }
 }

@@ -88,11 +88,14 @@ public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyR
     {
         Random random = new();
         var tokenGenerationOptions = _optionsMonitor.CurrentValue.Invitation.TokenGenerationOptions;
-        int length = tokenGenerationOptions.TokenLength;
+        int length = tokenGenerationOptions.Length;
+        length = (length < 1) ? 4 : length;
         
         string chars = tokenGenerationOptions.Uppercase ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ" : string.Empty;
         chars += tokenGenerationOptions.Lowercase ? "abcdefghijklmnopqrstuvwxyz" : string.Empty;
         chars += tokenGenerationOptions.Numbers || chars.Length == 0 ? "0123456789" : string.Empty;
+        
+        _logger.Information("Generating random string with length {Length}. Uppercase: {Uppercase}, lowercase: {lowercase}, numbers: {numbers}", length, tokenGenerationOptions.Uppercase, tokenGenerationOptions.Lowercase, tokenGenerationOptions.Numbers);
         
         return new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
