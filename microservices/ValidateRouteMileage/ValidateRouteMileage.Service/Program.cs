@@ -1,5 +1,6 @@
 ﻿using MassTransit;
-using ValidateRouteMileage.Model;
+using ValidateRouteMileage.Model.Configuration;
+using ValidateRouteMileage.Service.Consumer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder
     .AddEnvironmentVariables();
 
 builder.Services.Configure<Configuration>(builder.Configuration);
+
 Configuration? configuration = builder.Configuration.Get<Configuration>();
 if (configuration is null) throw new Exception("Configuration is null");
 
@@ -25,6 +27,13 @@ builder.Services.AddMassTransit(config =>
         {
             c.Username(rabbitMqConfiguration.Username);
             c.Password(rabbitMqConfiguration.Password);
+        });
+        
+        cfg.ReceiveEndpoint("Contracts:LogbookImageAnalyzed", e =>
+        {
+            e.ConfigureConsumer<LogbookImageAnalyzedConsumer>(context);
+            e.UseRawJsonDeserializer();
+            e.UseRawJsonSerializer();
         });
 
         cfg.ConfigureEndpoints(context);
