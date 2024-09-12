@@ -1,4 +1,4 @@
-﻿namespace ValidateRouteMileage.Model;
+﻿namespace ValidateRouteMileage.Model.Configuration;
 
 public record RabbitMqConfiguration
 {
