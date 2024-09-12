@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using DataAccess;
 using DataAccess.UserService;
+using Mailing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Model.User;
@@ -67,6 +68,9 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
         //     });
         //     await _database.SaveChangesAsync(ct);
         // }
+        SendTestEmail sendTestEmail = new();
+        sendTestEmail.Send();
+        
         await SendOkAsync(ct);
     }
 }
