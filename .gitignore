@@ -5,6 +5,7 @@ logs/
 riderModule.iml
 /_ReSharper.Caches/
 database.sqlite
+*.env
 
 
 /dist
