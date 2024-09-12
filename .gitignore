@@ -48,3 +48,4 @@ testem.log
 Thumbs.db
 /Backend/Fahrzeugverwaltung/*.sqlite-shm
 /Backend/Fahrzeugverwaltung/*.sqlite-wal
+/microservices/DetectMileageFromImage/*.env
