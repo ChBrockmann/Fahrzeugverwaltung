@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ValidateRouteMileage.Service.ExternalServices;
+namespace ValidateRouteMileage.Service.ExternalServices.GoogleMaps.RequestResponse;
 
-public record RouteDistanceResult
+public record GoogleMapsRouteDistanceResponse
 {
     [JsonPropertyName("destination_addresses")]
     public List<string> DestinationAddresses { get; set; } = new();
