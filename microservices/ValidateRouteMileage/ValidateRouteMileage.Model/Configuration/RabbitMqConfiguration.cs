@@ -1,6 +1,6 @@
 ﻿namespace ValidateRouteMileage.Model.Configuration;
 
-public record RabbitMqConfiguration
+public sealed record RabbitMqConfiguration
 {
     public string Host { get; set; } = string.Empty;
     public string VirtualHost { get; set; } = string.Empty;
