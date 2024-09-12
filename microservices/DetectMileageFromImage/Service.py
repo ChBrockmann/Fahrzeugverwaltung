@@ -10,7 +10,7 @@ from pika.adapters.blocking_connection import BlockingChannel
 load_dotenv()
 
 def send_to_openai(image_as_base64):
-    api_key = os.environ.get('API_KEY')
+    api_key = os.getenv("API_KEY")
 
     if api_key is None:
         raise ValueError("API_KEY not found in environment variables")
@@ -43,7 +43,6 @@ def send_to_openai(image_as_base64):
     }
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-    print(response.json())
     detected_total_mileage = response.json()['choices'][0]['message']['content']
 
     return detected_total_mileage
