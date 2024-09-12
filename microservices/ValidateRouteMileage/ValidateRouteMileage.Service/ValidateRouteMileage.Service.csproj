@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Backend\shared\Contracts\Contracts.csproj" />
+      <ProjectReference Include="..\ValidateRouteMileage.BusinessLogic\ValidateRouteMileage.BusinessLogic.csproj" />
       <ProjectReference Include="..\ValidateRouteMileage.Model\ValidateRouteMileage.Model.csproj" />
     </ItemGroup>
 

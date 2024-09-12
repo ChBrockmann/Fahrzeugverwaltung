@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using ValidateRouteMileage.BusinessLogic;
 using ValidateRouteMileage.Model.Configuration;
 using ValidateRouteMileage.Service.Consumer;
 
@@ -39,6 +40,7 @@ builder.Services.AddMassTransit(config =>
         cfg.ConfigureEndpoints(context);
     });
 });
+builder.Services.AddScoped<AllowedMaximumMileageCalculator>();
 
 var app = builder.Build();
 
