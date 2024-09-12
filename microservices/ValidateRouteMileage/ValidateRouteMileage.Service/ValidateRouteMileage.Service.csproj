@@ -10,10 +10,16 @@
 
     <ItemGroup>
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />
+      <PackageReference Include="Refit" Version="7.1.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Backend\shared\Contracts\Contracts.csproj" />
       <ProjectReference Include="..\ValidateRouteMileage.Model\ValidateRouteMileage.Model.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="BusinessLogic\" />
     </ItemGroup>
 
 </Project>
