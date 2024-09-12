@@ -18,8 +18,4 @@
       <ProjectReference Include="..\ValidateRouteMileage.Model\ValidateRouteMileage.Model.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BusinessLogic\" />
-    </ItemGroup>
-
 </Project>
