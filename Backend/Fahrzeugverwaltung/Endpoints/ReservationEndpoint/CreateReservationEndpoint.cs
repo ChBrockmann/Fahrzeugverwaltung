@@ -1,9 +1,11 @@
 ﻿using System.Security.Claims;
+using Contracts.Mailing;
 using DataAccess.ReservationService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Extensions;
 using FluentValidation.Results;
+using MassTransit;
 using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.User;
@@ -19,10 +21,11 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
     private readonly IUserService _userService;
     private readonly IVehicleService _vehicleService;
     private readonly IValidator<CreateReservationRequest> _validator;
+    private readonly IPublishEndpoint _bus;
 
     public CreateReservationEndpoint(IMapper mapper, IReservationService reservationService, 
-        IVehicleService vehicleService, ILogger<CreateReservationEndpoint> logger, 
-        IUserService userService, IValidator<CreateReservationRequest> validator)
+        IVehicleService vehicleService, ILogger<CreateReservationEndpoint> logger,
+        IUserService userService, IValidator<CreateReservationRequest> validator, IPublishEndpoint bus)
     {
         _mapper = mapper;
         _reservationService = reservationService;
@@ -30,6 +33,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         _logger = logger;
         _userService = userService;
         _validator = validator;
+        _bus = bus;
     }
 
     public override void Configure()
@@ -79,6 +83,10 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         mapped.ReservationMadeByUser = requestingUser;
 
         ReservationModel result = await _reservationService.Create(mapped);
+        await _bus.Publish(new SendNewReservationMail
+        {
+            ReservationId = mapped.Id
+        }, ct);
 
         await SendOkAsync(_mapper.Map<ReservationModelDto>(result), ct);
     }

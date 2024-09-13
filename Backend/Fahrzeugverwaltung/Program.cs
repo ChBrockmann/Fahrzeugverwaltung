@@ -5,8 +5,6 @@ global using FluentValidation;
 using DataAccess;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
-using FastEndpoints.Security;
-using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Model.Configuration;
@@ -28,6 +26,7 @@ else
     logger.Warning("Authentication disabled");
 }
 
+builder.Services.RegisterMassTransit();
 builder.Services.RegisterAllServices(logger, configuration);
 builder.Services
     .AddAuthorization();
@@ -71,7 +70,7 @@ builder.Services.AddCors(options =>
 
 WebApplication app = builder.Build();
 
-app.InitializeDatabase();
+await app.InitializeDatabase();
 app.UseCors("CorsPolicy");
 
 app.MapGroup("api/identity").MapIdentityApi<UserModel>();

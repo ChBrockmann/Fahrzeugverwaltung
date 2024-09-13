@@ -12,6 +12,7 @@ public record Configuration
     public ReservationRestrictions ReservationRestrictions { get; set; } = new();
     
     public Invitation Invitation { get; set; } = new();
+    public SmtpSettingsConfiguration SmtpSettings { get; set; } = new();
 }
 
 public record Invitation

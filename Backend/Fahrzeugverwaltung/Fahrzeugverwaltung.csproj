@@ -50,6 +50,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+        <ProjectReference Include="..\Contracts\Contracts.csproj"/>
         <ProjectReference Include="..\DataAccess\DataAccess.csproj"/>
         <ProjectReference Include="..\Mailing\Mailing.csproj" />
         <ProjectReference Include="..\Model\Model.csproj"/>
