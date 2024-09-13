@@ -16,5 +16,5 @@ public record Organization : IDatabaseId<OrganizationId>
 
     public List<UserModel> Users { get; set; } = new();
 
-    public UserModel Owner { get; set; } = new();
+    public List<UserModel> Admins { get; set; } = new();
 }

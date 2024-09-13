@@ -71,7 +71,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<Organization>()
             .HasKey(u => u.Id);
         modelBuilder.Entity<Organization>()
-            .HasOne(x => x.Owner)
+            .HasMany(x => x.Admins)
             .WithMany();
         modelBuilder.Entity<Organization>()
             .HasMany(x => x.Users)
