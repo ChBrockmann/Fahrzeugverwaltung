@@ -27,6 +27,12 @@ public class SendNewReservationMailConsumer : IConsumer<SendNewReservationMail>
 
     public async Task Consume(ConsumeContext<SendNewReservationMail> context)
     {
+        if (!_configuration.CurrentValue.Mailing.MailTypes.NewReservationRequest)
+        {
+            _logger.Information("New reservation mail is disabled in the configuration");
+            return;
+        }
+        
         _logger.Information("Sending E-Mail for new reservation with ID {ReservationId}", context.Message.ReservationId);
 
         ReservationModel? reservation = await _database
@@ -43,8 +49,9 @@ public class SendNewReservationMailConsumer : IConsumer<SendNewReservationMail>
             return;
         }
 
-        MimeMessage message = new MimeMessage();
-        SmtpSettingsConfiguration smtpConfig = _configuration.CurrentValue.SmtpSettings;
+        SmtpSettingsConfiguration smtpConfig = _configuration.CurrentValue.Mailing.SmtpSettings;
+
+        MimeMessage message = new();
 
         message.From.Add(new MailboxAddress(smtpConfig.SenderName, smtpConfig.SenderEmail));
 
@@ -61,19 +68,20 @@ public class SendNewReservationMailConsumer : IConsumer<SendNewReservationMail>
 
                     Reservierungsanfrage von: {reservation.ReservationMadeByUser.Firstname} {reservation.ReservationMadeByUser.Lastname}
                     Fahrzeug: {reservation.VehicleReserved.Name}
+                    Begründung: {reservation.Reason}
                     Zeitraum: {reservation.StartDateInclusive.ToString("dd.MM.yyyy")} - {reservation.EndDateInclusive.ToString("dd.MM.yyyy")}
 
                     Die Anfrage wurde am {reservation.ReservationCreated:dd.MM.yyyy HH:mm} erstellt.
                     """
         };
 
-        using SmtpClient client = new SmtpClient();
+        using SmtpClient client = new();
         await client.ConnectAsync(smtpConfig.Host, smtpConfig.Port, smtpConfig.UseSsl);
 
-        // Note: only needed if the SMTP server requires authentication
-        //client.Authenticate("joey", "password");
+        if (!string.IsNullOrEmpty(smtpConfig.Username) && !string.IsNullOrEmpty(smtpConfig.Password)) await client.AuthenticateAsync(smtpConfig.Username, smtpConfig.Password);
 
         await client.SendAsync(message);
+        _logger.Information("Send email for new reservation with ID {ReservationId} to {RecipientCount} Recipient", context.Message.ReservationId, message.To.Count);
         await client.DisconnectAsync(true);
     }
 }
