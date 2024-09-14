@@ -4,10 +4,8 @@ global using ILogger = Serilog.ILogger;
 global using FluentValidation;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
+using Keycloak.AuthServices.Authentication;
 using Model.Configuration;
-using Model.User;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -27,30 +25,9 @@ else
 
 builder.Services.RegisterMassTransit();
 builder.Services.RegisterAllServices(logger, configuration);
-builder.Services
-    .AddAuthorization();
-builder.Services.Configure<IdentityOptions>(opt =>
-{
-    opt.Password.RequiredLength = 8;
-    opt.Password.RequireLowercase = true;
-    opt.Password.RequireUppercase = true;
-    opt.Password.RequireDigit = true;
-    opt.Password.RequireNonAlphanumeric = false;
 
-    opt.User.RequireUniqueEmail = false;
-});
-
-builder.Services.ConfigureApplicationCookie(opt =>
-{
-    opt.ExpireTimeSpan = TimeSpan.FromHours(configuration.CookieExpirationInHours);
-    opt.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    opt.Cookie.Name = "YourAppCookieName";
-    opt.Cookie.HttpOnly = true;
-    opt.LoginPath = "/Identity/Account/Login";
-    opt.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-    opt.SlidingExpiration = true;
-    opt.Cookie.IsEssential = true;
-});
+builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -67,8 +44,6 @@ WebApplication app = builder.Build();
 
 await app.InitializeDatabase();
 app.UseCors("CorsPolicy");
-
-app.MapGroup("api/identity").MapIdentityApi<UserModel>();
 
 app.UseHttpsRedirection();
 

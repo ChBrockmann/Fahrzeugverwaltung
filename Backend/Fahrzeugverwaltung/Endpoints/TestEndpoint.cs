@@ -2,23 +2,19 @@
 using DataAccess;
 using DataAccess.UserService;
 using Mailing;
-using Microsoft.AspNetCore.Identity;
-using Model.User;
 
 namespace Fahrzeugverwaltung.Endpoints;
 
 public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
 {
     private readonly ILogger _logger;
-    private readonly UserManager<UserModel> _userManager;
     private readonly IUserService _userService;
     private DatabaseContext _database;
 
-    public TestEndpoint(ILogger logger, DatabaseContext database, UserManager<UserModel> userManager, IUserService userService)
+    public TestEndpoint(ILogger logger, DatabaseContext database, IUserService userService)
     {
         _logger = logger;
         _database = database;
-        _userManager = userManager;
         _userService = userService;
     }
 

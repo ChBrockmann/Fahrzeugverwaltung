@@ -1,6 +1,5 @@
 ﻿using DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Model;
 using Model.Organization;
 using Model.Roles;
@@ -14,7 +13,7 @@ public static class DatabaseInitialization
     public static async Task InitializeDatabase(this WebApplication app)
     {
         DatabaseContext database = app.Services.CreateScope().ServiceProvider.GetRequiredService<DatabaseContext>();
-        
+
         await database.Database.MigrateAsync();
         await database.SaveChangesAsync();
 
@@ -26,7 +25,11 @@ public static class DatabaseInitialization
 
         if (!database.Roles.Any())
         {
-            await database.Roles.AddRangeAsync(new Role {Name = SecurityConfiguration.UserRoleName}, new Role {Name = SecurityConfiguration.OrganizationAdminRoleName}, new Role {Name = SecurityConfiguration.AdminRoleName});
+            await database.Roles.AddRangeAsync(
+                new Role {Name = SecurityConfiguration.UserRoleName},
+                new Role {Name = SecurityConfiguration.OrganizationAdminRoleName},
+                new Role {Name = SecurityConfiguration.AdminRoleName}
+            );
             await database.SaveChangesAsync();
         }
 
@@ -34,7 +37,10 @@ public static class DatabaseInitialization
         {
             string email = "admin@example.com";
 
-            EntityEntry<UserModel> user = await database.Users.AddAsync(new UserModel
+            Role adminRole = await database.Roles.FirstAsync(r => r.Name == SecurityConfiguration.AdminRoleName);
+
+            DbSet<UserModel> users = database.Users;
+            users.Add(new UserModel
             {
                 Id = UserId.New(),
                 Firstname = "Admin",
@@ -45,10 +51,7 @@ public static class DatabaseInitialization
                     Name = "Initial Organization",
                     Description = "This is the default organization"
                 },
-                Roles = new List<Role>
-                {
-                    new() {Name = SecurityConfiguration.AdminRoleName}
-                },
+                Roles = new List<Role> {adminRole},
                 Email = email,
             });
             await database.SaveChangesAsync();
