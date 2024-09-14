@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240903093309_Added Reason to ReservationModel")]
-    partial class AddedReasontoReservationModel
+    [Migration("20240914112611_Added Organization")]
+    partial class AddedOrganization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,6 +203,24 @@ namespace DataAccess.Migrations
                     b.ToTable("InvitationModels");
                 });
 
+            modelBuilder.Entity("Model.Organization.OrganizationModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organizations");
+                });
+
             modelBuilder.Entity("Model.Reservation.ReservationModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -308,9 +326,8 @@ namespace DataAccess.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<string>("Organization")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
@@ -340,6 +357,8 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("OrganizationId");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -355,6 +374,21 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VehicleModels");
+                });
+
+            modelBuilder.Entity("OrganizationModelUserModel", b =>
+                {
+                    b.Property<Guid>("AdminsId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("OrganizationModelId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("AdminsId", "OrganizationModelId");
+
+                    b.HasIndex("OrganizationModelId");
+
+                    b.ToTable("OrganizationModelUserModel");
                 });
 
             modelBuilder.Entity("IdentityRole<Guid>InvitationModel", b =>
@@ -474,6 +508,37 @@ namespace DataAccess.Migrations
                     b.Navigation("Reservation");
 
                     b.Navigation("StatusChangedByUser");
+                });
+
+            modelBuilder.Entity("Model.User.UserModel", b =>
+                {
+                    b.HasOne("Model.Organization.OrganizationModel", "Organization")
+                        .WithMany("Users")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("OrganizationModelUserModel", b =>
+                {
+                    b.HasOne("Model.User.UserModel", null)
+                        .WithMany()
+                        .HasForeignKey("AdminsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.Organization.OrganizationModel", null)
+                        .WithMany()
+                        .HasForeignKey("OrganizationModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Model.Organization.OrganizationModel", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Model.Reservation.ReservationModel", b =>

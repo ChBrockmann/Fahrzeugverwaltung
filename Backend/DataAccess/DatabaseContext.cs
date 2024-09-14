@@ -20,7 +20,7 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
     public DbSet<UserModel> UserModels { get; set; } = null!;
     public DbSet<ReservationStatusModel> ReservationStatusModels { get; set; } = null!;
     public DbSet<InvitationModel> InvitationModels { get; set; } = null!;
-    public DbSet<Organization> Organizations { get; set; } = null!;
+    public DbSet<OrganizationModel> Organizations { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,6 +42,9 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<UserModel>()
             .HasMany(x => x.ReservationStatusChanges)
             .WithOne(x => x.StatusChangedByUser);
+        modelBuilder.Entity<UserModel>()
+            .HasOne(x => x.Organization)
+            .WithMany(x => x.Users);
 
         modelBuilder.Entity<ReservationStatusModel>()
             .Property(x => x.Id)
@@ -65,16 +68,16 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
             .HasMany(x => x.Reservations)
             .WithOne(x => x.VehicleReserved);
 
-        modelBuilder.Entity<Organization>()
+        modelBuilder.Entity<OrganizationModel>()
             .Property(x => x.Id)
             .HasConversion(x => x.Value, x => new OrganizationId(x));
-        modelBuilder.Entity<Organization>()
+        modelBuilder.Entity<OrganizationModel>()
             .HasKey(u => u.Id);
-        modelBuilder.Entity<Organization>()
+        modelBuilder.Entity<OrganizationModel>()
             .HasMany(x => x.Admins)
             .WithMany();
-        modelBuilder.Entity<Organization>()
+        modelBuilder.Entity<OrganizationModel>()
             .HasMany(x => x.Users)
-            .WithMany();
+            .WithOne(x => x.Organization);
     }
 }

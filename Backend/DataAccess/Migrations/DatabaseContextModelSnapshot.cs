@@ -200,7 +200,7 @@ namespace DataAccess.Migrations
                     b.ToTable("InvitationModels");
                 });
 
-            modelBuilder.Entity("Model.Organization.Organization", b =>
+            modelBuilder.Entity("Model.Organization.OrganizationModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("char(36)");
@@ -323,9 +323,8 @@ namespace DataAccess.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<string>("Organization")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
@@ -355,6 +354,8 @@ namespace DataAccess.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("OrganizationId");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -372,34 +373,19 @@ namespace DataAccess.Migrations
                     b.ToTable("VehicleModels");
                 });
 
-            modelBuilder.Entity("OrganizationUserModel", b =>
+            modelBuilder.Entity("OrganizationModelUserModel", b =>
                 {
                     b.Property<Guid>("AdminsId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Organization1Id")
+                    b.Property<Guid>("OrganizationModelId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("AdminsId", "Organization1Id");
+                    b.HasKey("AdminsId", "OrganizationModelId");
 
-                    b.HasIndex("Organization1Id");
+                    b.HasIndex("OrganizationModelId");
 
-                    b.ToTable("OrganizationUserModel");
-                });
-
-            modelBuilder.Entity("OrganizationUserModel1", b =>
-                {
-                    b.Property<Guid>("Organization2Id")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Organization2Id", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("OrganizationUserModel1");
+                    b.ToTable("OrganizationModelUserModel");
                 });
 
             modelBuilder.Entity("IdentityRole<Guid>InvitationModel", b =>
@@ -521,7 +507,18 @@ namespace DataAccess.Migrations
                     b.Navigation("StatusChangedByUser");
                 });
 
-            modelBuilder.Entity("OrganizationUserModel", b =>
+            modelBuilder.Entity("Model.User.UserModel", b =>
+                {
+                    b.HasOne("Model.Organization.OrganizationModel", "Organization")
+                        .WithMany("Users")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("OrganizationModelUserModel", b =>
                 {
                     b.HasOne("Model.User.UserModel", null)
                         .WithMany()
@@ -529,26 +526,16 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Model.Organization.Organization", null)
+                    b.HasOne("Model.Organization.OrganizationModel", null)
                         .WithMany()
-                        .HasForeignKey("Organization1Id")
+                        .HasForeignKey("OrganizationModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OrganizationUserModel1", b =>
+            modelBuilder.Entity("Model.Organization.OrganizationModel", b =>
                 {
-                    b.HasOne("Model.Organization.Organization", null)
-                        .WithMany()
-                        .HasForeignKey("Organization2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Model.User.UserModel", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Model.Reservation.ReservationModel", b =>
