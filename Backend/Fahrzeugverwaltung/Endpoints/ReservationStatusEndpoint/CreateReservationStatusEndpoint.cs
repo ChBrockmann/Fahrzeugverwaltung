@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
+using Contracts.Mailing;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
+using MassTransit;
 using Model;
 using Model.Reservation;
 using Model.Reservation.Requests;
@@ -16,13 +18,15 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
     private readonly IReservationService _reservationService;
     private readonly IReservationStatusService _reservationStatusService;
     private readonly IUserService _userService;
+    private readonly IPublishEndpoint _bus;
 
-    public CreateReservationStatusEndpoint(IReservationStatusService reservationStatusService, ILogger logger, IReservationService reservationService, IUserService userService)
+    public CreateReservationStatusEndpoint(IReservationStatusService reservationStatusService, ILogger logger, IReservationService reservationService, IUserService userService, IPublishEndpoint bus)
     {
         _reservationStatusService = reservationStatusService;
         _logger = logger;
         _reservationService = reservationService;
         _userService = userService;
+        _bus = bus;
     }
 
     public override void Configure()
@@ -65,6 +69,11 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
             StatusChangedByUser = requestingUser
         };
         await _reservationStatusService.AddStatusToReservationAsync(status, ct);
+
+        await _bus.Publish(new SendReservationStatusChangedMail
+        {
+            ReservationId = reservation.Id
+        }, ct);
 
         await SendOkAsync(ct);
     }
