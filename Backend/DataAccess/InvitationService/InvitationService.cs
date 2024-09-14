@@ -13,6 +13,7 @@ public class InvitationService : BaseService<InvitationModel, InvitationId>, IIn
     {
         return await Database.InvitationModels
             .Include(x => x.AcceptedBy)
+            .ThenInclude(x => x!.Organization)
             .Include(x => x.Roles)
             .Include(x => x.CreatedBy)
             .ToListAsync();

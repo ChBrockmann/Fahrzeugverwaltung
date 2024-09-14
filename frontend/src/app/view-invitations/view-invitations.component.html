@@ -21,7 +21,7 @@
     </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Angenommen'">
       <p>Angenommen am: {{ invitation.acceptedAt | date: "dd.MM.yyyy hh:mm" }}</p>
-      <p>Durch {{ invitation.acceptedBy?.fullname }} Organisation: {{ invitation.acceptedBy?.organization }}</p>
+      <p>Durch {{ invitation.acceptedBy?.fullname }} Organisation: {{ invitation.acceptedBy?.organization?.name }}</p>
     </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Abgelaufen'">
       <p>Die Einladung wurde nicht angenommen</p>

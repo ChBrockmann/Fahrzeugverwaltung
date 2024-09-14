@@ -50,6 +50,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -60,6 +61,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .ToListAsync();
@@ -70,6 +72,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => (x.StartDateInclusive >= queryStartDateInclusive && x.StartDateInclusive <= queryEndDateInclusive) ||
@@ -83,6 +86,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
@@ -97,6 +101,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         var allDataInTimespan =  await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
@@ -113,6 +118,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)
@@ -126,6 +132,7 @@ public class ReservationService : BaseService<ReservationModel, ReservationId>, 
         return await Database.ReservationModels
             .Include(x => x.VehicleReserved)
             .Include(x => x.ReservationMadeByUser)
+            .ThenInclude(x => x.Organization)
             .Include(x => x.ReservationStatusChanges)
             .ThenInclude(x => x.StatusChangedByUser)
             .Where(x => x.VehicleReserved.Id == vehicleId)

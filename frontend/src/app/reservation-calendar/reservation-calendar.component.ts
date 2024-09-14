@@ -92,7 +92,7 @@ export class ReservationCalendarComponent {
   getTitleForReservation(reservation: ReservationModelDto): string {
 
     let fahrzeug = reservation.vehicleReserved?.name ?? "Fahrzeug";
-    let organization = reservation.reservationMadeByUser?.organization ?? "Organisation";
+    let organization = reservation.reservationMadeByUser?.organization?.name ?? "Organisation";
     let fullname = reservation.reservationMadeByUser?.fullname ?? "Unbekannter Nutzer";
 
     switch (reservation.currentStatus) {

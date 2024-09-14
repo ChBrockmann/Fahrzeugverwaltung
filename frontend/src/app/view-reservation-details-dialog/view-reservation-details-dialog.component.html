@@ -17,7 +17,7 @@
     Fahrzeug: {{ reservation.reservation.vehicleReserved?.name }} <br>
     Startdatum: {{ reservation.reservation.startDateInclusive | date: "dd.MM.YYYY" }} <br>
     Enddatum: {{ reservation.reservation.endDateInclusive | date: "dd.MM.YYYY" }} <br><br>
-    Reserviert für: {{ reservation.reservation.reservationMadeByUser?.organization }} <br>
+    Reserviert für: {{ reservation.reservation.reservationMadeByUser?.organization?.name }} <br>
     Reserviert von: {{ reservation.reservation.reservationMadeByUser?.fullname }} <br>
     Reservierung erstellt am: {{ reservation.reservation.reservationCreated | date: "dd.MM.YYYY HH:mm" }} <br>
 
