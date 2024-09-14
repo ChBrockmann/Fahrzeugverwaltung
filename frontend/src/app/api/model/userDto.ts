@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OrganizationDto } from './organizationDto';
 
 
 export interface UserDto { 
@@ -16,6 +17,6 @@ export interface UserDto {
     firstname?: string;
     lastname?: string;
     fullname?: string;
-    organization?: string;
+    organization?: OrganizationDto;
 }
 

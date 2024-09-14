@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { UserDto } from './userDto';
+import { OrganizationDto } from './organizationDto';
 
 
 /**
