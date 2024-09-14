@@ -14,6 +14,7 @@
     </ng-container>
 
     <h2>Reservierungsdetails</h2>
+    Grund: {{reservation.reservation.reason}} <br><br>
     Fahrzeug: {{ reservation.reservation.vehicleReserved?.name }} <br>
     Startdatum: {{ reservation.reservation.startDateInclusive | date: "dd.MM.YYYY" }} <br>
     Enddatum: {{ reservation.reservation.endDateInclusive | date: "dd.MM.YYYY" }} <br><br>
