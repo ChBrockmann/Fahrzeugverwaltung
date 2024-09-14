@@ -17,6 +17,10 @@ import {firstValueFrom, map, Observable, of} from "rxjs";
 
 export class CheckReservationStatus {
   static checkVehicleAvailability(reservationService: ReservationService): (control: AbstractControl) => Observable<ValidationErrors | null> {
+    let lastStartDate: moment.Moment | null = null;
+    let lastEndDate: moment.Moment | null = null;
+    let lastVehicleId: string | null = null;
+
     return (formGroup: AbstractControl): Observable<ValidationErrors | null> => {
       const startDate = formGroup.get('startDate')?.value;
       const endDate = formGroup.get('endDate')?.value;
@@ -25,6 +29,14 @@ export class CheckReservationStatus {
       if(startDate == null || endDate == null || requestedVehicleId == null || requestedVehicleId == "") {
         return of(null);
       }
+      if (startDate === lastStartDate && endDate === lastEndDate && requestedVehicleId === lastVehicleId) {
+        return of(null);
+      }
+      lastStartDate = startDate;
+      lastEndDate = endDate;
+      lastVehicleId = requestedVehicleId;
+
+      console.log("test2");
 
       return reservationService.checkAvailabilityForVehicleAndTimespanEndpoint(requestedVehicleId, startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD")).pipe(
         map(value => {
