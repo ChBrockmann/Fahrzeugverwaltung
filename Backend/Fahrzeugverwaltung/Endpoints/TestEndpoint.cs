@@ -3,7 +3,6 @@ using DataAccess;
 using DataAccess.UserService;
 using Mailing;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Model.User;
 
 namespace Fahrzeugverwaltung.Endpoints;
@@ -11,16 +10,14 @@ namespace Fahrzeugverwaltung.Endpoints;
 public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
 {
     private readonly ILogger _logger;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
     private readonly UserManager<UserModel> _userManager;
     private readonly IUserService _userService;
     private DatabaseContext _database;
 
-    public TestEndpoint(ILogger logger, DatabaseContext database, RoleManager<IdentityRole<Guid>> roleManager, UserManager<UserModel> userManager, IUserService userService)
+    public TestEndpoint(ILogger logger, DatabaseContext database, UserManager<UserModel> userManager, IUserService userService)
     {
         _logger = logger;
         _database = database;
-        _roleManager = roleManager;
         _userManager = userManager;
         _userService = userService;
     }
@@ -50,9 +47,6 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
         //
         // await _userManager.RemoveFromRoleAsync(user.First(x => x.Firstname.Contains("Jeff")), "Admin");
         foreach (Claim claim in User.Claims) _logger.Information("Claim {ClaimValueType} {ClaimType} {ClaimValue}", claim.ValueType, claim.Type, claim.Value);
-
-        List<IdentityRole<Guid>> roles = await _roleManager.Roles.ToListAsync(ct);
-        foreach (IdentityRole<Guid> role in roles) _logger.Information("Role {RoleName} Guid: {Guid} UserIsInRole: {UserIsInRole}", role.Name, role.Id, User.IsInRole(role.Name!));
 
 
         // var claims = ClaimsPrincipal.Current?.Identities.First().Claims.ToList();

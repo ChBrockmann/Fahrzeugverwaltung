@@ -13,9 +13,10 @@ public class UserMappingTests : TestBase
         UserModel input = Fixture.Create<UserModel>();
         UserDto expected = new()
         {
+            Id = input.Id,
+            
             Firstname = input.Firstname,
             Lastname = input.Lastname,
-            Id = input.Id,
             Organization = Mapper.Map<OrganizationDto>(input.Organization)
         };
 

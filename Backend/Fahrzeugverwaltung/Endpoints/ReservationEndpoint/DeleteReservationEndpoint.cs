@@ -2,6 +2,7 @@
 using DataAccess.ReservationService;
 using Model.Reservation;
 using Model.Reservation.Requests;
+using Model.User;
 
 namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
@@ -32,7 +33,7 @@ public class DeleteReservationEndpoint : Endpoint<DeleteReservationRequest, Empt
             return;
         }
 
-        Guid userId = Guid.Parse(claimUserId);
+        UserId userId = UserId.Parse(claimUserId);
 
         _logger.Information("User {UserId} is attempting to delete reservation {ReservationId}", userId, req.ReservationId);
 

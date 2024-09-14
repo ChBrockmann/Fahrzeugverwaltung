@@ -2,7 +2,6 @@ global using FastEndpoints;
 global using IMapper = MapsterMapper.IMapper;
 global using ILogger = Serilog.ILogger;
 global using FluentValidation;
-using DataAccess;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,10 +29,6 @@ builder.Services.RegisterMassTransit();
 builder.Services.RegisterAllServices(logger, configuration);
 builder.Services
     .AddAuthorization();
-builder.Services
-    .AddIdentityApiEndpoints<UserModel>()
-    .AddRoles<IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<DatabaseContext>();
 builder.Services.Configure<IdentityOptions>(opt =>
 {
     opt.Password.RequiredLength = 8;

@@ -25,7 +25,7 @@ public class GetInvitationPdfEndpoint : Endpoint<GetInvitationPdfRequest, EmptyR
     public override void Configure()
     {
         Get("invitation/pdf");
-        Roles(Security.AdminRoleName);
+        Roles(SecurityConfiguration.AdminRoleName);
         Description(x => 
             x.Produces<EmptyResponse>(200, "application/pdf")
                 );

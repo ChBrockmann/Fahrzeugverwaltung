@@ -30,8 +30,7 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
             return;
         }
 
-        Guid userId = Guid.Parse(claimUserId);
-        UserModel? requestingUser = await _userService.Get(userId);
+        UserModel? requestingUser = await _userService.Get(UserId.Parse(claimUserId));
 
         if (requestingUser is null)
         {
@@ -39,10 +38,14 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
             return;
         }
 
+        List<string> roles = (await _userService.GetRolesOfUser(UserId.Parse(claimUserId)))
+            .Select(x => x.Name)
+            .ToList();
+        
         await SendOkAsync(new WhoAmIResponse
         {
             User = _mapper.Map<UserDto>(requestingUser),
-            Roles = await _userService.GetRolesOfUser(userId),
+            Roles = roles
         }, ct);
     }
 }

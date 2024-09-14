@@ -4,7 +4,7 @@ namespace Model.User;
 
 public sealed record UserDto
 {
-    public Guid Id { get; set; } = Guid.Empty;
+    public UserId Id { get; set; } = UserId.Empty;
 
     public string Firstname { get; set; } = string.Empty;
 

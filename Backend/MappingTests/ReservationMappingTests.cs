@@ -48,7 +48,7 @@ public class ReservationMappingTests : TestBase
 
         ReservationModel actual = Mapper.Map<ReservationModel>(input);
 
-        actual.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ReservationCreated).Excluding(x => x.ReservationMadeByUser.ConcurrencyStamp));
+        actual.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ReservationCreated));
         actual.ReservationCreated.Should().BeCloseTo(expected.ReservationCreated, new TimeSpan(0, 0, 1));
     }
 }

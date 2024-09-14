@@ -50,7 +50,6 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
             //TODO CB - 2024-09-13 fix this
             // Organization = req.Organization,
             Email = req.Email,
-            UserName = req.Email
         }, req.Password);
 
         _logger.Information(result.Succeeded ? "User created successfully" : "User creation failed");

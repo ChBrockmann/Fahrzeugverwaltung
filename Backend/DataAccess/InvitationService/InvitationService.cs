@@ -1,6 +1,7 @@
 ﻿using DataAccess.BaseService;
 using Microsoft.EntityFrameworkCore;
 using Model.Invitation;
+using Model.Roles;
 using Model.User;
 
 namespace DataAccess.InvitationService;
@@ -49,5 +50,13 @@ public class InvitationService : BaseService<InvitationModel, InvitationId>, IIn
 
         await Database.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<IEnumerable<Role>> GetRoles(InvitationId id)
+    {
+        return await Database.InvitationModels
+            .Include(x => x.Roles)
+            .FirstOrDefaultAsync(x => x.Id == id)
+            .ContinueWith(x => x.Result?.Roles ?? new List<Role>());
     }
 }

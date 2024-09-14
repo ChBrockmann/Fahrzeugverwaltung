@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Model.Invitation;
 using Model.Organization;
 using Model.Reservation;
 using Model.ReservationStatus;
+using Model.Roles;
 using Model.User;
 using Model.Vehicle;
 
 namespace DataAccess;
 
-public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, Guid>
+public class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
     public DbSet<ReservationModel> ReservationModels { get; set; } = null!;
 
     public DbSet<VehicleModel> VehicleModels { get; set; } = null!;
-    public DbSet<UserModel> UserModels { get; set; } = null!;
+    public DbSet<UserModel> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<ReservationStatusModel> ReservationStatusModels { get; set; } = null!;
     public DbSet<InvitationModel> InvitationModels { get; set; } = null!;
     public DbSet<OrganizationModel> Organizations { get; set; } = null!;
@@ -35,7 +35,9 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
             .HasMany(x => x.Roles)
             .WithMany();
 
-
+        modelBuilder.Entity<UserModel>()
+            .Property(x => x.Id)
+            .HasConversion(x => x.Value, x => new UserId(x));
         modelBuilder.Entity<UserModel>()
             .HasMany(u => u.ReservationsMadeByUser)
             .WithOne(u => u.ReservationMadeByUser);
@@ -44,6 +46,9 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
             .WithOne(x => x.StatusChangedByUser);
         modelBuilder.Entity<UserModel>()
             .HasOne(x => x.Organization)
+            .WithMany(x => x.Users);
+        modelBuilder.Entity<UserModel>()
+            .HasMany(x => x.Roles)
             .WithMany(x => x.Users);
 
         modelBuilder.Entity<ReservationStatusModel>()
@@ -79,5 +84,8 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<OrganizationModel>()
             .HasMany(x => x.Users)
             .WithOne(x => x.Organization);
+
+        modelBuilder.Entity<Role>()
+            .HasKey(x => x.Name);
     }
 }

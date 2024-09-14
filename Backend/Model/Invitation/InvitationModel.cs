@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Model.Roles;
 using Model.User;
 using StronglyTypedIds;
 
@@ -17,7 +17,7 @@ public record InvitationModel : IDatabaseId<InvitationId>
     public UserModel? AcceptedBy { get; set; }
     public DateTime? AcceptedAt { get; set; }
 
-    public List<IdentityRole<Guid>> Roles { get; set; } = new();
+    public List<Role> Roles { get; set; } = new();
 
     public DateTime ExpiresAt { get; set; }
     public InvitationId Id { get; set; } = InvitationId.Empty;

@@ -59,7 +59,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
             return;
         }
 
-        Guid userId = Guid.Parse(claimUserId);
+        UserId userId = UserId.Parse(claimUserId);
         UserModel? requestingUser = await _userService.Get(userId);
         if (requestingUser is null)
         {

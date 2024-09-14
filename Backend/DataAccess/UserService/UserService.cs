@@ -1,33 +1,34 @@
 ﻿using DataAccess.BaseService;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Model.Roles;
 using Model.User;
 
 namespace DataAccess.UserService;
 
-public class UserService : BaseService<UserModel, Guid>, IUserService
+public class UserService : BaseService<UserModel, UserId>, IUserService
 {
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-
-    public UserService(DatabaseContext databaseContext, RoleManager<IdentityRole<Guid>> roleManager) : base(databaseContext)
+    public UserService(DatabaseContext databaseContext) : base(databaseContext)
     {
-        _roleManager = roleManager;
+        
     }
 
-    public override async Task<UserModel?> Get(Guid id)
+    public override async Task<UserModel?> Get(UserId id)
     {
-        return await Database.UserModels.FirstOrDefaultAsync(x => x.Id.Equals(id));
+        return await Database.Users
+            .Include(x => x.Roles)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<string>> GetRolesOfUser(Guid userId)
+    public async Task<List<Role>> GetRolesOfUser(UserId userId)
     {
-        var roleIds = await Database.UserRoles.Where(x => x.UserId == userId).Select(x => x.RoleId).ToListAsync();
-
-        return await Database.Roles.Where(x => roleIds.Contains(x.Id)).Select(x => x.Name ?? "").ToListAsync();
+        return await Database.Users
+            .Include(x => x.Roles)
+            .FirstOrDefaultAsync(x => x.Id == userId)
+            .ContinueWith(x => x.Result?.Roles ?? new List<Role>());
     }
 
     public async Task<UserModel?> GetUserByEmail(string email)
     {
-        return await Database.UserModels.FirstOrDefaultAsync(x => x.Email == email);
+        return await Database.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
 }

@@ -32,7 +32,7 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
     public override void Configure()
     {
         Post("reservation/{ReservationId}/status");
-        Roles(Security.AdminRoleName);
+        Roles(SecurityConfiguration.AdminRoleName);
     }
 
     public override async Task HandleAsync(AddStatusToReservationRequest req, CancellationToken ct)
@@ -51,7 +51,7 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
             return;
         }
 
-        Guid userId = Guid.Parse(claimUserId);
+        UserId userId = UserId.Parse(claimUserId);
         UserModel? requestingUser = await _userService.Get(userId);
 
         if (requestingUser is null)
