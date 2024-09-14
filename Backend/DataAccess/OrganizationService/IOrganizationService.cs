@@ -3,4 +3,4 @@ using Model.Organization;
 
 namespace DataAccess.OrganizationService;
 
-public interface IOrganizationService : IBaseService<Organization, OrganizationId> { }
+public interface IOrganizationService : IBaseService<OrganizationModel, OrganizationId> { }

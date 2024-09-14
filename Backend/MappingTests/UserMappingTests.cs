@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
+using Model.Organization;
 using Model.User;
 
 namespace MappingTests;
@@ -15,7 +16,7 @@ public class UserMappingTests : TestBase
             Firstname = input.Firstname,
             Lastname = input.Lastname,
             Id = input.Id,
-            Organization = input.Organization
+            Organization = Mapper.Map<OrganizationDto>(input.Organization)
         };
 
         UserDto actual = Mapper.Map<UserDto>(input);

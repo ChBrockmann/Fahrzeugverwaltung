@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Model;
+using Model.Organization;
 using Model.User;
 using Model.Vehicle;
 
@@ -36,8 +37,13 @@ public static class DatabaseInitialization
             await usermanager.CreateAsync(new UserModel()
             {
                 Firstname = "Admin",
-                Lastname = "",
-                Organization = string.Empty,
+                Lastname = string.Empty,
+                Organization = new OrganizationModel
+                {
+                    Id = OrganizationId.New(),
+                    Name = string.Empty,
+                    Description = string.Empty
+                },
                 Email = email,
                 UserName = email
             }, "Admin123!");

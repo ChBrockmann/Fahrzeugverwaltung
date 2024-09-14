@@ -23,7 +23,7 @@ public class GetAllOrganizationsEndpoint : Endpoint<EmptyRequest, GetAllOrganiza
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
-        IEnumerable<Organization> organizations = await _organizationService.Get();
+        IEnumerable<OrganizationModel> organizations = await _organizationService.Get();
 
         await SendOkAsync(new GetAllOrganizationsResponse
         {

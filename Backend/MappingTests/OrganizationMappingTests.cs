@@ -9,7 +9,7 @@ public class OrganizationMappingTests : TestBase
     [Fact]
     public void Organization_To_OrganizationResponse()
     {
-        Organization input = Fixture.Create<Organization>();
+        OrganizationModel input = Fixture.Create<OrganizationModel>();
         OrganizationDto expected = new()
         {
             Id = input.Id,

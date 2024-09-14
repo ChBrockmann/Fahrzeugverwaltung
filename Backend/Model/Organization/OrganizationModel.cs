@@ -6,7 +6,7 @@ namespace Model.Organization;
 [StronglyTypedId(Template.Guid)]
 public partial struct OrganizationId { }
 
-public record Organization : IDatabaseId<OrganizationId>
+public record OrganizationModel : IDatabaseId<OrganizationId>
 {
     public OrganizationId Id { get; set; } = OrganizationId.Empty;
 

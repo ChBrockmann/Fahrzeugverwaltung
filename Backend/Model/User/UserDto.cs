@@ -1,4 +1,6 @@
-﻿namespace Model.User;
+﻿using Model.Organization;
+
+namespace Model.User;
 
 public sealed record UserDto
 {
@@ -10,5 +12,5 @@ public sealed record UserDto
 
     public string Fullname => Firstname + " " + Lastname;
 
-    public string Organization { get; set; } = string.Empty;
+    public OrganizationDto Organization { get; set; } = new();
 }

@@ -47,7 +47,8 @@ public class AcceptInvitationEndpoint : Endpoint<AcceptInvitationRequest, EmptyR
         {
             Firstname = req.Firstname,
             Lastname = req.Lastname,
-            Organization = req.Organization,
+            //TODO CB - 2024-09-13 fix this
+            // Organization = req.Organization,
             Email = req.Email,
             UserName = req.Email
         }, req.Password);
