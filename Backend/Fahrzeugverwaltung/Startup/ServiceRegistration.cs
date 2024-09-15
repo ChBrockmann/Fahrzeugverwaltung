@@ -6,6 +6,7 @@ using DataAccess.OrganizationService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
+using DataAccess.RoleService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Validators.Reservation;
@@ -66,6 +67,7 @@ public static class ServiceRegistration
         services.AddScoped<IReservationStatusService, ReservationStatusService>();
         services.AddScoped<IInvitationService, InvitationService>();
         services.AddScoped<IOrganizationService, OrganizationService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
