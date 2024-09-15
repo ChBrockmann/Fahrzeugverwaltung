@@ -25,6 +25,8 @@
     "@fullcalendar/angular": "^6.1.10",
     "@openapitools/openapi-generator-cli": "^2.13.4",
     "fullcalendar": "^6.1.11",
+    "keycloak-angular": "^14.4.0",
+    "keycloak-js": "^25.0.5",
     "moment": "^2.30.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

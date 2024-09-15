@@ -1,7 +1,8 @@
-﻿using System.Security.Claims;
-using DataAccess;
+﻿using DataAccess;
 using DataAccess.UserService;
-using Mailing;
+using FS.Keycloak.RestApiClient.Api;
+using FS.Keycloak.RestApiClient.Authentication.ClientFactory;
+using FS.Keycloak.RestApiClient.Authentication.Flow;
 
 namespace Fahrzeugverwaltung.Endpoints;
 
@@ -21,45 +22,36 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
     public override void Configure()
     {
         Get("test");
+        Roles("Fahrzeugwart", "Admin");
     }
+
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
         _logger.Information("Test Endpoint Called!");
+        _logger.Information("User Object: {User}", User.Claims);
+        _logger.Information("User: {User}", User.IsInRole("Admin"));
+        _logger.Information("User: {User}", User.IsInRole("Fahrzeugwart"));
+        _logger.Information("User: {User}", User.IsInRole("manage-account"));
 
-
-        _logger.Information("UserClaims: {UserClaims}", User.Claims);
-        foreach (var ids in User.Identities)
+        var credentials = new ClientCredentialsFlow()
         {
-            _logger.Information("UserIdentities: {UserIdentities}", ids.Name);
+            Realm = "fahrzeugverwaltung",
+            ClientId = "fahrzeugverwaltung-backend",
+            ClientSecret = "MCA50iqn0MMdcXarJzh17WUJeuIOK91G",
+            KeycloakUrl = "http://localhost:8080/"
+        };
+        using var httpClient = AuthenticationHttpClientFactory.Create(credentials);
+        using var usersApi = FS.Keycloak.RestApiClient.ClientFactory.ApiClientFactory.Create<UsersApi>(httpClient);
+        
+        var users = await usersApi.GetUsersAsync("fahrzeugverwaltung", cancellationToken: ct);
+
+        foreach (var user in users)
+        {
+            _logger.Information("User: {User} {UserId}", user.Username, user.Id);
         }
-
-        // var dbUser = _database.UserRoles.Add(new IdentityUserRole<Guid>()
-        // {
-        //     RoleId = Guid.Parse("08dc773c-6496-40ec-839f-755d35d819a2"),
-        //     UserId = Guid.Parse("4098D24F-0A17-4BAA-B895-B5C6E3926DE7")
-        // });
-        // await _database.SaveChangesAsync(ct);
-        //
-        // await _userManager.RemoveFromRoleAsync(user.First(x => x.Firstname.Contains("Jeff")), "Admin");
-        foreach (Claim claim in User.Claims) _logger.Information("Claim {ClaimValueType} {ClaimType} {ClaimValue}", claim.ValueType, claim.Type, claim.Value);
-
-
-        // var claims = ClaimsPrincipal.Current?.Identities.First().Claims.ToList();
-        // _logger.Information(claims?.Select(x => x.ToString()).ToString() ?? string.Empty);
-        // foreach (var user in _database.Users)
-        // {
-        //     _database.UserClaims.Add(new()
-        //     {
-        //         Id = new Random().Next(0, 999999999),
-        //         UserId = user.Id,
-        //         ClaimType = "TestClaim",
-        //         ClaimValue = user.Id.ToString()
-        //     });
-        //     await _database.SaveChangesAsync(ct);
-        // }
-        SendTestEmail sendTestEmail = new();
-        sendTestEmail.Send();
+        
+        
         
         await SendOkAsync(ct);
     }

@@ -10,6 +10,7 @@ import {Injectable, Provider} from "@angular/core";
 import {catchError, Observable, of, throwError} from "rxjs";
 import {AuthenticationService} from "../../services/authentication/authentication.service";
 import {Router} from "@angular/router";
+import {KeycloakService} from "keycloak-angular";
 
 
 @Injectable()

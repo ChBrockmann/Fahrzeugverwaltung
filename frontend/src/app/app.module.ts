@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -44,6 +44,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
 import { ViewInvitationsComponent } from './view-invitations/view-invitations.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 
 
 export const MY_FORMATS = {
@@ -70,6 +71,33 @@ export function apiConfigFactory(): Configuration {
   return new Configuration(params);
 }
 
+function initializeKeycloak(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8080',
+        realm: 'fahrzeugverwaltung',
+        clientId: 'fahrzeugverwaltung-dev'
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html'
+      },
+      shouldAddToken: (request) => {
+        const { method, url } = request;
+
+        const isGetRequest = 'GET' === method.toUpperCase();
+        const acceptablePaths = ['/assets', '/clients/public'];
+        const isAcceptablePathMatch = acceptablePaths.some((path) =>
+          url.includes(path)
+        );
+
+        return !(isGetRequest && isAcceptablePathMatch);
+      }
+    });
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,6 +113,7 @@ export function apiConfigFactory(): Configuration {
 
   ],
   imports: [
+    KeycloakAngularModule,
     ApiModule.forRoot(apiConfigFactory),
     BrowserModule,
     BrowserAnimationsModule,
@@ -112,6 +141,12 @@ export function apiConfigFactory(): Configuration {
   ],
   providers: [
     {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    },
+    {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
@@ -119,11 +154,6 @@ export function apiConfigFactory(): Configuration {
     {
       provide: MAT_DATE_FORMATS,
       useValue: MY_FORMATS
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthenticationHttpInterceptor,
-      multi: true
     }
   ],
   bootstrap: [AppComponent]

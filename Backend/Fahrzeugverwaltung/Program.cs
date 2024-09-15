@@ -2,9 +2,12 @@ global using FastEndpoints;
 global using IMapper = MapsterMapper.IMapper;
 global using ILogger = Serilog.ILogger;
 global using FluentValidation;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Fahrzeugverwaltung.Startup;
 using FastEndpoints.Swagger;
-using Keycloak.AuthServices.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Model.Configuration;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -26,7 +29,18 @@ else
 builder.Services.RegisterMassTransit();
 builder.Services.RegisterAllServices(logger, configuration);
 
-builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "http://localhost:8080/realms/fahrzeugverwaltung";
+        options.Audience = "fahrzeugverwaltung-backend";
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateAudience = true,
+            ValidateLifetime = true,
+        };
+    });
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
