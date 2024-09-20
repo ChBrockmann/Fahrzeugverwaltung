@@ -29,7 +29,7 @@ public class LogBookEntryService : BaseService<LogBookEntry, LogBookEntryId>, IL
     {
         if (objectToCreate.Id == LogBookEntryId.Empty) objectToCreate.Id = LogBookEntryId.New();
 
-        objectToCreate.CurrentNumber = GetCurrentNumber(objectToCreate.AssociatedVehicle.Id) + 1;
+        objectToCreate.CurrentNumber = (await GetCurrentNumber(objectToCreate.AssociatedVehicle.Id)) + 1;
 
         Database.LogBookEntries.Add(objectToCreate);
         await Database.SaveChangesAsync();
@@ -37,12 +37,13 @@ public class LogBookEntryService : BaseService<LogBookEntry, LogBookEntryId>, IL
         return (await Get(objectToCreate.Id))!;
     }
 
-    private int GetCurrentNumber(VehicleModelId vehicleId)
+    private async Task<int> GetCurrentNumber(VehicleModelId vehicleId)
     {
-        LogBookEntry? x = Database.LogBookEntries
+        LogBookEntry? x = await Database.LogBookEntries
             .Where(x => x.AssociatedVehicle.Id == vehicleId)
-            .MaxBy(x => x.CurrentNumber);
-        return x?.CurrentNumber ?? 1;
+            .OrderByDescending(x => x.CurrentNumber)
+            .FirstOrDefaultAsync();
+        return x?.CurrentNumber ?? 0;
     }
 
     public async Task<LogBookEntry?> SetEndMileage(LogBookEntryId id, int mileageInKm)

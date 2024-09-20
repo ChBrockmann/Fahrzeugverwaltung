@@ -7,6 +7,7 @@ namespace Model.LogBook;
 public record LogBookEntryDto
 {
     public LogBookEntryId Id { get; set; } = LogBookEntryId.Empty;
+    public int CurrentNumber { get; set; }
 
     public string? Description { get; set; }
 
@@ -15,6 +16,6 @@ public record LogBookEntryDto
 
     public int? EndMileageInKm { get; set; }
 
-    public ReservationModelDto? AssociatedReservation { get; set; } = new();
+    public ReservationModelDto? AssociatedReservation { get; set; }
     public VehicleModelDto AssociatedVehicle { get; set; } = new();
 }

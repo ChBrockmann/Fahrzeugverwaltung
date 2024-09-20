@@ -4,12 +4,12 @@
   Hier kann für jedes Fahrzeug das Fahrtenbuch eingesehen werden. Außerdem können manuell Fahrten hinzugefügt werden.
 </div>
 
-<button style="margin-top: 16px" mat-raised-button color="primary">Neuen Eintrag hinzufügen</button>
+<button style="margin-top: 16px" mat-raised-button color="primary" (click)="createNewEntry()">Neuen Eintrag hinzufügen</button>
 
 <mat-form-field style="margin-top: 32px; display: block">
   <mat-label>Fahrzeug</mat-label>
-  <mat-select [(value)]="selectedVehicleId" (selectionchange)="loadLogbook(selectedVehicleId ?? '')">
-    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle.id">
+  <mat-select [(value)]="selectedVehicle" (selectionchange)="loadLogbook(selectedVehicle)">
+    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
       {{ vehicle.name }}
     </mat-option>
   </mat-select>
@@ -19,34 +19,34 @@
   <table mat-table [dataSource]="logbookEntries" *ngIf="logbookEntries.length > 0; else noEntries">
 
     <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID</th>
-      <td mat-cell *matCellDef="let entry"> {{ entry.id }}</td>
+    <ng-container matColumnDef="currentNumber">
+      <th mat-header-cell *matHeaderCellDef>Laufende Nummer</th>
+      <td mat-cell *matCellDef="let entry"> {{ entry.currentNumber }}</td>
     </ng-container>
 
     <!-- Description Column -->
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> Description</th>
+      <th mat-header-cell *matHeaderCellDef>Beschreibung</th>
       <td mat-cell *matCellDef="let entry"> {{ entry.description }}</td>
     </ng-container>
 
     <!-- KM Column -->
-    <ng-container matColumnDef="km">
-      <th mat-header-cell *matHeaderCellDef> KM</th>
-      <td mat-cell *matCellDef="let entry"> {{ entry.km }}</td>
+    <ng-container matColumnDef="endMileageInKm">
+      <th mat-header-cell *matHeaderCellDef>Kilometerstand</th>
+      <td mat-cell *matCellDef="let entry"> {{ entry.endMileageInKm }} km</td>
     </ng-container>
 
-    <!-- Origin Column -->
-    <ng-container matColumnDef="origin">
-      <th mat-header-cell *matHeaderCellDef> Origin</th>
-      <td mat-cell *matCellDef="let entry"> {{ entry.origin }}</td>
-    </ng-container>
+<!--    &lt;!&ndash; Origin Column &ndash;&gt;-->
+<!--    <ng-container matColumnDef="origin">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Origin</th>-->
+<!--      <td mat-cell *matCellDef="let entry"> {{ entry.origin }}</td>-->
+<!--    </ng-container>-->
 
-    <!-- Destination Column -->
-    <ng-container matColumnDef="destination">
-      <th mat-header-cell *matHeaderCellDef> Destination</th>
-      <td mat-cell *matCellDef="let entry"> {{ entry.destination }}</td>
-    </ng-container>
+<!--    &lt;!&ndash; Destination Column &ndash;&gt;-->
+<!--    <ng-container matColumnDef="destination">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Destination</th>-->
+<!--      <td mat-cell *matCellDef="let entry"> {{ entry.destination }}</td>-->
+<!--    </ng-container>-->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
