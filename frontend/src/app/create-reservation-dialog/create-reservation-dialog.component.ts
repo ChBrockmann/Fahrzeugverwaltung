@@ -5,7 +5,6 @@ import {firstValueFrom, Observable} from "rxjs";
 import * as moment from "moment";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CheckReservationStatus} from "../validator/check-reservation-status/check-reservation-status";
-import {AuthenticationService} from "../services/authentication/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({

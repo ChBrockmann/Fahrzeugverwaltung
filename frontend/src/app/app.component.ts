@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthenticationService} from "./services/authentication/authentication.service";
-import {IdentityService} from "./api";
+import {IdentityService, TestService} from "./api";
 import {environment} from "../environments/environment";
 import {KeycloakService} from "keycloak-angular";
 
@@ -29,32 +28,32 @@ export class AppComponent {
   ]
 
   constructor(private readonly router: Router,
-              private readonly authService: AuthenticationService,
+              private readonly testEndpoint: TestService,
               private readonly keycloakService: KeycloakService,
-              private readonly logoutService: IdentityService) {
+              ) {
   }
 
   async logout(): Promise<void> {
-    this.authService.clear();
     await this.keycloakService.logout();
   }
 
-  showMenu(): boolean {
-    return true;
-    return this.authService.hasUser() &&
-      (this.authService.getUser()?.roles?.includes(environment.roles.admin) ?? false);
+  async showMenu(): Promise<boolean> {
+    return this.getMenuItems().length > 0;
   }
 
   getMenuItems(): { path: string, icon: string, title: string }[] {
+    let userRoles = this.keycloakService.getUserRoles() ?? [];
     return this.routes.filter(route => {
       if(route.allowedRoles.length == 0) {
         return true;
       }
 
-      let userRoles = this.authService.getUser()?.roles ?? [];
-
       return route.allowedRoles.some(role => userRoles.includes(role));
     });
+  }
+
+  temp() {
+    this.testEndpoint.testEndpoint().subscribe();
   }
 
 }

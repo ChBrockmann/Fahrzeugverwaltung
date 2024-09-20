@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Contracts.Mailing;
+﻿using Contracts.Mailing;
 using DataAccess.ReservationService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
@@ -8,12 +7,11 @@ using FluentValidation.Results;
 using MassTransit;
 using Model.Reservation;
 using Model.Reservation.Requests;
-using Model.User;
 using Model.Vehicle;
 
 namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
-public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, ReservationModelDto>
+public class CreateReservationEndpoint : BaseEndpoint<CreateReservationRequest, ReservationModelDto>
 {
     private readonly ILogger<CreateReservationEndpoint> _logger;
     private readonly IMapper _mapper;
@@ -52,21 +50,6 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         
         VehicleModel requestedVehicle = await _vehicleService.Get(req.Vehicle) ?? throw new ArgumentNullException(nameof(req.Vehicle), "Vehicle not found");
 
-        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (claimUserId is null)
-        {
-            await SendUnauthorizedAsync(ct);
-            return;
-        }
-
-        UserId userId = UserId.Parse(claimUserId);
-        UserModel? requestingUser = await _userService.Get(userId);
-        if (requestingUser is null)
-        {
-            _logger.LogWarning("Could not find User {UserId}", userId);
-            ThrowError("User not found");
-        }
-
         IEnumerable<ReservationModel> existingReservation = await _reservationService.GetReservationsInTimespanWithoutDenied(req.StartDateInclusive, req.EndDateInclusive, req.Vehicle) ?? throw new ArgumentNullException();
         List<ReservationModel> existingReservationList = existingReservation.ToList();
 
@@ -80,7 +63,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         ReservationModel mapped = _mapper.Map<ReservationModel>(req);
         mapped.Id = ReservationId.New();
         mapped.VehicleReserved = requestedVehicle;
-        mapped.ReservationMadeByUser = requestingUser;
+        mapped.ReservationMadeByUser = UserFromContext;
 
         ReservationModel result = await _reservationService.Create(mapped);
         await _bus.Publish(new SendNewReservationMail

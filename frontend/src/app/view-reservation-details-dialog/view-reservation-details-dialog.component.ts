@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {GetReservationByIdResponse, ReservationService, ReservationStatusEnum, ReservationStatusModelDto} from "../api";
 import {firstValueFrom} from "rxjs";
-import {AuthenticationService} from "../services/authentication/authentication.service";
 
 @Component({
   selector: 'app-view-reservation-details-dialog',
@@ -19,8 +18,7 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {reservationId: string},
               private readonly reservationService: ReservationService,
-              private readonly dialogRef: MatDialogRef<ViewReservationDetailsDialogComponent>,
-              private readonly authService: AuthenticationService) {
+              private readonly dialogRef: MatDialogRef<ViewReservationDetailsDialogComponent>) {
     this.reservationId = data.reservationId;
   }
 
@@ -60,6 +58,7 @@ export class ViewReservationDetailsDialogComponent implements OnInit{
       wasChanged: true
     });
   }
+
 
   getLatestStatusChange() : ReservationStatusModelDto | undefined {
     return this.reservation?.reservation.reservationStatusChanges?.sort((a, b) => {

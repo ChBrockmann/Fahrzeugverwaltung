@@ -5,7 +5,6 @@ import {firstValueFrom} from "rxjs";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "../services/authentication/authentication.service";
 
 @Component({
   selector: 'app-accept-invitation',
@@ -24,7 +23,6 @@ export class AcceptInvitationComponent {
               private readonly route: ActivatedRoute,
               private readonly router: Router,
               private readonly loginService: DefaultService,
-              private readonly authService: AuthenticationService,
               private readonly userService: UserService,
               private readonly organizationService: OrganizationService) {
     this.acceptInvitationFormGroup = this.nonNullableFormBuilder.group({
@@ -72,19 +70,20 @@ export class AcceptInvitationComponent {
   }
 
   async login(email: string, password: string): Promise<void> {
-    try {
-      let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, false, {
-        email: email ?? "",
-        password: password ?? ""
-      }));
-
-      let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
-      this.authService.setUser(whoAmI);
-
-      this.router.navigate([""]);
-    } catch (e) {
-      this.errorText = "Anmeldung fehlgeschlagen.";
-    }
+    //TODO CB 2024-09-20
+    // try {
+    //   let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, false, {
+    //     email: email ?? "",
+    //     password: password ?? ""
+    //   }));
+    //
+    //   let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
+    //   this.authService.setUser(whoAmI);
+    //
+    //   this.router.navigate([""]);
+    // } catch (e) {
+    //   this.errorText = "Anmeldung fehlgeschlagen.";
+    // }
   }
 
   handleError(error: HttpErrorResponse) {

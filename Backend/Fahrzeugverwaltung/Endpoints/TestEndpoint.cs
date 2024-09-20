@@ -3,10 +3,11 @@ using DataAccess.UserService;
 using FS.Keycloak.RestApiClient.Api;
 using FS.Keycloak.RestApiClient.Authentication.ClientFactory;
 using FS.Keycloak.RestApiClient.Authentication.Flow;
+using FS.Keycloak.RestApiClient.ClientFactory;
 
 namespace Fahrzeugverwaltung.Endpoints;
 
-public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
+public class TestEndpoint : BaseEndpoint<EmptyRequest, EmptyResponse>
 {
     private readonly ILogger _logger;
     private readonly IUserService _userService;
@@ -28,6 +29,7 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
+        _logger.Information("User: {Firstname} {Lastname}", UserFromContext.Firstname, UserFromContext.Lastname);
         _logger.Information("Test Endpoint Called!");
         _logger.Information("User Object: {User}", User.Claims);
         _logger.Information("User: {User}", User.IsInRole("Admin"));
@@ -42,7 +44,7 @@ public class TestEndpoint : Endpoint<EmptyRequest, EmptyResponse>
             KeycloakUrl = "http://localhost:8080/"
         };
         using var httpClient = AuthenticationHttpClientFactory.Create(credentials);
-        using var usersApi = FS.Keycloak.RestApiClient.ClientFactory.ApiClientFactory.Create<UsersApi>(httpClient);
+        using UsersApi? usersApi = ApiClientFactory.Create<UsersApi>(httpClient);
         
         var users = await usersApi.GetUsersAsync("fahrzeugverwaltung", cancellationToken: ct);
 

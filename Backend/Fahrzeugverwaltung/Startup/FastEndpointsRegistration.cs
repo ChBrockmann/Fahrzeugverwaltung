@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using Fahrzeugverwaltung.Endpoints.GlobalPreprocessor;
-using Model.Configuration;
 
 namespace Fahrzeugverwaltung.Startup;
 
@@ -17,6 +16,7 @@ public static class FastEndpointsRegistration
 
                 opt.Endpoints.Configurator = endpointConfigurator =>
                 {
+                    endpointConfigurator.PreProcessor<ResolveUserFromClaimPreProcessor>(Order.Before);
                     if (!configuration.AuthenticationEnabled)
                     {
                         endpointConfigurator.AllowAnonymous();

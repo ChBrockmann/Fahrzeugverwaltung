@@ -9,11 +9,11 @@ using DataAccess.ReservationStatusService;
 using DataAccess.RoleService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
+using Fahrzeugverwaltung.Keycloak;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
-using Model.Configuration;
 using Model.Mapping;
 using QuestPDF;
 using QuestPDF.Infrastructure;
@@ -70,6 +70,8 @@ public static class ServiceRegistration
         services.AddScoped<IRoleService, RoleService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
+        services.AddScoped<IKeycloakClientFactory, KeycloakClientFactory>();
 
         services.AddScoped<CreateReservationValidatorLogic>();
         services.AddScoped<VehicleValidator>();

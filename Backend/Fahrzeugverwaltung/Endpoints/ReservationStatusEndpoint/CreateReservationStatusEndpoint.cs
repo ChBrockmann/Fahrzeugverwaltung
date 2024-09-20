@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Contracts.Mailing;
+﻿using Contracts.Mailing;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
 using DataAccess.UserService;
@@ -8,11 +7,10 @@ using Model;
 using Model.Reservation;
 using Model.Reservation.Requests;
 using Model.ReservationStatus;
-using Model.User;
 
 namespace Fahrzeugverwaltung.Endpoints.ReservationStatusEndpoint;
 
-public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRequest, EmptyResponse>
+public class CreateReservationStatusEndpoint : BaseEndpoint<AddStatusToReservationRequest, EmptyResponse>
 {
     private readonly ILogger _logger;
     private readonly IReservationService _reservationService;
@@ -43,22 +41,7 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
             await SendNotFoundAsync(ct);
             return;
         }
-
-        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (claimUserId is null)
-        {
-            await SendUnauthorizedAsync(ct);
-            return;
-        }
-
-        UserId userId = UserId.Parse(claimUserId);
-        UserModel? requestingUser = await _userService.Get(userId);
-
-        if (requestingUser is null)
-        {
-            await SendNotFoundAsync(ct);
-            return;
-        }
+        
 
         ReservationStatusModel status = new()
         {
@@ -66,7 +49,7 @@ public class CreateReservationStatusEndpoint : Endpoint<AddStatusToReservationRe
             StatusReason = req.Reason,
             Status = req.Status,
             StatusChanged = DateTime.Now,
-            StatusChangedByUser = requestingUser
+            StatusChangedByUser = UserFromContext
         };
         await _reservationStatusService.AddStatusToReservationAsync(status, ct);
 

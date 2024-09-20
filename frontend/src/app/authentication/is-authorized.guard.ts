@@ -1,43 +1,30 @@
-import {CanActivate, CanActivateFn, Router} from '@angular/router';
-import {inject, Injectable} from "@angular/core";
-import {AuthenticationService} from "../services/authentication/authentication.service";
+import {CanActivateFn} from '@angular/router';
+import {inject} from "@angular/core";
+import {KeycloakService} from "keycloak-angular";
 
 
 
-export const isAuthorizedGuard: CanActivateFn = (route, state) => {
-  return true;
+export const isAuthorizedGuard: CanActivateFn = async (route, state) => {
+  let keycloakService = inject(KeycloakService);
+  console.log("Route: ", route);
 
-  let authService = inject(AuthenticationService);
-  let router = inject(Router);
-  if (authService.hasUser())
+  if (await keycloakService.isLoggedIn())
   {
     return true;
   }
   else
   {
-    router.navigate(["login"]).then(r => console.log("Navigated to login"));
+    console.log("user is not logged in");
+    await keycloakService.login({redirectUri: window.location.origin + state.url});
     return false;
-  }
-};
-
-export const isUnAuthorizedGuard: CanActivateFn = (route, state) => {
-  let authService = inject(AuthenticationService);
-  let router = inject(Router);
-  if (authService.hasUser())
-  {
-    router.navigate(["/"]).then(r => console.log("Navigated to /"));
-    return false;
-  }
-  else
-  {
-    return true;
   }
 };
 
 export const hasRoleGuard: CanActivateFn = (route, state) => {
-  let authService = inject(AuthenticationService);
+  let keycloakService = inject(KeycloakService);
+
   let requiredRoles: string[] = route.data['roles'];
-  let userRoles = authService.getUser()?.roles ?? [];
+  let userRoles = keycloakService.getUserRoles() ?? [];
 
   return requiredRoles.some(role => userRoles.includes(role));
 };

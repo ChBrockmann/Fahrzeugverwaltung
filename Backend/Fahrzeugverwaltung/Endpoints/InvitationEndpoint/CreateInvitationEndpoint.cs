@@ -1,10 +1,8 @@
-﻿using System.Security.Claims;
-using DataAccess.InvitationService;
+﻿using DataAccess.InvitationService;
 using DataAccess.RoleService;
 using DataAccess.UserService;
 using Microsoft.Extensions.Options;
 using Model;
-using Model.Configuration;
 using Model.Invitation;
 using Model.Invitation.Requests;
 using Model.Roles;
@@ -12,7 +10,7 @@ using Model.User;
 
 namespace Fahrzeugverwaltung.Endpoints.InvitationEndpoint;
 
-public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyResponse>
+public class CreateInvitationEndpoint : BaseEndpoint<CreateInvitationRequest, EmptyResponse>
 {
     private readonly IInvitationService _invitationService;
     private readonly IUserService _userService;
@@ -37,14 +35,7 @@ public class CreateInvitationEndpoint : Endpoint<CreateInvitationRequest, EmptyR
 
     public override async Task HandleAsync(CreateInvitationRequest req, CancellationToken ct)
     {
-        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (claimUserId is null)
-        {
-            await SendUnauthorizedAsync(ct);
-            return;
-        }
-
-        UserId userId = UserId.Parse(claimUserId);
+        UserId userId = UserFromContext.Id;
         UserModel? requestingUser = await _userService.Get(userId);
         
         _logger.Information("User {UserId} is creating {Count} invitations", userId, req.Count);

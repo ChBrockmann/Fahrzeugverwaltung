@@ -1,11 +1,10 @@
-﻿using System.Security.Claims;
-using DataAccess.UserService;
+﻿using DataAccess.UserService;
 using Model.User;
 using Model.User.Responses;
 
 namespace Fahrzeugverwaltung.Endpoints.UserEndpoints;
 
-public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
+public class WhoAmIEndpoint : BaseEndpoint<EmptyRequest, WhoAmIResponse>
 {
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
@@ -23,14 +22,8 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
-        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (claimUserId is null)
-        {
-            await SendUnauthorizedAsync(ct);
-            return;
-        }
-
-        UserModel? requestingUser = await _userService.Get(UserId.Parse(claimUserId));
+        UserId userId = UserFromContext.Id;
+        UserModel? requestingUser = await _userService.Get(userId);
 
         if (requestingUser is null)
         {
@@ -38,7 +31,7 @@ public class WhoAmIEndpoint : Endpoint<EmptyRequest, WhoAmIResponse>
             return;
         }
 
-        List<string> roles = (await _userService.GetRolesOfUser(UserId.Parse(claimUserId)))
+        List<string> roles = (await _userService.GetRolesOfUser(userId))
             .Select(x => x.Name)
             .ToList();
         

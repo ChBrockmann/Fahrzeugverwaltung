@@ -13,6 +13,8 @@ public record Configuration
     
     public Invitation Invitation { get; set; } = new();
     public MailingConfiguration Mailing { get; set; } = new();
+
+    public KeycloakConfiguration Keycloak { get; set; } = new();
 }
 
 public record Invitation
