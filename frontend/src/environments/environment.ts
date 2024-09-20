@@ -6,6 +6,9 @@ export const environment = {
   production: false,
   roles: {
     admin: "Admin",
+  },
+  reservation: {
+    defaultOriginAdress: 'Winterberg'
   }
 };
 

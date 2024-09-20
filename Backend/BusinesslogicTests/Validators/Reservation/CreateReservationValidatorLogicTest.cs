@@ -46,7 +46,7 @@ public class CreateReservationValidatorLogicTest
             .With(x => x.EndDateInclusive, new DateOnly(2024, 05, 20))
             .Create();
         _reservationServiceMock
-            .Setup(x => x.GetReservationsInTimespan(input.StartDateInclusive, input.EndDateInclusive, input.Vehicle))
+            .Setup(x => x.GetReservationsInTimespanWithoutDenied(input.StartDateInclusive, input.EndDateInclusive, input.Vehicle))
             .ReturnsAsync(new[]
             {
                 new ReservationModel()
@@ -84,7 +84,7 @@ public class CreateReservationValidatorLogicTest
                 MaxReservationTimeInAdvanceInDays = 365
             }
         });
-        _dateTimeProviderMock.Setup(x => x.DateToday).Returns(new DateOnly(2024, 06, 10));
+        _dateTimeProviderMock.Setup(x => x.DateToday).Returns(new DateOnly(2024, 05, 10));
 
 
         var resultVehicleAvailable = await _sut.CheckIfVehicleIsAvailable(input.Vehicle, input.StartDateInclusive, input.EndDateInclusive, default);

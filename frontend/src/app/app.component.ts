@@ -25,6 +25,12 @@ export class AppComponent {
       icon: "mark_email_unread",
       title: "Einladungen"
     },
+    {
+      path: "logbook",
+      allowedRoles: [environment.roles.admin],
+      icon: "book",
+      title: "Fahrtenbuch"
+    }
   ]
 
   constructor(private readonly router: Router,

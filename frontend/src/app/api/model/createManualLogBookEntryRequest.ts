@@ -11,11 +11,8 @@
  */
 
 
-export interface CreateReservationRequest { 
-    startDateInclusive: string;
-    endDateInclusive: string;
-    originAdress: string;
-    destinationAdress: string;
-    vehicle: string;
+export interface CreateManualLogBookEntryRequest { 
+    totalMileageInKm: number;
+    description?: string | null;
 }
 

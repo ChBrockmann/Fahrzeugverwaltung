@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CheckReservationStatus} from "../validator/check-reservation-status/check-reservation-status";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-create-reservation-dialog',
@@ -18,6 +19,8 @@ export class CreateReservationDialogComponent implements OnInit {
   createReservationFormGroup = new FormGroup({
     startDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
     endDate: new FormControl<moment.Moment>(moment.utc(), [Validators.required]),
+    originAdress: new FormControl<string>(environment.reservation.defaultOriginAdress, {nonNullable: true, validators: [Validators.required]}),
+    destinationAdress: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
     requestedVehicleId: new FormControl('', [Validators.required]),
   });
   public vehicles: VehicleModelDto[] | undefined;
@@ -55,6 +58,8 @@ export class CreateReservationDialogComponent implements OnInit {
       startDateInclusive: formValues.startDate?.format("YYYY-MM-DD") ?? "",
       endDateInclusive: formValues.endDate?.format("YYYY-MM-DD") ?? "",
       vehicle: formValues.requestedVehicleId ?? "",
+      destinationAdress: formValues.destinationAdress ?? "",
+      originAdress: formValues.originAdress ?? ""
     }).subscribe({
       next: (response) => {
         this.dialogRef.close(response);

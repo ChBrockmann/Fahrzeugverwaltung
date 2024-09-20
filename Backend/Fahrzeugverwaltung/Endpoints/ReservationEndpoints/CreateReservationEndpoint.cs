@@ -3,12 +3,9 @@ using DataAccess.ReservationService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Extensions;
-using Fahrzeugverwaltung.Validators.Reservation;
-using FluentValidation;
 using FluentValidation.Results;
 using Model.Reservation;
 using Model.Reservation.Requests;
-using Model.ReservationStatus;
 using Model.User;
 using Model.Vehicle;
 
@@ -16,15 +13,15 @@ namespace Fahrzeugverwaltung.Endpoints.ReservationEndpoints;
 
 public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, ReservationModelDto>
 {
-    private readonly ILogger<CreateReservationEndpoint> _logger;
+    private readonly ILogger _logger;
     private readonly IMapper _mapper;
     private readonly IReservationService _reservationService;
     private readonly IUserService _userService;
     private readonly IVehicleService _vehicleService;
     private readonly IValidator<CreateReservationRequest> _validator;
 
-    public CreateReservationEndpoint(IMapper mapper, IReservationService reservationService, 
-        IVehicleService vehicleService, ILogger<CreateReservationEndpoint> logger, 
+    public CreateReservationEndpoint(IMapper mapper, IReservationService reservationService,
+        IVehicleService vehicleService, ILogger logger, 
         IUserService userService, IValidator<CreateReservationRequest> validator)
     {
         _mapper = mapper;
@@ -62,7 +59,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
         UserModel? requestingUser = await _userService.Get(userId);
         if (requestingUser is null)
         {
-            _logger.LogWarning("Could not find User {UserId}", userId);
+            _logger.Warning("Could not find User {UserId}", userId);
             ThrowError("User not found");
         }
 
@@ -71,7 +68,7 @@ public class CreateReservationEndpoint : Endpoint<CreateReservationRequest, Rese
 
         if (existingReservationList.Any())
         {
-            _logger.LogWarning("Requested vehicle is alredy reserved. Request-Startdate: {StartDate} Request-Enddate: {EndDate}, existing reservation: {ExistingReservationId}",
+            _logger.Warning("Requested vehicle is alredy reserved. Request-Startdate: {StartDate} Request-Enddate: {EndDate}, existing reservation: {ExistingReservationId}",
                 req.StartDateInclusive.ToIso8601(), req.EndDateInclusive.ToIso8601(), string.Join(",", existingReservationList.Select(x => x.Id)).Trim(','));
             ThrowError(new ValidationFailure(nameof(req.Vehicle), "The requested vehicle is already reserved for the requested time"));
         }

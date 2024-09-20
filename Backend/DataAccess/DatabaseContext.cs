@@ -73,5 +73,8 @@ public class DatabaseContext : IdentityDbContext<UserModel, IdentityRole<Guid>, 
         modelBuilder.Entity<LogBookEntry>()
             .HasOne(x => x.CreatedBy)
             .WithMany();
+        modelBuilder.Entity<LogBookEntry>()
+            .HasOne(x => x.AssociatedVehicle)
+            .WithMany();
     }
 }

@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LogBookEntryDto } from './logBookEntryDto';
 
 
-export interface CreateReservationRequest { 
-    startDateInclusive: string;
-    endDateInclusive: string;
-    originAdress: string;
-    destinationAdress: string;
-    vehicle: string;
+export interface GetAllLogBookEntriesForVehicleResponse { 
+    logBookEntries?: Array<LogBookEntryDto>;
 }
 

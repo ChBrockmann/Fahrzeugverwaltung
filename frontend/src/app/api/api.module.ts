@@ -6,6 +6,7 @@ import { DefaultService } from './api/default.service';
 import { IcalService } from './api/ical.service';
 import { IdentityService } from './api/identity.service';
 import { InvitationService } from './api/invitation.service';
+import { LogbookentryService } from './api/logbookentry.service';
 import { ReservationService } from './api/reservation.service';
 import { TestService } from './api/test.service';
 import { UserService } from './api/user.service';

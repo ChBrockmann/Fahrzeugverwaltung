@@ -8,12 +8,12 @@
 
     <ItemGroup>
         <PackageReference Include="Mapster" Version="7.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4"/>
         <PackageReference Include="StronglyTypedId" Version="1.0.0-beta08"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="LogBook\Responses\" />
         <Folder Include="User\Request\"/>
     </ItemGroup>
 

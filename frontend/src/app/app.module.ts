@@ -44,6 +44,9 @@ import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
 import { ViewInvitationsComponent } from './view-invitations/view-invitations.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import { ViewLogbookComponent } from './view-logbook/view-logbook.component';
+import {MatTableModule} from "@angular/material/table";
+import { CreateManualLogbookEntryComponent } from './create-manual-logbook-entry/create-manual-logbook-entry.component';
 
 
 export const MY_FORMATS = {
@@ -82,6 +85,8 @@ export function apiConfigFactory(): Configuration {
     NotFoundComponent,
     ViewInvitationsComponent,
     CreateInvitationComponent,
+    ViewLogbookComponent,
+    CreateManualLogbookEntryComponent,
 
   ],
   imports: [
@@ -109,6 +114,7 @@ export function apiConfigFactory(): Configuration {
     MatCardModule,
     MatListModule,
     MatLineModule,
+    MatTableModule,
   ],
   providers: [
     {
