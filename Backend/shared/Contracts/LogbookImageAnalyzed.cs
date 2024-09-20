@@ -1,11 +1,10 @@
-﻿namespace Contracts;
+﻿using Model.LogBook;
+
+namespace Contracts;
 
 public class LogbookImageAnalyzed
 {
-    public int TotalMileageForRoute { get; set; }
-    public DateOnly StartDateInclusive { get; set; }
-    public DateOnly EndDateInclusive { get; set; }
+    public LogBookEntryId LogBookEntryId { get; set; } = LogBookEntryId.Empty;
 
-    public string OriginAdress { get; set; } = string.Empty;
-    public string DestinationAdress { get; set; } = string.Empty;
+    public int DetectedMileageInKm { get; set; }
 }

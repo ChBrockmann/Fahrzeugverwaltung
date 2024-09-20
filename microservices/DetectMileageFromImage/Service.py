@@ -52,6 +52,7 @@ def callback(ch: Union[BlockingChannel, BlockingChannel], method, properties, bo
 
     image_as_base64 = message.get('imageAsBase64', '')
     image_type = message.get('imageType', '')
+    logBookEntryId = message.get('logBookEntryId', '')
 
     print("Received Image")
     detected_total_mileage = send_to_openai(image_as_base64)
@@ -69,7 +70,8 @@ def callback(ch: Union[BlockingChannel, BlockingChannel], method, properties, bo
     message = {
         "messageType": ["urn:message:Contracts:LogbookImageAnalyzed"],
         "message": {
-            "detectedTotalMileage": detected_total_mileage
+            "logBookEntryId": logBookEntryId,
+            "detectedMileageInKm": detected_total_mileage
         }
     }
     ch.basic_publish(exchange=exchange,

@@ -20,6 +20,8 @@ export interface ReservationModelDto {
     reason?: string;
     startDateInclusive?: string;
     endDateInclusive?: string;
+    originAdress?: string;
+    destinationAdress?: string;
     reservationCreated?: Date;
     reservationMadeByUser?: UserDto;
     currentStatus?: ReservationStatusEnum;
