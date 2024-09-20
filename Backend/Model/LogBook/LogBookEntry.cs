@@ -21,6 +21,6 @@ public sealed record LogBookEntry : IDatabaseId<LogBookEntryId>
     
     public int? EndMileageInKm { get; set; }
 
-    public ReservationModel? AssociatedReservation { get; set; } = new();
+    public ReservationModel? AssociatedReservation { get; set; }
     public VehicleModel AssociatedVehicle { get; set; } = new();
 }

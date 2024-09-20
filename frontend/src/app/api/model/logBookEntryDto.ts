@@ -16,6 +16,7 @@ import { VehicleModelDto } from './vehicleModelDto';
 
 export interface LogBookEntryDto { 
     id?: string;
+    currentNumber?: number;
     description?: string | null;
     createdAt?: Date;
     createdBy?: UserDto;
