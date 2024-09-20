@@ -20,6 +20,8 @@ public class ReservationMappingTests : TestBase
             Reason = input.Reason,
             EndDateInclusive = input.EndDateInclusive,
             StartDateInclusive = input.StartDateInclusive,
+            OriginAdress = input.OriginAdress,
+            DestinationAdress = input.DestinationAdress,
             VehicleReserved = Mapper.Map<VehicleModelDto>(input.VehicleReserved),
             ReservationStatusChanges = Mapper.Map<List<ReservationStatusModelDto>>(input.ReservationStatusChanges),
             ReservationCreated = input.ReservationCreated,
@@ -43,7 +45,9 @@ public class ReservationMappingTests : TestBase
             Reason = input.Reason,
             VehicleReserved = new VehicleModel {Id = VehicleModelId.Empty},
             ReservationStatusChanges = new List<ReservationStatusModel>(),
-            ReservationCreated = DateTime.Now
+            ReservationCreated = DateTime.Now,
+            DestinationAdress = input.DestinationAdress,
+            OriginAdress = input.OriginAdress
         };
 
         ReservationModel actual = Mapper.Map<ReservationModel>(input);

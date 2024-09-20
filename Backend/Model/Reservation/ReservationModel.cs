@@ -13,6 +13,9 @@ public sealed record ReservationModel : IDatabaseId<ReservationId>
     public string Reason { get; set; } = string.Empty;
     public DateOnly StartDateInclusive { get; set; } = DateOnly.MinValue;
     public DateOnly EndDateInclusive { get; set; } = DateOnly.MinValue;
+    public string OriginAdress { get; set; } = string.Empty;
+    public string DestinationAdress { get; set; } = string.Empty;
+    
     public DateTime ReservationCreated { get; set; } = DateTime.Now;
 
     public VehicleModel VehicleReserved { get; set; } = new() {Id = VehicleModelId.Empty};
