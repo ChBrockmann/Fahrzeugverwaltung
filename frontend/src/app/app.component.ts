@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {TestService} from "./api";
 import {environment} from "../environments/environment";
 import {KeycloakService} from "keycloak-angular";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -34,10 +35,10 @@ export class AppComponent {
     }
   ]
 
-  constructor(private readonly router: Router,
-              private readonly testEndpoint: TestService,
+  constructor(private readonly titleService: Title,
               private readonly keycloakService: KeycloakService,
               ) {
+    titleService.setTitle("Fahrzeugverwaltung");
   }
 
   async logout(): Promise<void> {
