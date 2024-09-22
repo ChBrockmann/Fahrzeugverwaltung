@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {IdentityService, TestService} from "./api";
+import {TestService} from "./api";
 import {environment} from "../environments/environment";
 import {KeycloakService} from "keycloak-angular";
 
@@ -14,14 +14,14 @@ export class AppComponent {
 
   routes: { path: string; allowedRoles: string[]; icon: string; title: string }[] = [
     {
-      path: "/calendar",
-      allowedRoles: ["default-roles-fahrzeugverwaltung"],
+      path: "calendar",
+      allowedRoles: [],
       icon: "home",
       title: "Startseite"
     },
     {
       path: "invitations",
-      allowedRoles: [environment.roles.admin, "default-roles-fahrzeugverwaltung"],
+      allowedRoles: [environment.roles.admin, environment.roles.organizationAdmin],
       icon: "mark_email_unread",
       title: "Einladungen"
     },
@@ -37,10 +37,6 @@ export class AppComponent {
     await this.keycloakService.logout();
   }
 
-  async showMenu(): Promise<boolean> {
-    return this.getMenuItems().length > 0;
-  }
-
   getMenuItems(): { path: string, icon: string, title: string }[] {
     let userRoles = this.keycloakService.getUserRoles() ?? [];
     return this.routes.filter(route => {
@@ -50,10 +46,6 @@ export class AppComponent {
 
       return route.allowedRoles.some(role => userRoles.includes(role));
     });
-  }
-
-  temp() {
-    this.testEndpoint.testEndpoint().subscribe();
   }
 
 }

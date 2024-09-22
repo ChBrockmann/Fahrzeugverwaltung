@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'accept-invitation', component: AcceptInvitationComponent},
   {path: 'calendar', component: ReservationCalendarComponent, canActivate: [isAuthorizedGuard]},
 
-  {path: 'invitations', component: ViewInvitationsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin]}},
+  {path: 'invitations', component: ViewInvitationsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}},
 
   {path: '**', component: NotFoundComponent}
 ];

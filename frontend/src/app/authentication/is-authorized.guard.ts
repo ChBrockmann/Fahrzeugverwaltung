@@ -6,7 +6,6 @@ import {KeycloakService} from "keycloak-angular";
 
 export const isAuthorizedGuard: CanActivateFn = async (route, state) => {
   let keycloakService = inject(KeycloakService);
-  console.log("Route: ", route);
 
   if (await keycloakService.isLoggedIn())
   {

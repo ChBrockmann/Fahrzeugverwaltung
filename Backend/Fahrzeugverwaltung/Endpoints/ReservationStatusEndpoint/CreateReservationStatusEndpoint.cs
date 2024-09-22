@@ -30,7 +30,7 @@ public class CreateReservationStatusEndpoint : BaseEndpoint<AddStatusToReservati
     public override void Configure()
     {
         Post("reservation/{ReservationId}/status");
-        Roles(SecurityConfiguration.AdminRoleName);
+        Roles(SecurityConfiguration.AdminRoleName, SecurityConfiguration.OrganizationAdminRoleName);
     }
 
     public override async Task HandleAsync(AddStatusToReservationRequest req, CancellationToken ct)

@@ -2,7 +2,7 @@
   <div style="padding: 32px; background: #f0f0f0; border-radius: 8px;">
     <h1>Account erstellen</h1>
 
-    <form [formGroup]="acceptInvitationFormGroup" class="formgroup">
+    <form [formGroup]="acceptInvitationFormGroup" class="formgroup" *ngIf="!isSuccessful; else success">
       <mat-form-field class="input">
         <mat-label>Token</mat-label>
         <input matInput formControlName="token"/>
@@ -24,13 +24,13 @@
       </mat-form-field>
 
       <mat-form-field class="input">
-        <mat-label>E-Mail</mat-label>
-        <input matInput formControlName="email" type="email"/>
+        <mat-label>Telefonnummer</mat-label>
+        <input matInput formControlName="phoneNumber" type="tel"/>
       </mat-form-field>
 
       <mat-form-field class="input">
-        <mat-label>Passwort</mat-label>
-        <input matInput formControlName="password" type="password"/>
+        <mat-label>E-Mail</mat-label>
+        <input matInput formControlName="email" type="email"/>
       </mat-form-field>
 
       <mat-error *ngIf="errorText != '' && !isLoading">
@@ -44,3 +44,12 @@
     </form>
   </div>
 </div>
+
+<ng-template #success>
+  <h2>Registierung erfolgreich</h2>
+  <p>Dein Account wurde angelgt. Du erhälst in kürze eine E-Mail zum setzen deines Passworts. </p>
+  <p>Anschließend kannst du dich mit deiner E-Mail-Adresse und deinem Passwort anmelden.</p>
+  <p>Hinweis: Das Empfangen der E-Mail kann in Ausnahmefällen bis zu 60 Minuten dauern.</p>
+
+  <button mat-raised-button color="primary" routerLink="/calendar">Startseite</button>
+</ng-template>

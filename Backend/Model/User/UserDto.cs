@@ -10,6 +10,8 @@ public sealed record UserDto
 
     public string Lastname { get; set; } = string.Empty;
 
+    public string PhoneNumber { get; set; } = string.Empty;
+
     public string Fullname => Firstname + " " + Lastname;
 
     public OrganizationDto Organization { get; set; } = new();

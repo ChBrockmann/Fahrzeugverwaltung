@@ -50,7 +50,7 @@ public class GetReservationByIdEndpoint : Endpoint<GetReservationByIdRequest, Ge
 
     private bool CanChangeStatus(ReservationModel reservation)
     {
-        return User.IsInRole(SecurityConfiguration.AdminRoleName) &&
+        return User.IsInRole(SecurityConfiguration.AdminRoleName) || User.IsInRole(SecurityConfiguration.OrganizationAdminRoleName) &&
                reservation.ReservationStatusChanges.MaxBy(x => x.StatusChanged)?.Status != ReservationStatusEnum.Confirmed;
     }
 }

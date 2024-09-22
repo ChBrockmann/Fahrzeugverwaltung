@@ -1,9 +1,5 @@
-export * from './default.service';
-import { DefaultService } from './default.service';
 export * from './ical.service';
 import { IcalService } from './ical.service';
-export * from './identity.service';
-import { IdentityService } from './identity.service';
 export * from './invitation.service';
 import { InvitationService } from './invitation.service';
 export * from './organization.service';
@@ -16,4 +12,4 @@ export * from './user.service';
 import { UserService } from './user.service';
 export * from './vehicle.service';
 import { VehicleService } from './vehicle.service';
-export const APIS = [DefaultService, IcalService, IdentityService, InvitationService, OrganizationService, ReservationService, TestService, UserService, VehicleService];
+export const APIS = [IcalService, InvitationService, OrganizationService, ReservationService, TestService, UserService, VehicleService];

@@ -48,4 +48,12 @@ public class UserService : BaseService<UserModel, UserId>, IUserService
     {
         return await Database.Users.FirstOrDefaultAsync(x => x.Email == email);
     }
+
+    public async Task SetAuthIdOfUser(UserId userId, string authId)
+    {
+        UserModel? user = await Database.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        if (user is null) throw new ArgumentNullException(nameof(user), "User should not be null");
+        user.AuthId = authId;
+        await Database.SaveChangesAsync();
+    }
 }

@@ -19,7 +19,7 @@ public class GetAllInvitationsEndpoint : Endpoint<EmptyRequest, GetAllInvitation
     public override void Configure()
     {
         Get("invitation");
-        Roles(SecurityConfiguration.AdminRoleName);
+        Roles(SecurityConfiguration.AdminRoleName, SecurityConfiguration.OrganizationAdminRoleName);
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)

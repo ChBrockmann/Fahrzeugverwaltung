@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.UserService;
+using Fahrzeugverwaltung.Keycloak;
 using FS.Keycloak.RestApiClient.Api;
 using FS.Keycloak.RestApiClient.Authentication.ClientFactory;
 using FS.Keycloak.RestApiClient.Authentication.Flow;
@@ -12,12 +13,14 @@ public class TestEndpoint : BaseEndpoint<EmptyRequest, EmptyResponse>
     private readonly ILogger _logger;
     private readonly IUserService _userService;
     private DatabaseContext _database;
+    private IKeycloakClientFactory _keycloakClientFactory;
 
-    public TestEndpoint(ILogger logger, DatabaseContext database, IUserService userService)
+    public TestEndpoint(ILogger logger, DatabaseContext database, IUserService userService, IKeycloakClientFactory keycloakClientFactory)
     {
         _logger = logger;
         _database = database;
         _userService = userService;
+        _keycloakClientFactory = keycloakClientFactory;
     }
 
     public override void Configure()
@@ -29,6 +32,9 @@ public class TestEndpoint : BaseEndpoint<EmptyRequest, EmptyResponse>
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
+        var client = _keycloakClientFactory.CreateClient();
+        var usersApi = ApiClientFactory.Create<UsersApi>(client);
+        
         _logger.Information("User: {Firstname} {Lastname}", UserFromContext.Firstname, UserFromContext.Lastname);
         _logger.Information("Test Endpoint Called!");
         _logger.Information("User Object: {User}", User.Claims);
@@ -36,15 +42,7 @@ public class TestEndpoint : BaseEndpoint<EmptyRequest, EmptyResponse>
         _logger.Information("User: {User}", User.IsInRole("Fahrzeugwart"));
         _logger.Information("User: {User}", User.IsInRole("manage-account"));
 
-        var credentials = new ClientCredentialsFlow()
-        {
-            Realm = "fahrzeugverwaltung",
-            ClientId = "fahrzeugverwaltung-backend",
-            ClientSecret = "MCA50iqn0MMdcXarJzh17WUJeuIOK91G",
-            KeycloakUrl = "http://localhost:8080/"
-        };
-        using var httpClient = AuthenticationHttpClientFactory.Create(credentials);
-        using UsersApi? usersApi = ApiClientFactory.Create<UsersApi>(httpClient);
+        
         
         var users = await usersApi.GetUsersAsync("fahrzeugverwaltung", cancellationToken: ct);
 

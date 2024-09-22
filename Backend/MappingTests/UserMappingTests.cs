@@ -14,10 +14,10 @@ public class UserMappingTests : TestBase
         UserDto expected = new()
         {
             Id = input.Id,
-            
             Firstname = input.Firstname,
             Lastname = input.Lastname,
-            Organization = Mapper.Map<OrganizationDto>(input.Organization)
+            Organization = Mapper.Map<OrganizationDto>(input.Organization),
+            PhoneNumber = input.PhoneNumber
         };
 
         UserDto actual = Mapper.Map<UserDto>(input);

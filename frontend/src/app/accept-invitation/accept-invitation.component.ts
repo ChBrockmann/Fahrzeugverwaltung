@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, NonNullableFormBuilder, Validators} from "@angular/forms";
-import {DefaultService, InvitationService, OrganizationDto, OrganizationService, UserService} from "../api";
+import {InvitationService, OrganizationDto, OrganizationService} from "../api";
 import {firstValueFrom} from "rxjs";
-import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -11,9 +10,10 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './accept-invitation.component.html',
   styleUrls: ['./accept-invitation.component.scss']
 })
-export class AcceptInvitationComponent {
+export class AcceptInvitationComponent implements OnInit{
   public acceptInvitationFormGroup: FormGroup;
   public isLoading = false;
+  public isSuccessful = false;
   public errorText = '';
   public organizations: OrganizationDto[] = [];
 
@@ -21,20 +21,21 @@ export class AcceptInvitationComponent {
   constructor(private readonly invitationService: InvitationService,
               private readonly nonNullableFormBuilder: NonNullableFormBuilder,
               private readonly route: ActivatedRoute,
-              private readonly router: Router,
-              private readonly loginService: DefaultService,
-              private readonly userService: UserService,
               private readonly organizationService: OrganizationService) {
     this.acceptInvitationFormGroup = this.nonNullableFormBuilder.group({
       token: new FormControl(this.route.snapshot.queryParamMap.get('token') ?? '', [Validators.required]),
       firstname: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
       organization: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
     });
 
-    this.load();
+
+  }
+
+  async ngOnInit(): Promise<void> {
+        await this.load();
   }
 
   async load() {
@@ -52,12 +53,11 @@ export class AcceptInvitationComponent {
       firstname: values.firstname,
       lastname: values.lastname,
       organization: values.organization,
-      password: values.password,
-      phoneNumber: ''
+      phoneNumber: values.phoneNumber
     })
       .subscribe({
         next: async data => {
-          await this.login(values.email, values.password);
+          this.isSuccessful = true;
         },
         error: error => {
           this.handleError(error);
@@ -67,23 +67,6 @@ export class AcceptInvitationComponent {
           this.isLoading = false;
         }
       });
-  }
-
-  async login(email: string, password: string): Promise<void> {
-    //TODO CB 2024-09-20
-    // try {
-    //   let result = await firstValueFrom(this.loginService.postApiIdentityLogin(true, false, {
-    //     email: email ?? "",
-    //     password: password ?? ""
-    //   }));
-    //
-    //   let whoAmI = await firstValueFrom(this.userService.whoAmIEndpoint());
-    //   this.authService.setUser(whoAmI);
-    //
-    //   this.router.navigate([""]);
-    // } catch (e) {
-    //   this.errorText = "Anmeldung fehlgeschlagen.";
-    // }
   }
 
   handleError(error: HttpErrorResponse) {

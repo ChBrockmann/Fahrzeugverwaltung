@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" style="display: flex; justify-content: space-between">
-  <button mat-icon-button aria-label="menu icon" (click)="drawer.toggle()" *ngIf="showMenu()">
+  <button mat-icon-button aria-label="menu icon" (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <span>{{ title }}</span>
@@ -21,7 +21,6 @@
           <span mat-line class="route-item-link">{{ menuItem.title }}</span>
         </a>
       </div>
-      <a (click)="temp()">TEST</a>
     </mat-nav-list>
   </mat-sidenav>
 

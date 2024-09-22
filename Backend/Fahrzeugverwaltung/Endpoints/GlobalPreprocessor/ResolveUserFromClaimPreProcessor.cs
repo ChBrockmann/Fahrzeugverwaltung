@@ -4,6 +4,7 @@ using Fahrzeugverwaltung.Keycloak;
 using FS.Keycloak.RestApiClient.Api;
 using FS.Keycloak.RestApiClient.Authentication.Client;
 using FS.Keycloak.RestApiClient.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Model.Configuration;
@@ -23,6 +24,11 @@ public class ResolveUserFromClaimPreProcessor : IGlobalPreProcessor
 
     public async Task PreProcessAsync(IPreProcessorContext context, CancellationToken ct)
     {
+        if (context.HttpContext.GetEndpoint()?.Metadata.GetMetadata<IAllowAnonymous>() is not null)
+        {
+            return;
+        }
+        
         Claim? userIdClaim = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
         if (userIdClaim == null) throw new InvalidOperationException("User ID claim not found");
 

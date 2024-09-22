@@ -30,7 +30,7 @@ public class CreateInvitationEndpoint : BaseEndpoint<CreateInvitationRequest, Em
     public override void Configure()
     {
         Post("invitation");
-        Roles(SecurityConfiguration.AdminRoleName);
+        Roles(SecurityConfiguration.AdminRoleName, SecurityConfiguration.OrganizationAdminRoleName);
     }
 
     public override async Task HandleAsync(CreateInvitationRequest req, CancellationToken ct)

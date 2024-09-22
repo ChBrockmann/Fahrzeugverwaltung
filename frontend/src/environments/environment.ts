@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   roles: {
     admin: "Admin",
+    organizationAdmin: "OrganizationAdmin",
   }
 };
 
