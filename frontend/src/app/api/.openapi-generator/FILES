@@ -22,6 +22,7 @@ model/createReservationRequest.ts
 model/getAllInvitationsResponse.ts
 model/getAllOrganizationsResponse.ts
 model/getAllVehicleResponse.ts
+model/getOrganizationAdminResponse.ts
 model/getReservationByIdResponse.ts
 model/getReservationsInMonthYearResponse.ts
 model/getReservationsInTimespanResponse.ts
@@ -30,10 +31,12 @@ model/getVehicleStatusResponseCurrentReservation.ts
 model/invitationModelDto.ts
 model/invitationModelDtoCreatedBy.ts
 model/models.ts
+model/organizationAdminResponse.ts
 model/organizationDto.ts
 model/reservationModelDto.ts
 model/reservationStatusEnum.ts
 model/reservationStatusModelDto.ts
+model/setOrganizationAdminRequest.ts
 model/userDto.ts
 model/vehicleModelDto.ts
 model/vehicleStatus.ts

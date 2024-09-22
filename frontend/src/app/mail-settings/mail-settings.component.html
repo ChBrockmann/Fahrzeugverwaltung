@@ -1,0 +1,25 @@
+<h1>E-Mail Einstellungen</h1>
+
+<p>Hier kannst du auswählen für welche Organisationen du eine E-Mail Benachrichtigung bei neuen Buchungsanfragen
+  bekommst</p>
+
+<ng-container *ngIf="!isLoading; else loader">
+  <form [formGroup]="form">
+
+    <div formArrayName="organizations" *ngFor="let org of organizationsFormArray.controls; let i = index">
+      <div [formGroupName]="i">
+        <label class="item">
+          <input type="checkbox" formControlName="isAdmin">
+          {{ org.get('name')?.value }}
+        </label>
+      </div>
+    </div>
+
+    <button style="margin-top: 16px" mat-raised-button color="primary" (click)="save()">Speichern</button>
+  </form>
+</ng-container>
+
+
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

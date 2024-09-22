@@ -44,6 +44,7 @@ import {MatListModule} from "@angular/material/list";
 import { ViewInvitationsComponent } from './view-invitations/view-invitations.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
+import { MailSettingsComponent } from './mail-settings/mail-settings.component';
 
 
 export const MY_FORMATS = {
@@ -108,6 +109,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     NotFoundComponent,
     ViewInvitationsComponent,
     CreateInvitationComponent,
+    MailSettingsComponent,
 
   ],
   imports: [

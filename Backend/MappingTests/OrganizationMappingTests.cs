@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using Model.Organization;
+using Model.Organization.Responses;
 
 namespace MappingTests;
 
@@ -18,6 +19,23 @@ public class OrganizationMappingTests : TestBase
         };
 
         OrganizationDto actual = Mapper.Map<OrganizationDto>(input);
+
+        actual.Should().BeEquivalentTo(expected);
+    }
+    
+    [Fact]
+    public void Organization_To_OrganizationAdminResponse()
+    {
+        OrganizationModel input = Fixture.Create<OrganizationModel>();
+        OrganizationAdminResponse expected = new()
+        {
+            Id = input.Id,
+            Name = input.Name,
+            Description = input.Description,
+            IsAdmin = false
+        };
+
+        OrganizationAdminResponse actual = Mapper.Map<OrganizationAdminResponse>(input);
 
         actual.Should().BeEquivalentTo(expected);
     }

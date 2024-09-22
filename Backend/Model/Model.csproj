@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Organization\Responses\"/>
         <Folder Include="User\Request\"/>
     </ItemGroup>
 

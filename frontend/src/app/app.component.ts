@@ -27,6 +27,15 @@ export class AppComponent {
       title: "Einladungen"
     },
     {
+      path: "mail-settings",
+      allowedRoles: [environment.roles.admin, environment.roles.organizationAdmin],
+      icon: "email",
+      title: "Mail Einstellungen"
+    },
+
+
+
+    {
       path: "",
       allowedRoles: [],
       icon: "account_circle",
