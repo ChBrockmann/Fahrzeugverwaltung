@@ -7,6 +7,11 @@ export const environment = {
   roles: {
     admin: "Admin",
     organizationAdmin: "OrganizationAdmin",
+  },
+  keycloak: {
+    realm: "fahrzeugverwaltung",
+    clientId: "fahrzeugverwaltung-dev",
+    url: "http://localhost:8080",
   }
 };
 

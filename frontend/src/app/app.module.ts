@@ -45,6 +45,7 @@ import { ViewInvitationsComponent } from './view-invitations/view-invitations.co
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import { MailSettingsComponent } from './mail-settings/mail-settings.component';
+import {environment} from "../environments/environment";
 
 
 export const MY_FORMATS = {
@@ -75,9 +76,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080',
-        realm: 'fahrzeugverwaltung',
-        clientId: 'fahrzeugverwaltung-dev'
+        url: environment.keycloak.url,
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId
       },
       initOptions: {
         onLoad: 'check-sso',
