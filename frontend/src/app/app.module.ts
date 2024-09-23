@@ -46,6 +46,7 @@ import { CreateInvitationComponent } from './create-invitation/create-invitation
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import { MailSettingsComponent } from './mail-settings/mail-settings.component';
 import {environment} from "../environments/environment";
+import { DebugComponent } from './debug/debug.component';
 
 
 export const MY_FORMATS = {
@@ -111,6 +112,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     ViewInvitationsComponent,
     CreateInvitationComponent,
     MailSettingsComponent,
+    DebugComponent,
 
   ],
   imports: [

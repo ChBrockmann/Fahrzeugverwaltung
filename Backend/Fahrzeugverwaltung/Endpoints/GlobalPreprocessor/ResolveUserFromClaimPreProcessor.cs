@@ -47,13 +47,41 @@ public class ResolveUserFromClaimPreProcessor : IGlobalPreProcessor
 
     private async Task<UserModel> SyncUserFromKeycloak(HttpContext context, DatabaseContext database, string userId)
     {
-        return await GetUserFromDatabase(context, database, userId);
-    }
+        var result = await GetUserFromDatabase(context, database, userId);
 
-    private async Task<UserModel> GetUserFromDatabase(HttpContext context, DatabaseContext database, string userId)
+        if (result is null)
+        {
+            result = await CreateInDatabase(context, database, userId);
+        }
+
+        return result;
+    }
+    
+    private async Task<UserModel> CreateInDatabase(HttpContext context, DatabaseContext database, string userId)
     {
         KeycloakConfiguration keycloakConfiguration = context.Resolve<IOptionsMonitor<Configuration>>().CurrentValue.Keycloak;
-        UserModel user = await LoadUserFromKeycloakViaId(context, keycloakConfiguration.Realm, userId);
+        var keycloakUser = await LoadUserFromKeycloakViaId(context, keycloakConfiguration.Realm, userId);
+        
+        UserModel newUser = new UserModel
+        {
+            Id = UserId.New(),
+            AuthId = keycloakUser.Id,
+            Email = keycloakUser.Email,
+            Firstname = keycloakUser.FirstName,
+            Lastname = keycloakUser.LastName,
+            Roles = database.Roles.Where(r => keycloakUser.RealmRoles.Contains(r.Name)).ToList(),
+        };
+
+        await database.Users.AddAsync(newUser);
+        await database.SaveChangesAsync();
+
+        return newUser;
+    }
+
+    private async Task<UserModel?> GetUserFromDatabase(HttpContext context, DatabaseContext database, string userId)
+    {
+        KeycloakConfiguration keycloakConfiguration = context.Resolve<IOptionsMonitor<Configuration>>().CurrentValue.Keycloak;
+        UserRepresentation user = await LoadUserFromKeycloakViaId(context, keycloakConfiguration.Realm, userId);
         UserModel? databaseUser = await database.Users
             .Include(u => u.Roles)
             .Include(u => u.Organization)
@@ -62,7 +90,7 @@ public class ResolveUserFromClaimPreProcessor : IGlobalPreProcessor
         if (databaseUser is null)
         {
             _logger.Fatal("Could not get User from Database: ClaimUserId: {ClaimUserId}, Email: {Email}", userId, user.Email);
-            return null!;
+            return null;
         }
 
         databaseUser.AuthId = userId;
@@ -72,19 +100,11 @@ public class ResolveUserFromClaimPreProcessor : IGlobalPreProcessor
         return databaseUser;
     }
 
-    private async Task<UserModel> LoadUserFromKeycloakViaId(HttpContext context, string realm, string id)
+    private async Task<UserRepresentation> LoadUserFromKeycloakViaId(HttpContext context, string realm, string id)
     {
         using AuthenticationHttpClient httpClient = context.Resolve<IKeycloakClientFactory>().CreateClient();
         using UsersApi userApi = ApiClientFactory.Create<UsersApi>(httpClient);
 
-        UserRepresentation result = await userApi.GetUsersByUserIdAsync(realm, id);
-
-        return new UserModel
-        {
-            AuthId = result.Id,
-            Firstname = result.FirstName,
-            Lastname = result.LastName,
-            Email = result.Email
-        };
+        return await userApi.GetUsersByUserIdAsync(realm, id);
     }
 }

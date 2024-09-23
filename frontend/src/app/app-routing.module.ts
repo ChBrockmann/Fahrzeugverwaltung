@@ -8,6 +8,7 @@ import {ViewInvitationsComponent} from "./view-invitations/view-invitations.comp
 import {environment} from "../environments/environment";
 import {CreateInvitationComponent} from "./create-invitation/create-invitation.component";
 import {MailSettingsComponent} from "./mail-settings/mail-settings.component";
+import {DebugComponent} from "./debug/debug.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,8 @@ const routes: Routes = [
   {path: 'invitations', component: ViewInvitationsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}},
 
   {path: 'mail-settings', component: MailSettingsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}},
+
+  {path: 'howTfDidYouGetHere', component: DebugComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin]}},
 
   {path: '**', component: NotFoundComponent}
 ];

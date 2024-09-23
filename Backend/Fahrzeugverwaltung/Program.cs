@@ -36,6 +36,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateAudience = true,
             ValidateLifetime = true,
+            ValidateIssuer = true,
+            ValidIssuers = new[] { $"{configuration.Keycloak.BaseAuthServerUrl}realms/{configuration.Keycloak.Realm}" }
         };
     });
 builder.Services.AddAuthorization();
