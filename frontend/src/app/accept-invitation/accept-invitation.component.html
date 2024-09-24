@@ -20,7 +20,15 @@
 
       <mat-form-field class="input">
         <mat-label>Organization</mat-label>
-        <input matInput formControlName="organization"/>
+        <input type="text" matInput formControlName="organization" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addNewOrganization()">
+          <mat-option *ngFor="let org of filteredOrganizations" [value]="org.name">
+            {{ org.name }}
+          </mat-option>
+          <mat-option *ngIf="filteredOrganizations.length === 0" [value]="newOrganization">
+            {{ newOrganization }} (neu)
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <mat-form-field class="input">

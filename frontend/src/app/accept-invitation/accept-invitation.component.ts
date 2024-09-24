@@ -16,6 +16,8 @@ export class AcceptInvitationComponent implements OnInit{
   public isSuccessful = false;
   public errorText = '';
   public organizations: OrganizationDto[] = [];
+  public filteredOrganizations: OrganizationDto[] = [];
+  public newOrganization = '';
 
 
   constructor(private readonly invitationService: InvitationService,
@@ -36,10 +38,26 @@ export class AcceptInvitationComponent implements OnInit{
 
   async ngOnInit(): Promise<void> {
         await this.load();
+        this.acceptInvitationFormGroup.get('organization')?.valueChanges.subscribe(value => {
+          this.filterOrganizations(value);
+        });
   }
 
   async load() {
     this.organizations = (await firstValueFrom(this.organizationService.getAllOrganizationsEndpoint())).organizations ?? [];
+    this.filteredOrganizations = this.organizations;
+  }
+
+  filterOrganizations(value: string) {
+    const filterValue = value;
+    this.filteredOrganizations = this.organizations.filter(org => org.name?.includes(filterValue));
+    this.newOrganization = filterValue;
+  }
+
+  addNewOrganization() {
+    this.organizations.push({name: this.newOrganization});
+    this.acceptInvitationFormGroup.get('organization')?.setValue(this.newOrganization);
+    this.newOrganization = '';
   }
 
 

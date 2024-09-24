@@ -48,6 +48,7 @@ import { MailSettingsComponent } from './mail-settings/mail-settings.component';
 import {environment} from "../environments/environment";
 import { DebugComponent } from './debug/debug.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 export const MY_FORMATS = {
@@ -116,34 +117,35 @@ function initializeKeycloak(keycloak: KeycloakService) {
     DebugComponent,
 
   ],
-    imports: [
-        KeycloakAngularModule,
-        ApiModule.forRoot(apiConfigFactory),
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        FullCalendarModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatDialogModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatDatepickerModule,
-        MatMomentDateModule,
-        MatSelectModule,
-        MatProgressSpinnerModule,
-        MatProgressBarModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatDividerModule,
-        MatInputModule,
-        MatCardModule,
-        MatListModule,
-        MatLineModule,
-        MatCheckboxModule,
-    ],
+  imports: [
+    KeycloakAngularModule,
+    ApiModule.forRoot(apiConfigFactory),
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    FullCalendarModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatDialogModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatDividerModule,
+    MatInputModule,
+    MatCardModule,
+    MatListModule,
+    MatLineModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
+  ],
   providers: [
     {
       provide: APP_INITIALIZER,
