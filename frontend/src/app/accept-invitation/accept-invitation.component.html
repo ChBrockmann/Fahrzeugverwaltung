@@ -18,37 +18,50 @@
         <input matInput formControlName="lastname"/>
       </mat-form-field>
 
-      <mat-form-field class="input">
-        <mat-label>Organization</mat-label>
-        <input type="text" matInput formControlName="organization" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addNewOrganization()">
-          <mat-option *ngFor="let org of filteredOrganizations" [value]="org.name">
-            {{ org.name }}
-          </mat-option>
-          <mat-option *ngIf="filteredOrganizations.length === 0" [value]="newOrganization">
-            {{ newOrganization }} (neu)
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      <div>
 
-      <mat-form-field class="input">
-        <mat-label>Telefonnummer</mat-label>
-        <input matInput formControlName="phoneNumber" type="tel"/>
-      </mat-form-field>
+        <h3>Organisation</h3>
+        <p>Eine neue Organisation kann durch Eingabe eines nicht vorhandenen <br>
+          Namens erstellt werden, falls keine passenden Vorschläge <br>
+          in der Auswahlliste vorhanden sind.
+        </p>
+        <mat-form-field class="input">
+          <mat-label>Organization</mat-label>
+          <input type="text" matInput formControlName="organization" [matAutocomplete]="auto" class="input">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addNewOrganization()">
+            <mat-option *ngFor="let org of filteredOrganizations" [value]="org.name">
+              {{ org.name }}
+            </mat-option>
+            <mat-option *ngIf="filteredOrganizations.length === 0" [value]="newOrganization">
+              {{ newOrganization }} (neu)
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field class="input">
-        <mat-label>E-Mail</mat-label>
-        <input matInput formControlName="email" type="email"/>
-      </mat-form-field>
+      <div style="margin-top: 32px">
+        <h3>Kontaktdaten</h3>
+        <mat-form-field class="input">
+          <mat-label>Telefonnummer</mat-label>
+          <input matInput formControlName="phoneNumber" type="tel"/>
+        </mat-form-field>
+
+        <mat-form-field class="input">
+          <mat-label>E-Mail</mat-label>
+          <input matInput formControlName="email" type="email"/>
+        </mat-form-field>
+      </div>
 
       <mat-error *ngIf="errorText != '' && !isLoading">
-        {{errorText}}
+        {{ errorText }}
       </mat-error>
 
       <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
 
 
-      <button mat-raised-button color="primary" (click)="click()" [disabled]="!acceptInvitationFormGroup.valid || isLoading">Account erstellen</button>
+      <button mat-raised-button color="primary" (click)="click()"
+              [disabled]="!acceptInvitationFormGroup.valid || isLoading">Account erstellen
+      </button>
 
       <div *ngIf="isLoading" style="margin-top: 16px">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
