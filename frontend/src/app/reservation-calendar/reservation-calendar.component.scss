@@ -1,0 +1,28 @@
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .calendar {
+    min-height: 480px;
+  }
+
+  .hide-on-desktop {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-on-mobile {
+    display: block;
+  }
+
+  .calendar {
+    max-height: 65vh;
+  }
+
+  .hide-on-desktop {
+    display: none;
+  }
+}
+

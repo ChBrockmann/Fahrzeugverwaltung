@@ -1,6 +1,6 @@
 <h1>Reservierungen</h1>
 <!--<h3>{{authService.getUser()?.fullname ?? ""}} ({{authService.getUser()?.organization ?? ""}})</h3>-->
-<p>
+<p class="hide-on-mobile">
   Eine Reservierung kann über das Auswählen der Daten im Kalendar, oder über den Schaltfläche "Reservierung anlegen" erstellt werden. <br>
   Reservierung im Kalender anklicken, um Details anzuzeigen. <br>
   Eigene Reservierungen können dort ebenfalls gelöscht werden.
@@ -10,4 +10,11 @@
 
 <mat-divider style="margin-top: 32px; margin-bottom: 32px;"></mat-divider>
 
-<full-calendar [options]="calendarOptions" [deepChangeDetection]="true" style="max-height: 65vh"></full-calendar>
+<full-calendar [options]="calendarOptions" [deepChangeDetection]="true" class="calendar"></full-calendar>
+
+
+<p class="hide-on-desktop">
+  Eine Reservierung kann über das Auswählen der Daten im Kalendar, oder über den Schaltfläche "Reservierung anlegen" erstellt werden. <br>
+  Reservierung im Kalender anklicken, um Details anzuzeigen. <br>
+  Eigene Reservierungen können dort ebenfalls gelöscht werden.
+</p>
