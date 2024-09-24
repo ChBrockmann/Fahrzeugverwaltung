@@ -19,8 +19,6 @@ public class KeycloakClientFactory : IKeycloakClientFactory
     {
         KeycloakConfiguration configuration = _optionsMonitor.CurrentValue.Keycloak;
 
-        Console.WriteLine(configuration.ClientSecret);
-
         ClientCredentialsFlow credentials = new ClientCredentialsFlow
         {
             Realm = configuration.Realm,
