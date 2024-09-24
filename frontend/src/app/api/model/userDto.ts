@@ -14,8 +14,10 @@ import { OrganizationDto } from './organizationDto';
 
 export interface UserDto { 
     id?: string;
+    authId?: string;
     firstname?: string;
     lastname?: string;
+    email?: string;
     phoneNumber?: string;
     fullname?: string;
     organization?: OrganizationDto;

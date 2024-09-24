@@ -1,6 +1,14 @@
 <h1>Einladungen</h1>
 
-<button mat-raised-button color="primary" (click)="createInvitation()">Einladung erstellen</button>
+<div>
+  <button mat-raised-button color="primary" (click)="createInvitation()">Einladung erstellen</button>
+</div>
+<div>
+  <mat-checkbox [(ngModel)]="OnlyShowOwnInvitations" >Zeige nur Einladungen, die von mir erstellt wurden</mat-checkbox>
+  <mat-checkbox [(ngModel)]="OnlyShowNonAcceptedInvitations">Zeige nur nicht angenommene Einladungen</mat-checkbox>
+
+  <button mat-raised-button (click)="loadData()" color="accent">Filter anwenden</button>
+</div>
 
 <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
 
@@ -27,7 +35,9 @@
       <p>Die Einladung wurde nicht angenommen</p>
     </mat-card-content>
     <mat-card-content *ngIf="getStatusText(invitation) == 'Offen'">
-      <button mat-raised-button color="primary" (click)="downloadInvitationPdf(invitation.id)" [disabled]="isDisabled(invitation.id)" style="margin-top: 16px">Einladung herunterladen</button>
+      <button mat-raised-button color="primary" (click)="downloadInvitationPdf(invitation.id)"
+              [disabled]="isDisabled(invitation.id)" style="margin-top: 16px">Einladung herunterladen
+      </button>
     </mat-card-content>
   </mat-card>
 </div>

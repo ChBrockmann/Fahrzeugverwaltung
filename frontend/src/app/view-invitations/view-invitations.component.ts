@@ -5,6 +5,7 @@ import * as moment from "moment/moment";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateInvitationComponent} from "../create-invitation/create-invitation.component";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-view-invitations',
@@ -14,8 +15,11 @@ import {CreateInvitationComponent} from "../create-invitation/create-invitation.
 export class ViewInvitationsComponent implements OnInit {
 
   public getAllInvitationResponse: GetAllInvitationsResponse | undefined;
+  public OnlyShowOwnInvitations = true;
+  public OnlyShowNonAcceptedInvitations = true;
 
   constructor(private readonly invitationService: InvitationService,
+              private readonly keycloak: KeycloakService,
               public dialog: MatDialog) {
   }
 
@@ -25,6 +29,20 @@ export class ViewInvitationsComponent implements OnInit {
 
   async loadData(): Promise<void> {
     this.getAllInvitationResponse = await firstValueFrom(this.invitationService.getAllInvitationsEndpoint());
+  }
+
+  filter() : InvitationModelDto[] {
+    let invitations = this.getAllInvitationResponse?.invitations ?? [];
+    let currentUsername = this.keycloak.getUsername();
+    return invitations.filter(dto => {
+      if(this.OnlyShowOwnInvitations && dto.createdBy !== undefined && dto.createdBy?.email?.toLowerCase() == currentUsername.toLowerCase()) {
+        return false;
+      }
+      if(this.OnlyShowNonAcceptedInvitations && dto.acceptedBy !== undefined) {
+        return false;
+      }
+      return true;
+    }) ?? [];
   }
 
   createInvitation() {
