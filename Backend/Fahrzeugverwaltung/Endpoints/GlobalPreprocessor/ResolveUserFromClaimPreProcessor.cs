@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Model.Configuration;
+using Model.Organization;
 using Model.User;
 using ApiClientFactory = FS.Keycloak.RestApiClient.ClientFactory.ApiClientFactory;
 
@@ -70,6 +71,7 @@ public class ResolveUserFromClaimPreProcessor : IGlobalPreProcessor
             Firstname = keycloakUser.FirstName,
             Lastname = keycloakUser.LastName,
             Roles = database.Roles.Where(r => keycloakUser.RealmRoles.Contains(r.Name)).ToList(),
+            Organization = database.Organizations.FirstOrDefault(x => x.Id == OrganizationId.Empty) ?? new OrganizationModel()
         };
 
         await database.Users.AddAsync(newUser);
