@@ -18,7 +18,6 @@ export interface UserDto {
     firstname?: string;
     lastname?: string;
     email?: string;
-    phoneNumber?: string;
     fullname?: string;
     organization?: OrganizationDto;
 }

@@ -18,7 +18,6 @@ public class UserMappingTests : TestBase
             Firstname = input.Firstname,
             Lastname = input.Lastname,
             Organization = Mapper.Map<OrganizationDto>(input.Organization),
-            PhoneNumber = input.PhoneNumber,
             Email = input.Email
         };
 
