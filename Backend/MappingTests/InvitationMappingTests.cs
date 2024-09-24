@@ -15,6 +15,7 @@ public class InvitationMappingTests : TestBase
         {
             Id = input.Id,
             Token = input.Token,
+            Note = input.Note,
             ExpiresAt = input.ExpiresAt,
             CreatedBy = input.CreatedBy is not null ? Mapper.Map<UserDto>(input.CreatedBy) : null,
             CreatedAt = input.CreatedAt,

@@ -17,6 +17,7 @@ const routes: Routes = [
   {path: 'calendar', component: ReservationCalendarComponent, canActivate: [isAuthorizedGuard]},
 
   {path: 'invitations', component: ViewInvitationsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}},
+  {path: 'create-invitation', component: CreateInvitationComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}},
 
   {path: 'mail-settings', component: MailSettingsComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}},
 

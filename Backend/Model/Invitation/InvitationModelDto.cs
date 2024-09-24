@@ -7,6 +7,7 @@ public record InvitationModelDto
     public InvitationId Id { get; set; } = InvitationId.Empty;
 
     public string Token { get; set; } = string.Empty;
+    public string? Note { get; set; }
 
     public UserDto? CreatedBy { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.Now;

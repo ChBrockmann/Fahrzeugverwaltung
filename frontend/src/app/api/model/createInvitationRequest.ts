@@ -15,5 +15,6 @@ export interface CreateInvitationRequest {
     count: number;
     roles: Array<string>;
     expiresAfterDay: Date;
+    notes?: Array<string>;
 }
 

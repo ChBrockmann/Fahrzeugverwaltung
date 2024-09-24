@@ -44,6 +44,7 @@ public class CreateInvitationEndpoint : BaseEndpoint<CreateInvitationRequest, Em
 
         for (int i = 0; i < req.Count; i++)
         {
+            string? note = req.Notes.ElementAtOrDefault(i);
             InvitationModel invitationModel = new()
             {
                 Id = InvitationId.New(),
@@ -51,6 +52,7 @@ public class CreateInvitationEndpoint : BaseEndpoint<CreateInvitationRequest, Em
                 CreatedBy = requestingUser,
                 ExpiresAt = new DateTime(req.ExpiresAfterDay.Year, req.ExpiresAfterDay.Month, req.ExpiresAfterDay.Day, 0, 0, 0),
                 Roles = roles,
+                Note = note,
                 Token = await GenerateUniqueToken()
             };
 

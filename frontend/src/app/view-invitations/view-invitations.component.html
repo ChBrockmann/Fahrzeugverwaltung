@@ -1,7 +1,7 @@
 <h1>Einladungen</h1>
 
 <div>
-  <button mat-raised-button color="primary" (click)="createInvitation()">Einladung erstellen</button>
+  <button mat-raised-button color="primary" routerLink="/create-invitation">Einladung erstellen</button>
 </div>
 
 <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
@@ -33,10 +33,11 @@
       <mat-divider style="margin-top: 8px; margin-bottom: 8px;"></mat-divider>
     </mat-card-content>
     <mat-card-content>
-      Erstellt am: {{ invitation.createdAt | date: "dd.MM.yyyy HH:mm" }} <br>
+<!--      Erstellt am: {{ invitation.createdAt | date: "dd.MM.yyyy HH:mm" }} <br>-->
       Gültig bis: {{ invitation.expiresAt | date: "dd.MM.yyyy" }} <br>
       Erstellt von {{ invitation.createdBy?.fullname }} <br>
-      <span style="margin-bottom: 8px; margin-top: 8px">Typ: {{ getTypeText(invitation) }}</span>
+      <div style="margin-bottom: 8px; margin-top: 8px">Typ: {{ getTypeText(invitation) }}</div>
+      Notiz: {{ getNoteText(invitation) }}
 
       <mat-divider style="margin-top: 8px; margin-bottom: 8px;"></mat-divider>
     </mat-card-content>

@@ -1,6 +1,7 @@
 <div style="display: flex; justify-content: center; align-items: center">
   <div style="padding: 32px; background: #f0f0f0; border-radius: 8px;">
     <h1>Einladung erstellen</h1>
+
     <form [formGroup]="createInvitationFormGroup" class="formgroup">
       <mat-form-field class="input">
         <mat-label>Anzahl - Token</mat-label>
@@ -24,9 +25,22 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
+      <h2 style="margin-top: 16px">Notizen</h2>
+      <p>Hier können einzelne zusätzliche Notizen für jede Einladung erstellt werden</p>
+      <p>Alle Einträge sind optional und können leergelassen werden</p>
+
+      <div formArrayName="notes">
+        <div *ngFor="let note of notesFormArray.controls; let i = index">
+          <mat-form-field class="input">
+            <mat-label>Notiz {{ i + 1 }} (optional)</mat-label>
+            <input matInput [formControlName]="i" [maxLength]="30">
+          </mat-form-field>
+        </div>
+      </div>
+
       <button (click)="createInvitations()" type="submit" [disabled]="!createInvitationFormGroup.valid"
               mat-raised-button
-              color="primary">Einladung erstellen
+              color="primary">{{(createInvitationFormGroup.value.count ?? 1)}} {{(createInvitationFormGroup.value.count ?? 0) > 1 ? "Einladungen" : "Einladung" }} erstellen
       </button>
     </form>
   </div>

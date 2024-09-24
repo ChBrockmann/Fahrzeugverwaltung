@@ -15,6 +15,7 @@ import { InvitationModelDtoCreatedBy } from './invitationModelDtoCreatedBy';
 export interface InvitationModelDto { 
     id?: string;
     token?: string;
+    note?: string | null;
     createdBy?: InvitationModelDtoCreatedBy | null;
     createdAt?: Date;
     acceptedBy?: InvitationModelDtoCreatedBy | null;

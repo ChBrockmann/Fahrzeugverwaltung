@@ -12,4 +12,6 @@ public class CreateInvitationRequest
     
     [Required]
     public DateTime ExpiresAfterDay { get; set; }
+    
+    public List<string> Notes { get; set; } = new();
 }

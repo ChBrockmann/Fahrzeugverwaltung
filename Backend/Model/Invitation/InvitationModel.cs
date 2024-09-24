@@ -13,6 +13,7 @@ public record InvitationModel : IDatabaseId<InvitationId>
 
     public UserModel? CreatedBy { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public string? Note { get; set; }
 
     public UserModel? AcceptedBy { get; set; }
     public DateTime? AcceptedAt { get; set; }

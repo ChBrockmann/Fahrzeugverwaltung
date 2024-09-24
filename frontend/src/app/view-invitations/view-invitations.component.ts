@@ -39,7 +39,7 @@ export class ViewInvitationsComponent implements OnInit {
     let invitations = this.getAllInvitationResponse?.invitations ?? [];
 
     return invitations.filter(dto => {
-      if(this.OnlyShowOwnInvitations && dto.createdBy !== undefined && dto.createdBy?.authId?.toLowerCase() == this.userId?.toLowerCase()) {
+      if(this.OnlyShowOwnInvitations && dto.createdBy !== undefined && dto.createdBy?.authId?.toLowerCase() != this.userId?.toLowerCase()) {
         return false;
       }
       if(this.OnlyShowTypeOfInvitations === "Accepted" && dto.acceptedBy == null) {
@@ -50,13 +50,6 @@ export class ViewInvitationsComponent implements OnInit {
       }
       return true;
     }) ?? [];
-  }
-
-  createInvitation() {
-    this.dialog.open<CreateInvitationComponent>(CreateInvitationComponent)
-      .afterClosed().subscribe(async () => {
-        await this.loadData();
-    });
   }
 
 
@@ -75,6 +68,13 @@ export class ViewInvitationsComponent implements OnInit {
       return "Standard";
     }
     return invitation.roles.join(", ").trimEnd();
+  }
+
+  getNoteText(invitation: InvitationModelDto) : string {
+    if(invitation.note == undefined || invitation.note == "") {
+      return "(keine)";
+    }
+    return invitation.note.trimEnd();
   }
 
   loadingPdfs: string[] = [];
