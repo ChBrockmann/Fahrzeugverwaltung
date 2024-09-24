@@ -7,6 +7,8 @@ export const environment = {
   roles: {
     admin: "Admin",
     organizationAdmin: "OrganizationAdmin",
+    adminName: "Administrator",
+    organizationAdminName: "Organisations-Administrator",
   },
   keycloak: {
     realm: "fahrzeugverwaltung",

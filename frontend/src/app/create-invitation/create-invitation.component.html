@@ -11,9 +11,7 @@
       <mat-form-field class="input">
         <mat-label>Rollen</mat-label>
         <mat-select formControlName="roles">
-          <mat-option value="none">Standard-Benutzer</mat-option>
-          <mat-option value="organizationAdmin">Fahrzeugwart</mat-option>
-          <mat-option value="admin">Admin</mat-option>
+          <mat-option *ngFor="let role of availableRoles" [value]="role.value">{{role.name}}</mat-option>
         </mat-select>
       </mat-form-field>
 

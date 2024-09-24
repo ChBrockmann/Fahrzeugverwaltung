@@ -4,6 +4,8 @@ import * as moment from 'moment';
 import {InvitationService} from "../api";
 import {MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
+import {KeycloakService} from "keycloak-angular";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-create-invitation',
@@ -22,11 +24,28 @@ export class CreateInvitationComponent implements OnInit {
     notes: new FormArray([])
   });
 
+  availableRoles: {value: string, name: string}[] = [{value: "none", name: "Standard-Benutzer"}];
+
   constructor(private readonly invitationService: InvitationService,
+              private readonly keycloakService: KeycloakService,
               private readonly router: Router) {
   }
 
   ngOnInit(): void {
+    let res = this.keycloakService.getUserRoles(true, environment.keycloak.realm).map(role => role.toLowerCase());
+    let envRoles = environment.roles;
+
+    if(res.includes(envRoles.admin.toLowerCase()))
+    {
+      this.availableRoles.push({value: envRoles.organizationAdmin, name: envRoles.organizationAdminName});
+      this.availableRoles.push({value: envRoles.admin, name: envRoles.adminName});
+    }
+    if(res.includes(envRoles.organizationAdmin.toLowerCase()))
+    {
+      this.availableRoles.push({value: envRoles.organizationAdmin, name: envRoles.organizationAdminName});
+    }
+
+    console.log(res);
     this.updateNotes();
     this.createInvitationFormGroup.get('count')?.valueChanges.subscribe(() => {
       this.updateNotes();
