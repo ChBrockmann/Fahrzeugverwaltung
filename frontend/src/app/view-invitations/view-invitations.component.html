@@ -3,17 +3,30 @@
 <div>
   <button mat-raised-button color="primary" (click)="createInvitation()">Einladung erstellen</button>
 </div>
+
+<mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
+
 <div>
   <mat-checkbox [(ngModel)]="OnlyShowOwnInvitations" >Zeige nur Einladungen, die von mir erstellt wurden</mat-checkbox>
-  <mat-checkbox [(ngModel)]="OnlyShowNonAcceptedInvitations">Zeige nur nicht angenommene Einladungen</mat-checkbox>
+  <br>
 
-  <button mat-raised-button (click)="loadData()" color="accent">Filter anwenden</button>
+  <mat-form-field>
+    <mat-label>Typ</mat-label>
+    <mat-select [(ngModel)]="OnlyShowTypeOfInvitations">
+      <mat-option value="All">Alle</mat-option>
+      <mat-option value="NonAccepted">Nicht Akzeptiert</mat-option>
+      <mat-option value="Accepted">Akzeptiert</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <br>
+  <button mat-raised-button (click)="loadData()" color="accent">Daten Neuladen</button>
 </div>
 
 <mat-divider style="margin-top: 16px; margin-bottom: 16px"></mat-divider>
 
 <div *ngIf="getAllInvitationResponse != undefined; else loader" style="display: flex; flex-wrap: wrap;">
-  <mat-card *ngFor="let invitation of getAllInvitationResponse.invitations" class="invitation-card">
+  <mat-card *ngFor="let invitation of filter()" class="invitation-card">
     <mat-card-content>
       <mat-card-title>Einladungen</mat-card-title>
       <mat-card-subtitle>Status: {{ getStatusText(invitation) }}</mat-card-subtitle>

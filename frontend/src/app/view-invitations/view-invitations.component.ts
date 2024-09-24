@@ -16,7 +16,9 @@ export class ViewInvitationsComponent implements OnInit {
 
   public getAllInvitationResponse: GetAllInvitationsResponse | undefined;
   public OnlyShowOwnInvitations = true;
-  public OnlyShowNonAcceptedInvitations = true;
+  public OnlyShowTypeOfInvitations: "All" | "NonAccepted" | "Accepted" = "All";
+
+  private userId: string | undefined;
 
   constructor(private readonly invitationService: InvitationService,
               private readonly keycloak: KeycloakService,
@@ -28,17 +30,22 @@ export class ViewInvitationsComponent implements OnInit {
   }
 
   async loadData(): Promise<void> {
+    this.getAllInvitationResponse = undefined;
+    this.userId = (await this.keycloak.loadUserProfile()).id;
     this.getAllInvitationResponse = await firstValueFrom(this.invitationService.getAllInvitationsEndpoint());
   }
 
-  filter() : InvitationModelDto[] {
+  filter(): InvitationModelDto[] {
     let invitations = this.getAllInvitationResponse?.invitations ?? [];
-    let currentUsername = this.keycloak.getUsername();
+
     return invitations.filter(dto => {
-      if(this.OnlyShowOwnInvitations && dto.createdBy !== undefined && dto.createdBy?.email?.toLowerCase() == currentUsername.toLowerCase()) {
+      if(this.OnlyShowOwnInvitations && dto.createdBy !== undefined && dto.createdBy?.authId?.toLowerCase() == this.userId?.toLowerCase()) {
         return false;
       }
-      if(this.OnlyShowNonAcceptedInvitations && dto.acceptedBy !== undefined) {
+      if(this.OnlyShowTypeOfInvitations === "Accepted" && dto.acceptedBy == null) {
+        return false;
+      }
+      if(this.OnlyShowTypeOfInvitations === "NonAccepted" && dto.acceptedBy != null) {
         return false;
       }
       return true;
