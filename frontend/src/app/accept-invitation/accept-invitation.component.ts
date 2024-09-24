@@ -88,21 +88,13 @@ export class AcceptInvitationComponent implements OnInit{
   }
 
   handleError(error: HttpErrorResponse) {
+    this.errorText = "";
     if (error.status == 500) {
-      this.errorText = "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es später erneut.";
+      this.errorText = "Es ist ein unbekannter Fehler aufgetreten. Bitte versuchen Sie es später erneut.\n" + error.error.errors;
     } else {
       let errors = error.error.errors;
-      if (errors?.passwordTooShort) {
-        this.errorText = this.getGermanErrorText(errors.passwordTooShort[0]);
-      }
-      if(errors?.passwordRequiresLower) {
-        this.errorText = this.getGermanErrorText(errors.passwordRequiresLower[0]);
-      }
-      if(errors?.passwordRequiresUpper) {
-        this.errorText = this.getGermanErrorText(errors.passwordRequiresUpper[0]);
-      }
-      if(errors?.passwordRequiresDigit) {
-        this.errorText = this.getGermanErrorText(errors.passwordRequiresDigit[0]);
+      if(errors?.email) {
+        this.errorText = this.getGermanErrorText(errors.email[0]);
       }
       if(errors?.token) {
         this.errorText = this.getGermanErrorText(errors.token[0]);

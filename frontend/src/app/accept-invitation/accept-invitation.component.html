@@ -50,7 +50,7 @@
 
       <button mat-raised-button color="primary" (click)="click()" [disabled]="!acceptInvitationFormGroup.valid || isLoading">Account erstellen</button>
 
-      <div *ngIF="isLoading">
+      <div *ngIf="isLoading" style="margin-top: 16px">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         Account wird erstellt...
       </div>
