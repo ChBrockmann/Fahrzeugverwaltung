@@ -4,9 +4,7 @@ public record Configuration
 {
     public string RootOrganizationName { get; set; } = string.Empty;
     public string DatabaseConnectionString { get; set; } = string.Empty;
-
-    public int CookieExpirationInHours { get; set; }
-
+    
     public bool AuthenticationEnabled { get; set; }
 
     public ReservationRestrictions ReservationRestrictions { get; set; } = new();
