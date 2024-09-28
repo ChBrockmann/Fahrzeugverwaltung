@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserDto } from './userDto';
 
 
 export interface OrganizationDto { 
-    id?: string;
-    name?: string;
-    description?: string;
+    id: string;
+    name: string;
+    description: string;
+    users: Array<UserDto>;
 }
 

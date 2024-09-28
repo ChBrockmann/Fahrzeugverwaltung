@@ -13,6 +13,6 @@ import { OrganizationDto } from './organizationDto';
 
 
 export interface GetAllOrganizationsResponse { 
-    organizations?: Array<OrganizationDto>;
+    organizations: Array<OrganizationDto>;
 }
 

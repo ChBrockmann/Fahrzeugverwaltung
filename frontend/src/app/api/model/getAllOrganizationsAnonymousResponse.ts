@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OrganizationBasicResponse } from './organizationBasicResponse';
 
 
-export interface RegisterRequest { 
-    email?: string;
-    password?: string;
+export interface GetAllOrganizationsAnonymousResponse { 
+    organizations?: Array<OrganizationBasicResponse>;
 }
 

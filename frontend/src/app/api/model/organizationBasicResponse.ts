@@ -11,7 +11,9 @@
  */
 
 
-export interface RefreshRequest { 
-    refreshToken?: string;
+export interface OrganizationBasicResponse { 
+    id?: string;
+    name?: string;
+    description?: string;
 }
 

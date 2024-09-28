@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, NonNullableFormBuilder, Validators} from "@angular/forms";
-import {InvitationService, OrganizationDto, OrganizationService} from "../api";
+import {InvitationService, OrganizationBasicResponse, OrganizationDto, OrganizationService} from "../api";
 import {firstValueFrom} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -15,8 +15,8 @@ export class AcceptInvitationComponent implements OnInit{
   public isLoading = false;
   public isSuccessful = false;
   public errorText = '';
-  public organizations: OrganizationDto[] = [];
-  public filteredOrganizations: OrganizationDto[] = [];
+  public organizations: OrganizationBasicResponse[] = [];
+  public filteredOrganizations: OrganizationBasicResponse[] = [];
   public newOrganization = '';
 
 
@@ -44,7 +44,7 @@ export class AcceptInvitationComponent implements OnInit{
   }
 
   async load() {
-    this.organizations = (await firstValueFrom(this.organizationService.getAllOrganizationsEndpoint())).organizations ?? [];
+    this.organizations = (await firstValueFrom(this.organizationService.getAllOrganizationsAnonmyousEndpoint())).organizations ?? [];
     this.filteredOrganizations = this.organizations;
   }
 

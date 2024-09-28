@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -35,9 +35,6 @@ import {MatInputModule} from "@angular/material/input";
 import {isAuthorizedGuard} from "./authentication/is-authorized.guard";
 import { SetStatusForReservationActiongroupComponent } from './set-status-for-reservation-actiongroup/set-status-for-reservation-actiongroup.component';
 import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
-import {
-  AuthenticationHttpInterceptor
-} from "./authentication/authentication-http-interceptor/authentication-http-interceptor";
 import { NotFoundComponent } from './not-found/not-found.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
@@ -49,6 +46,7 @@ import {environment} from "../environments/environment";
 import { DebugComponent } from './debug/debug.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {GlobalErrorHandler} from "./services/global-error-handler/global-error-handler.service";
 
 
 export const MY_FORMATS = {
@@ -161,6 +159,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
     {
       provide: MAT_DATE_FORMATS,
       useValue: MY_FORMATS
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
     }
   ],
   bootstrap: [AppComponent]

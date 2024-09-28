@@ -7,6 +7,7 @@ import { InvitationService } from './api/invitation.service';
 import { OrganizationService } from './api/organization.service';
 import { ReservationService } from './api/reservation.service';
 import { TestService } from './api/test.service';
+import { UnauthorizedService } from './api/unauthorized.service';
 import { UserService } from './api/user.service';
 import { VehicleService } from './api/vehicle.service';
 

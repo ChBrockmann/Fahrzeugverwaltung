@@ -7,6 +7,7 @@ api/invitation.service.ts
 api/organization.service.ts
 api/reservation.service.ts
 api/test.service.ts
+api/unauthorized.service.ts
 api/user.service.ts
 api/vehicle.service.ts
 configuration.ts
@@ -20,6 +21,7 @@ model/checkAvailabilityForVehicleAndTimespanResponse.ts
 model/createInvitationRequest.ts
 model/createReservationRequest.ts
 model/getAllInvitationsResponse.ts
+model/getAllOrganizationsAnonymousResponse.ts
 model/getAllOrganizationsResponse.ts
 model/getAllVehicleResponse.ts
 model/getOrganizationAdminResponse.ts
@@ -32,6 +34,7 @@ model/invitationModelDto.ts
 model/invitationModelDtoCreatedBy.ts
 model/models.ts
 model/organizationAdminResponse.ts
+model/organizationBasicResponse.ts
 model/organizationDto.ts
 model/reservationModelDto.ts
 model/reservationStatusEnum.ts

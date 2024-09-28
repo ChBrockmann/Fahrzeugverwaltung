@@ -25,6 +25,7 @@ public static class FastEndpointsRegistration
                 };
 
                 opt.Serializer.Options.Converters.Add(new JsonStringEnumConverter());
+                opt.Serializer.Options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
     }
 }

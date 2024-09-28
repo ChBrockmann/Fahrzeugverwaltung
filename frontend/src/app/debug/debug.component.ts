@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
-import {TestService} from "../api";
+import {TestService, UnauthorizedService} from "../api";
 
 @Component({
   selector: 'app-debug',
@@ -10,7 +10,8 @@ import {TestService} from "../api";
 export class DebugComponent {
 
   constructor(private readonly keycloakService: KeycloakService,
-              private readonly testEndpoint: TestService) {
+              private readonly testEndpoint: TestService,
+              private readonly unauthorizedService: UnauthorizedService) {
   }
 
   profile() {
@@ -27,6 +28,12 @@ export class DebugComponent {
 
   testEp() {
     this.testEndpoint.testEndpoint().subscribe(response => {
+      console.log(response);
+    });
+  }
+
+  unauthorized() {
+    this.unauthorizedService.unAuthorizedEndpoint().subscribe(response => {
       console.log(response);
     });
   }

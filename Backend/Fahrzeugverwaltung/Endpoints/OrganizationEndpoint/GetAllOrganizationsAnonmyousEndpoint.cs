@@ -1,16 +1,15 @@
 ﻿using DataAccess.OrganizationService;
-using Model;
 using Model.Organization;
 using Model.Organization.Responses;
 
 namespace Fahrzeugverwaltung.Endpoints.OrganizationEndpoint;
 
-public class GetAllOrganizationsEndpoint : Endpoint<EmptyRequest, GetAllOrganizationsResponse>
+public class GetAllOrganizationsAnonmyousEndpoint : Endpoint<EmptyRequest, GetAllOrganizationsAnonymousResponse>
 {
     private readonly IOrganizationService _organizationService;
     private readonly IMapper _mapper;
-    
-    public GetAllOrganizationsEndpoint(IOrganizationService organizationService, IMapper mapper)
+
+    public GetAllOrganizationsAnonmyousEndpoint(IOrganizationService organizationService, IMapper mapper)
     {
         _organizationService = organizationService;
         _mapper = mapper;
@@ -18,17 +17,17 @@ public class GetAllOrganizationsEndpoint : Endpoint<EmptyRequest, GetAllOrganiza
 
     public override void Configure()
     {
-        Get("organization");
-        Roles(SecurityConfiguration.OrganizationAdminRoleName, SecurityConfiguration.AdminRoleName);
+        Get("organization/anonymous");
+        AllowAnonymous();
     }
 
     public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
     {
         IEnumerable<OrganizationModel> organizations = await _organizationService.Get();
 
-        await SendOkAsync(new GetAllOrganizationsResponse
+        await SendOkAsync(new GetAllOrganizationsAnonymousResponse
         {
-            Organizations = _mapper.Map<List<OrganizationDto>>(organizations)
+            Organizations = _mapper.Map<List<OrganizationBasicResponse>>(organizations)
         }, ct);
     }
 }
