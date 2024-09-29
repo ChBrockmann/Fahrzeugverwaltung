@@ -23,6 +23,13 @@ const routes: Routes = [
 
   {path: 'howTfDidYouGetHere', component: DebugComponent, canActivate: [isAuthorizedGuard, hasRoleGuard], data: {roles: [environment.roles.admin]}},
 
+  {
+    path: 'organization',
+    loadChildren: () => import('./organization/organization/organization.module').then(m => m.OrganizationModule),
+    canActivate: [isAuthorizedGuard, hasRoleGuard],
+    data: {roles: [environment.roles.admin, environment.roles.organizationAdmin]}
+  },
+
   {path: '**', component: NotFoundComponent}
 ];
 
