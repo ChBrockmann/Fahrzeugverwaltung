@@ -1,16 +1,15 @@
-﻿using BusinessLogic.Validators;
-using BusinessLogic.Validators.Reservation;
+﻿using BusinessLogic.Validators.Reservation;
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
-using DataAccess.LogBookEntryService;
+using DataAccess.OrganizationService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
 using DataAccess.ReservationStatusService;
+using DataAccess.RoleService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Fahrzeugverwaltung.Endpoints;
-using Fahrzeugverwaltung.Endpoints.tmp;
 using Fahrzeugverwaltung.Keycloak;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
@@ -43,7 +42,7 @@ public static class ServiceRegistration
 
     public static void RegisterAllServices(this IServiceCollection services, ILogger logger, Configuration configuration)
     {
-        QuestPDF.Settings.License = LicenseType.Community;
+        Settings.License = LicenseType.Community;
         services.AddFastEndpoints();
         services.SwaggerDocument(opt =>
         {
@@ -81,6 +80,7 @@ public static class ServiceRegistration
         services.AddScoped<VehicleValidator>();
 
 
+        RabbitMqConfiguration rabbitMqConfiguration = configuration.RabbitMq;
         services.AddMassTransit(x =>
         {
             x.AddConsumers(typeof(TestEndpoint).Assembly);
@@ -96,6 +96,5 @@ public static class ServiceRegistration
                 cfg.ConfigureEndpoints(context);
             });
         });
-        services.AddHostedService<TestWorker>();
     }
 }

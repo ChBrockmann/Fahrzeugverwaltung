@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Model.Invitation;
+using Model.LogBook;
 using Model.Organization;
 using Model.Reservation;
 using Model.ReservationStatus;
@@ -20,6 +21,7 @@ public class DatabaseContext : DbContext
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<ReservationStatusModel> ReservationStatusModels { get; set; } = null!;
     public DbSet<InvitationModel> InvitationModels { get; set; } = null!;
+    public DbSet<LogBookEntry> LogBookEntries { get; set; } = null!;
     public DbSet<OrganizationModel> Organizations { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -87,5 +89,18 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Role>()
             .HasKey(x => x.Name);
+
+        modelBuilder.Entity<LogBookEntry>()
+            .Property(x => x.Id)
+            .HasConversion(x => x.Value, x => new LogBookEntryId(x));
+        modelBuilder.Entity<LogBookEntry>()
+            .HasOne(x => x.CreatedBy)
+            .WithMany();
+        modelBuilder.Entity<LogBookEntry>()
+            .HasOne(x => x.AssociatedReservation)
+            .WithMany();
+        modelBuilder.Entity<LogBookEntry>()
+            .HasOne(x => x.AssociatedVehicle)
+            .WithMany();
     }
 }

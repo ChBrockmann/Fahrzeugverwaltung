@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Contracts;
+﻿using Contracts;
 using DataAccess.LogBookEntryService;
 using DataAccess.ReservationService;
 using DataAccess.UserService;
@@ -7,11 +6,10 @@ using MassTransit;
 using Model.LogBook;
 using Model.LogBook.Requests;
 using Model.Reservation;
-using Model.User;
 
 namespace Fahrzeugverwaltung.Endpoints.LogBookEntryEndpoint;
 
-public class CreateLogBookEntryWithReservationEndpoint : Endpoint<CreateLogBookRequest, EmptyResponse>
+public class CreateLogBookEntryWithReservationEndpoint : BaseEndpoint<CreateLogBookRequest, EmptyResponse>
 {
     private readonly ILogger _logger;
     private readonly IPublishEndpoint _publishEndpoint;
@@ -38,7 +36,6 @@ public class CreateLogBookEntryWithReservationEndpoint : Endpoint<CreateLogBookR
     public override async Task HandleAsync(CreateLogBookRequest req, CancellationToken ct)
     {
         _logger.Information("Creating log book entry");
-        UserModel requestingUser = await GetUserFromClaim(ct);
 
         using MemoryStream memoryStream = new();
         await req.ImageFile.CopyToAsync(memoryStream, ct);
@@ -57,7 +54,7 @@ public class CreateLogBookEntryWithReservationEndpoint : Endpoint<CreateLogBookR
             AssociatedVehicle = reservation.VehicleReserved,
             Id = LogBookEntryId.New(),
             CreatedAt = DateTime.Now,
-            CreatedBy = requestingUser,
+            CreatedBy = UserFromContext,
             Description = req.Description
         });
 
@@ -71,26 +68,5 @@ public class CreateLogBookEntryWithReservationEndpoint : Endpoint<CreateLogBookR
         await _publishEndpoint.Publish(logBookEntryCreated, ct);
 
         await SendOkAsync(ct);
-    }
-
-    private async Task<UserModel> GetUserFromClaim(CancellationToken ct)
-    {
-        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (claimUserId is null)
-        {
-            await SendUnauthorizedAsync(ct);
-            ThrowError("No token provided");
-            return null!;
-        }
-
-        Guid userId = Guid.Parse(claimUserId);
-        UserModel? requestingUser = await _userService.Get(userId);
-        if (requestingUser is null)
-        {
-            _logger.Warning("Could not find User {UserId}", userId);
-            ThrowError("User not found");
-        }
-
-        return requestingUser;
     }
 }

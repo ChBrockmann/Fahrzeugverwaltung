@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using DataAccess.LogBookEntryService;
+﻿using DataAccess.LogBookEntryService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
 using Model.LogBook;
@@ -9,7 +8,7 @@ using Model.Vehicle;
 
 namespace Fahrzeugverwaltung.Endpoints.LogBookEntryEndpoint;
 
-public class CreateManualLogBookEntry : Endpoint<CreateManualLogBookEntryRequest, LogBookEntryDto>
+public class CreateManualLogBookEntry : BaseEndpoint<CreateManualLogBookEntryRequest, LogBookEntryDto>
 {
     private readonly ILogBookEntryService _logBookEntryService;
     private readonly IMapper _mapper;
@@ -33,7 +32,7 @@ public class CreateManualLogBookEntry : Endpoint<CreateManualLogBookEntryRequest
 
     public override async Task HandleAsync(CreateManualLogBookEntryRequest req, CancellationToken ct)
     {
-        UserModel requestingUser = await GetUserFromClaim(ct);
+        UserModel requestingUser = UserFromContext;
         if (requestingUser == null) throw new ArgumentNullException(nameof(requestingUser));
 
         VehicleModel? associatedVehicle = await _vehicleService.Get(req.VehicleModelId);
@@ -55,26 +54,5 @@ public class CreateManualLogBookEntry : Endpoint<CreateManualLogBookEntryRequest
         };
 
         await SendOkAsync(_mapper.Map<LogBookEntryDto>(await _logBookEntryService.Create(logBookEntry)), ct);
-    }
-
-    private async Task<UserModel> GetUserFromClaim(CancellationToken ct)
-    {
-        string? claimUserId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (claimUserId is null)
-        {
-            await SendUnauthorizedAsync(ct);
-            ThrowError("No token provided");
-            return null!;
-        }
-
-        Guid userId = Guid.Parse(claimUserId);
-        UserModel? requestingUser = await _userService.Get(userId);
-        if (requestingUser is null)
-        {
-            _logger.Warning("Could not find User {UserId}", userId);
-            ThrowError("User not found");
-        }
-
-        return requestingUser;
     }
 }

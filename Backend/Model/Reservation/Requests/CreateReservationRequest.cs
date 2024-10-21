@@ -16,4 +16,10 @@ public record CreateReservationRequest
 
     [Required]
     public VehicleModelId Vehicle { get; set; }
+
+    [Required]
+    public string DestinationAdress { get; set; } = string.Empty;
+
+    [Required]
+    public string OriginAdress { get; set; } = string.Empty;
 }
