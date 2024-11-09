@@ -1,16 +1,26 @@
-﻿using Mailing;
-using MassTransit;
+﻿using MassTransit;
+using Model.Configuration;
 
 namespace Fahrzeugverwaltung.Startup;
 
 public static class MassTransitRegistration
 {
-    public static void RegisterMassTransit(this IServiceCollection services)
+    public static void RegisterMassTransit(this IServiceCollection services, Configuration configuration)
     {
+        RabbitMqConfiguration rabbitMqConfiguration = configuration.RabbitMq;
+        
         services.AddMassTransit(x =>
         {
-            x.AddConsumers(typeof(IAssemblyMarker).Assembly);
-            x.UsingInMemory((context, cfg) => { cfg.ConfigureEndpoints(context); });
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(rabbitMqConfiguration.Host, rabbitMqConfiguration.Port, rabbitMqConfiguration.VirtualHost, c =>
+                {
+                    c.Username(rabbitMqConfiguration.Username);
+                    c.Password(rabbitMqConfiguration.Password);
+                });
+
+                cfg.ConfigureEndpoints(context);
+            });
         });
     }
 }

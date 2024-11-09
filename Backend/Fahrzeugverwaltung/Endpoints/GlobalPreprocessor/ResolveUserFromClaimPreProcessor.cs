@@ -33,6 +33,8 @@ public class ResolveUserFromClaimPreProcessor : IGlobalPreProcessor
         Claim? userIdClaim = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
         if (userIdClaim == null) throw new InvalidOperationException("User ID claim not found");
 
+        _logger.Information("Resolving User from Claim: {ClaimUserId}", userIdClaim.Value);
+
         string userId = userIdClaim.Value;
 
         DatabaseContext database = context.HttpContext.Resolve<DatabaseContext>();

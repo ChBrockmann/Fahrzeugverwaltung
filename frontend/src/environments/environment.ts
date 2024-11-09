@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  defaults: {
+    originAdress: "Winterberg Schulstraße 10"
+  },
   roles: {
     admin: "Admin",
     organizationAdmin: "OrganizationAdmin",

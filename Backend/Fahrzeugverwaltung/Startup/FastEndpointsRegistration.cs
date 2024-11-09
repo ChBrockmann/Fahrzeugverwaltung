@@ -21,6 +21,7 @@ public static class FastEndpointsRegistration
                     {
                         endpointConfigurator.AllowAnonymous();
                         endpointConfigurator.PreProcessor<AddUserClaimToRequestPreProcessor>(Order.Before);
+                        
                     }
                 };
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240924182419_Added note to invitation")]
-    partial class Addednotetoinvitation
+    [Migration("20241109141523_Initial - MySQL")]
+    partial class InitialMySQL
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,43 @@ namespace DataAccess.Migrations
                     b.ToTable("InvitationModels");
                 });
 
+            modelBuilder.Entity("Model.LogBook.LogBookEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AssociatedReservationId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AssociatedVehicleId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("CurrentNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("EndMileageInKm")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssociatedReservationId");
+
+                    b.HasIndex("AssociatedVehicleId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("LogBookEntries");
+                });
+
             modelBuilder.Entity("Model.Organization.OrganizationModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -99,8 +136,16 @@ namespace DataAccess.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("DestinationAdress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateOnly>("EndDateInclusive")
                         .HasColumnType("date");
+
+                    b.Property<string>("OriginAdress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Reason")
                         .IsRequired()
@@ -272,6 +317,31 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CreatedById");
 
                     b.Navigation("AcceptedBy");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("Model.LogBook.LogBookEntry", b =>
+                {
+                    b.HasOne("Model.Reservation.ReservationModel", "AssociatedReservation")
+                        .WithMany()
+                        .HasForeignKey("AssociatedReservationId");
+
+                    b.HasOne("Model.Vehicle.VehicleModel", "AssociatedVehicle")
+                        .WithMany()
+                        .HasForeignKey("AssociatedVehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.User.UserModel", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssociatedReservation");
+
+                    b.Navigation("AssociatedVehicle");
 
                     b.Navigation("CreatedBy");
                 });

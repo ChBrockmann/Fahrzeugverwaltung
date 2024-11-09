@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/ical.service.ts
 api/invitation.service.ts
+api/logbookentry.service.ts
 api/organization.service.ts
 api/reservation.service.ts
 api/test.service.ts
@@ -19,8 +20,10 @@ model/addStatusToReservationRequest.ts
 model/allUserResponse.ts
 model/checkAvailabilityForVehicleAndTimespanResponse.ts
 model/createInvitationRequest.ts
+model/createManualLogBookEntryRequest.ts
 model/createReservationRequest.ts
 model/getAllInvitationsResponse.ts
+model/getAllLogBookEntriesForVehicleResponse.ts
 model/getAllOrganizationsAnonymousResponse.ts
 model/getAllOrganizationsResponse.ts
 model/getAllVehicleResponse.ts
@@ -32,6 +35,7 @@ model/getVehicleStatusResponse.ts
 model/getVehicleStatusResponseCurrentReservation.ts
 model/invitationModelDto.ts
 model/invitationModelDtoCreatedBy.ts
+model/logBookEntryDto.ts
 model/models.ts
 model/organizationAdminResponse.ts
 model/organizationBasicResponse.ts

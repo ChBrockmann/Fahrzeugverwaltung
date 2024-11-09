@@ -28,6 +28,18 @@
         <input matInput formControlName="reason"/>
     </mat-form-field>
 
+  <div>
+    <mat-form-field style="margin-top: 32px; display: block">
+      <mat-label>Start-Adresse</mat-label>
+      <input matInput formControlName="originAdress" />
+    </mat-form-field>
+
+    <mat-form-field style="margin-top: 32px; display: block">
+      <mat-label>Ziel-Adresse</mat-label>
+      <input matInput formControlName="destinationAdress" />
+    </mat-form-field>
+  </div>
+
     <div style="display: block; margin-top: 32px">
         <h3>Verfügbarkeit</h3>
         <ng-container *ngIf="createReservationFormGroup.status == 'PENDING'">

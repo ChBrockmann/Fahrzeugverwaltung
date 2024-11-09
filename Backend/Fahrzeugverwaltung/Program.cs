@@ -23,7 +23,7 @@ else
     logger.Warning("Authentication disabled");
 }
 
-builder.Services.RegisterMassTransit();
+builder.Services.RegisterMassTransit(configuration);
 builder.Services.RegisterAllServices(logger, configuration);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

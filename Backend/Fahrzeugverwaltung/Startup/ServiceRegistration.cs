@@ -2,6 +2,7 @@
 using BusinessLogic.Validators.Vehicle;
 using DataAccess;
 using DataAccess.InvitationService;
+using DataAccess.LogBookEntryService;
 using DataAccess.OrganizationService;
 using DataAccess.Provider.DateTimeProvider;
 using DataAccess.ReservationService;
@@ -9,14 +10,11 @@ using DataAccess.ReservationStatusService;
 using DataAccess.RoleService;
 using DataAccess.UserService;
 using DataAccess.VehicleService;
-using Fahrzeugverwaltung.Endpoints;
 using Fahrzeugverwaltung.Keycloak;
 using Fahrzeugverwaltung.Validators.Reservation;
 using FastEndpoints.Swagger;
 using MapsterMapper;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Model.Configuration;
 using Model.Mapping;
 using QuestPDF;
 using QuestPDF.Infrastructure;
@@ -71,6 +69,7 @@ public static class ServiceRegistration
         services.AddScoped<IInvitationService, InvitationService>();
         services.AddScoped<IOrganizationService, OrganizationService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<ILogBookEntryService, LogBookEntryService>();
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
@@ -78,23 +77,5 @@ public static class ServiceRegistration
 
         services.AddScoped<CreateReservationValidatorLogic>();
         services.AddScoped<VehicleValidator>();
-
-
-        RabbitMqConfiguration rabbitMqConfiguration = configuration.RabbitMq;
-        services.AddMassTransit(x =>
-        {
-            x.AddConsumers(typeof(TestEndpoint).Assembly);
-            
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(rabbitMqConfiguration.Host, rabbitMqConfiguration.Port, rabbitMqConfiguration.VirtualHost, c =>
-                {
-                    c.Username("user");
-                    c.Password("password");
-                });
-                
-                cfg.ConfigureEndpoints(context);
-            });
-        });
     }
 }

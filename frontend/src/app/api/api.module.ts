@@ -2,13 +2,13 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { DefaultService } from './api/default.service';
 import { IcalService } from './api/ical.service';
-import { IdentityService } from './api/identity.service';
 import { InvitationService } from './api/invitation.service';
 import { LogbookentryService } from './api/logbookentry.service';
+import { OrganizationService } from './api/organization.service';
 import { ReservationService } from './api/reservation.service';
 import { TestService } from './api/test.service';
+import { UnauthorizedService } from './api/unauthorized.service';
 import { UserService } from './api/user.service';
 import { VehicleService } from './api/vehicle.service';
 
