@@ -1,10 +1,12 @@
-﻿using DataAccess;
+﻿using Contracts;
+using DataAccess;
 using DataAccess.UserService;
 using Fahrzeugverwaltung.Keycloak;
 using FS.Keycloak.RestApiClient.Api;
 using FS.Keycloak.RestApiClient.Authentication.ClientFactory;
 using FS.Keycloak.RestApiClient.Authentication.Flow;
 using FS.Keycloak.RestApiClient.ClientFactory;
+using MassTransit;
 
 namespace Fahrzeugverwaltung.Endpoints;
 
@@ -14,13 +16,15 @@ public class TestEndpoint : BaseEndpoint<EmptyRequest, EmptyResponse>
     private readonly IUserService _userService;
     private DatabaseContext _database;
     private IKeycloakClientFactory _keycloakClientFactory;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public TestEndpoint(ILogger logger, DatabaseContext database, IUserService userService, IKeycloakClientFactory keycloakClientFactory)
+    public TestEndpoint(ILogger logger, DatabaseContext database, IUserService userService, IKeycloakClientFactory keycloakClientFactory, IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _database = database;
         _userService = userService;
         _keycloakClientFactory = keycloakClientFactory;
+        _publishEndpoint = publishEndpoint;
     }
 
     public override void Configure()
@@ -42,14 +46,19 @@ public class TestEndpoint : BaseEndpoint<EmptyRequest, EmptyResponse>
         _logger.Information("User: {User}", User.IsInRole("Fahrzeugwart"));
         _logger.Information("User: {User}", User.IsInRole("manage-account"));
 
-        
-        
-        var users = await usersApi.GetUsersAsync("fahrzeugverwaltung", cancellationToken: ct);
-
-        foreach (var user in users)
+        await _publishEndpoint.Publish(new NotifyUserEvent()
         {
-            _logger.Information("User: {User} {UserId}", user.Username, user.Id);
-        }
+            Message = "Test Message"
+        }, ct);
+
+        
+        
+        // var users = await usersApi.GetUsersAsync("fahrzeugverwaltung", cancellationToken: ct);
+        //
+        // foreach (var user in users)
+        // {
+        //     _logger.Information("User: {User} {UserId}", user.Username, user.Id);
+        // }
         
         
         

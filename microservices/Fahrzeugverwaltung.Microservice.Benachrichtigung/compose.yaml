@@ -1,0 +1,12 @@
+﻿services:
+  benachrichtigungsservice:
+    image: benachrichtigungsservice
+    build:
+      context: .
+      dockerfile: BenachrichtigungsService/Dockerfile
+
+  fahrzeugverwaltung.microservice.benachrichtigung.service:
+    image: fahrzeugverwaltung.microservice.benachrichtigung.service
+    build:
+      context: .
+      dockerfile: Fahrzeugverwaltung.Microservice.Benachrichtigung.Service/Dockerfile

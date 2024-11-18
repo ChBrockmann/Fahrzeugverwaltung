@@ -14,7 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mailing", "Mailing\Mailing.csproj", "{C1F12EC4-AD34-45A7-A8AA-72A11EF34F94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "shared\Contracts\Contracts.csproj", "{0C77CC7C-E598-40ED-968F-55AAB9013B59}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{FCA397A0-3606-4D82-BEA4-2A0803978717}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "shared\Contracts\Contracts.csproj", "{F10155B2-19DA-479F-9733-A3111D86B687}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,9 +52,12 @@ Global
 		{C1F12EC4-AD34-45A7-A8AA-72A11EF34F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1F12EC4-AD34-45A7-A8AA-72A11EF34F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1F12EC4-AD34-45A7-A8AA-72A11EF34F94}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C77CC7C-E598-40ED-968F-55AAB9013B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C77CC7C-E598-40ED-968F-55AAB9013B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C77CC7C-E598-40ED-968F-55AAB9013B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C77CC7C-E598-40ED-968F-55AAB9013B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F10155B2-19DA-479F-9733-A3111D86B687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F10155B2-19DA-479F-9733-A3111D86B687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F10155B2-19DA-479F-9733-A3111D86B687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F10155B2-19DA-479F-9733-A3111D86B687}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F10155B2-19DA-479F-9733-A3111D86B687} = {FCA397A0-3606-4D82-BEA4-2A0803978717}
 	EndGlobalSection
 EndGlobal
