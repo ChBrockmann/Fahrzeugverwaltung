@@ -73,5 +73,5 @@ Fahrzeugverwaltung is a comprehensive vehicle management system designed to stre
 
 1. Build the docker image:
    ```bash
-  docker build -t fahrzeugverwaltung-frontend .
+   docker build -t fahrzeugverwaltung-frontend .
    ```
