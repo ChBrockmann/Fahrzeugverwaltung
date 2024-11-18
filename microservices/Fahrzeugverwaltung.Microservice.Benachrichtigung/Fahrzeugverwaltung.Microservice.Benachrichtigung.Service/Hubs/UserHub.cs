@@ -13,7 +13,7 @@ public class UserHub : Hub
 
     public override Task OnConnectedAsync()
     {
-        _logger.LogInformation("Connected");    
+        _logger.Information("Connected");    
         return base.OnConnectedAsync();
     }
     

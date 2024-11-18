@@ -17,8 +17,8 @@ public class NotifyUserConsumer : IConsumer<NotifyUserEvent>
         var user = context.Message.UserId;
         var message = context.Message.Message;
         
-        _logger.LogInformation("UserId: {UserId} Message: {Message}", user, message);
+        _logger.Information("UserId: {UserId} Message: {Message}", user, message);
 
-        await context.Publish<NotifyUserEvent>(new { UserId = user, Message = message });
+        // await context.Publish<NotifyUserEvent>(new { UserId = user, Message = message });
     }
 }
