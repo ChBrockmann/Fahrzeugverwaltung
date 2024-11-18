@@ -27,6 +27,16 @@ Fahrzeugverwaltung is a comprehensive vehicle management system designed to stre
 
 ---
 
+## 📈 Roadmap
+- 📱 **Mobile-App**: Make the frontend a PWA
+- 🔔 **Advanced Notifications**: SignalR-Messaging to the frontend and the PWA
+- 📊 **Statistics**: Provide usage-statistics and trends for administrators
+- 🛠 **Setup**: Guide the user through the setup process
+
+These features will be implemented after I complete my bachelor thesis. In my thesis I am evaluating event-driven microservice-architecture using the RabbitMQ Eventbroker. Checkout the "BA" branch!
+
+---
+
 ## ⚙️ Technologies & Tools
 
 ### Backend
@@ -53,6 +63,17 @@ Fahrzeugverwaltung is a comprehensive vehicle management system designed to stre
 - **Node.js** (v16+)
 - **Docker**
 
+### Infrastructure Setup
+
+1. Execute the docker file which sets up:
+  - MySQL Database
+  - Keycloak
+
+  ```bash
+  cd docker
+  docker compose up -d
+  ```
+
 ### Backend Setup
 
 1. Navigate to the backend directory:
@@ -75,3 +96,8 @@ Fahrzeugverwaltung is a comprehensive vehicle management system designed to stre
    ```bash
    docker build -t fahrzeugverwaltung-frontend .
    ```
+
+
+# 🤝 Contributions
+
+Contributions and suggestions are welcome! Please use the GitHub issue tracker to report bugs or request features.
