@@ -1,53 +1,74 @@
-import {Component} from '@angular/core';
-import {Router} from "@angular/router";
-import {TestService} from "./api";
-import {environment} from "../environments/environment";
-import {KeycloakService} from "keycloak-angular";
-import {Title} from "@angular/platform-browser";
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { TestService } from './api';
+import { environment } from '../environments/environment';
+import { KeycloakService } from 'keycloak-angular';
+import { Title } from '@angular/platform-browser';
+import { SignalRService } from './services/signalr-service/signal-r.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'Fahrzeugverwaltung';
 
-  routes: { path: string; allowedRoles: string[]; icon: string; title: string; action?: () => void }[] = [
+  routes: {
+    path: string;
+    allowedRoles: string[];
+    icon: string;
+    title: string;
+    action?: () => void;
+  }[] = [
     {
-      path: "calendar",
+      path: 'calendar',
       allowedRoles: [],
-      icon: "home",
-      title: "Startseite"
+      icon: 'home',
+      title: 'Startseite',
     },
     {
-      path: "invitations",
-      allowedRoles: [environment.roles.admin, environment.roles.organizationAdmin],
-      icon: "mark_email_unread",
-      title: "Einladungen"
+      path: 'invitations',
+      allowedRoles: [
+        environment.roles.admin,
+        environment.roles.organizationAdmin,
+      ],
+      icon: 'mark_email_unread',
+      title: 'Einladungen',
     },
     {
-      path: "mail-settings",
-      allowedRoles: [environment.roles.admin, environment.roles.organizationAdmin],
-      icon: "email",
-      title: "Mail Einstellungen"
+      path: 'mail-settings',
+      allowedRoles: [
+        environment.roles.admin,
+        environment.roles.organizationAdmin,
+      ],
+      icon: 'email',
+      title: 'Mail Einstellungen',
     },
 
-
-
     {
-      path: "",
+      path: '',
       allowedRoles: [],
-      icon: "account_circle",
-      title: "Profil",
-      action: () => this.navigateToProfile()
-    }
-  ]
+      icon: 'account_circle',
+      title: 'Profil',
+      action: () => this.navigateToProfile(),
+    },
+  ];
 
-  constructor(private readonly titleService: Title,
-              private readonly keycloakService: KeycloakService,
-              ) {
-    titleService.setTitle("Fahrzeugverwaltung");
+  constructor(
+    private readonly titleService: Title,
+    private readonly keycloakService: KeycloakService,
+    private readonly signalRService: SignalRService
+  ) {
+    titleService.setTitle('Fahrzeugverwaltung');
+
+    // this.signalRService.startConnection().subscribe(() => {
+    //   this.signalRService
+    //     .receiveMessage('testsendmessage')
+    //     .subscribe((message) => {
+    //       console.log('Received message: ' + message);
+    //     });
+    // });
   }
 
   async logout(): Promise<void> {
@@ -56,18 +77,22 @@ export class AppComponent {
   }
 
   async navigateToProfile() {
-    await this.keycloakService.getKeycloakInstance().accountManagement()
+    await this.keycloakService.getKeycloakInstance().accountManagement();
   }
 
-  getMenuItems(): { path: string, icon: string, title: string, action?: () => void }[] {
+  getMenuItems(): {
+    path: string;
+    icon: string;
+    title: string;
+    action?: () => void;
+  }[] {
     let userRoles = this.keycloakService.getUserRoles() ?? [];
-    return this.routes.filter(route => {
-      if(route.allowedRoles.length == 0) {
+    return this.routes.filter((route) => {
+      if (route.allowedRoles.length == 0) {
         return true;
       }
 
-      return route.allowedRoles.some(role => userRoles.includes(role));
+      return route.allowedRoles.some((role) => userRoles.includes(role));
     });
   }
-
 }
