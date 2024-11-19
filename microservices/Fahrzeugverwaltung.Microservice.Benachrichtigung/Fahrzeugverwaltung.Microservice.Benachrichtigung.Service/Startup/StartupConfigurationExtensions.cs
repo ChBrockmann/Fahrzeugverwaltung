@@ -1,4 +1,5 @@
 ﻿using Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Model;
+using Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Model.Configuration;
 
 namespace Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Startup;
 

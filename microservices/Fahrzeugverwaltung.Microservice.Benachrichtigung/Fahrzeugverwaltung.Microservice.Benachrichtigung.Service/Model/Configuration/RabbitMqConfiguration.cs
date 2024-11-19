@@ -1,4 +1,4 @@
-﻿namespace Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Model;
+﻿namespace Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Model.Configuration;
 
 
 public sealed record RabbitMqConfiguration
