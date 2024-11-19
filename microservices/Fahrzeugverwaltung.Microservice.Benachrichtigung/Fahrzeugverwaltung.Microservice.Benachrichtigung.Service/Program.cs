@@ -1,6 +1,5 @@
 global using ILogger = Serilog.ILogger;
 using Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Hubs;
-using Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Model;
 using Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Model.Configuration;
 using Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Startup;
 using MassTransit;
@@ -12,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 Configuration configuration = builder.SetupConfiguration();
 
 ILogger logger = builder.SetupLogger();
+
+builder.Services.InitializeDatabase(configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
