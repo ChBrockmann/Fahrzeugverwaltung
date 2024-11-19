@@ -1,4 +1,4 @@
-﻿namespace Contracts;
+﻿namespace Contracts.Logbook;
 
 public record ReservationFullyCompletedEvent
 {

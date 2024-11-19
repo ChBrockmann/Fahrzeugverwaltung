@@ -1,6 +1,6 @@
 ﻿using Model.LogBook;
 
-namespace Contracts;
+namespace Contracts.Logbook;
 
 public class LogbookEntryCreatedEvent
 {

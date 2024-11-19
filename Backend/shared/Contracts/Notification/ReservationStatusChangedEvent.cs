@@ -1,8 +1,8 @@
 ﻿using Model.Reservation;
 
-namespace Contracts.Mailing;
+namespace Contracts.Notification;
 
-public record SendReservationStatusChangedMail
+public sealed record ReservationStatusChangedEvent
 {
     public ReservationId ReservationId { get; set; }
 }

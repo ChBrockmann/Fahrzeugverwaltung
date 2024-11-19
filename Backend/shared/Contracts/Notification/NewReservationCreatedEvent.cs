@@ -1,8 +1,8 @@
 ﻿using Model.Reservation;
 
-namespace Contracts.Mailing;
+namespace Contracts.Notification;
 
-public record SendNewReservationMail
+public sealed record NewReservationCreatedEvent
 {
     public ReservationId ReservationId { get; set; } = new();
 }
