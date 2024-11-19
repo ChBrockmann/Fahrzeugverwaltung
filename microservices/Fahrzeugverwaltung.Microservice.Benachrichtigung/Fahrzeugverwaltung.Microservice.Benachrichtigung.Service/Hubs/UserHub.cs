@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Fahrzeugverwaltung.Microservice.Benachrichtigung.Service.Hubs;
 
+[Authorize]
 public class UserHub : Hub
 {
     private readonly ILogger _logger;
